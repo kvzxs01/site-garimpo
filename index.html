@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,10 @@
   <style>
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -25,9 +30,11 @@
     header {
       height: 72px;
       border-bottom: 1px solid #292929;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       padding: 0 6%;
 
       position: fixed;
@@ -35,12 +42,16 @@
       left: 0;
       right: 0;
 
-      background: #080808ee;
+      background: rgba(8, 8, 8, 0.94);
       backdrop-filter: blur(10px);
 
       z-index: 1000;
 
       transition: transform 0.3s ease;
+    }
+
+    header.hide {
+      transform: translateY(-100%);
     }
 
     .brand {
@@ -52,6 +63,7 @@
     .logo {
       width: 40px;
       height: 40px;
+
       border-radius: 10px;
 
       background: #ffd600;
@@ -64,25 +76,35 @@
       font-size: 22px;
     }
 
+    .brand b {
+      font-size: 14px;
+    }
+
     .brand small {
       display: block;
+
       color: #888;
+
       font-size: 10px;
+
       margin-top: 3px;
     }
 
-    /*
-      O botão Gerenciar fica escondido
-      para visitantes.
-    */
+    /* Gerenciar fica escondido para visitantes */
 
     .admin {
       display: none;
+
       color: #bbb;
+
       border: 1px solid #333;
+
       padding: 9px 12px;
+
       border-radius: 9px;
+
       text-decoration: none;
+
       font-size: 12px;
     }
 
@@ -93,7 +115,9 @@
 
     .hero {
       max-width: 1100px;
+
       margin: auto;
+
       padding: 145px 20px 55px;
     }
 
@@ -103,15 +127,22 @@
 
     .hero h1 {
       font-size: clamp(42px, 7vw, 74px);
+
       line-height: 0.98;
+
       letter-spacing: -3px;
+
       margin: 16px 0;
     }
 
     .hero p {
       max-width: 600px;
+
       color: #999;
+
       line-height: 1.6;
+
+      margin-bottom: 0;
     }
 
 
@@ -121,97 +152,154 @@
 
     .wrap {
       max-width: 1100px;
+
       margin: auto;
+
       padding: 0 20px 80px;
     }
 
+
+    /* =========================
+       BUSCA
+    ========================= */
+
     .bar {
       display: flex;
+
       gap: 10px;
+
       flex-wrap: wrap;
+
       margin-bottom: 25px;
     }
 
     .search {
       flex: 1;
+
       min-width: 220px;
 
       background: #111;
+
       border: 1px solid #333;
 
       color: #fff;
 
       border-radius: 9px;
-      padding: 13px;
+
+      padding: 13px 14px;
+
+      font-size: 14px;
+
+      transition: border-color 0.2s ease;
     }
 
     .search:focus {
       outline: none;
+
       border-color: #ffd600;
     }
 
+    .search::placeholder {
+      color: #777;
+    }
+
+
+    /* =========================
+       CATEGORIAS
+    ========================= */
+
     .cats {
       display: flex;
+
       gap: 7px;
+
       flex-wrap: wrap;
     }
 
     .cat {
       background: #111;
+
       color: #bbb;
 
       border: 1px solid #333;
+
       border-radius: 9px;
 
       padding: 10px 12px;
 
       cursor: pointer;
+
+      font-size: 12px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .cat:hover {
+      border-color: #555;
+
+      color: #fff;
     }
 
     .cat.active {
       background: #ffd600;
+
       color: #000;
+
+      border-color: #ffd600;
+
       font-weight: 800;
     }
 
 
     /* =========================
-       GRID DOS PRODUTOS
+       GRID
     ========================= */
 
     .grid {
       display: grid;
+
       grid-template-columns: repeat(4, 1fr);
+
       gap: 15px;
 
-      /*
-        Faz os cards da mesma linha
-        terem a mesma altura.
-      */
       align-items: stretch;
     }
 
 
     /* =========================
-       CARD DO PRODUTO
+       CARD
     ========================= */
 
     .card {
       background: #111;
+
       border: 1px solid #292929;
+
       border-radius: 15px;
 
       overflow: hidden;
 
-      /*
-        ESSA É UMA DAS PRINCIPAIS
-        ALTERAÇÕES.
-      */
-
       display: flex;
+
       flex-direction: column;
 
       height: 100%;
+
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+
+      border-color: #444;
+
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
 
 
@@ -220,17 +308,29 @@
     ========================= */
 
     .pic {
-      aspect-ratio: 1;
+      aspect-ratio: 1 / 1;
+
       background: #fff;
 
       flex-shrink: 0;
+
+      overflow: hidden;
     }
 
     .pic img {
       width: 100%;
+
       height: 100%;
+
       object-fit: cover;
+
       display: block;
+
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .pic img {
+      transform: scale(1.03);
     }
 
 
@@ -241,90 +341,135 @@
     .info {
       padding: 14px;
 
-      /*
-        Faz o conteúdo ocupar
-        toda a altura restante.
-      */
-
       display: flex;
+
       flex-direction: column;
 
       flex: 1;
+
+      min-height: 215px;
     }
 
     .catname {
       font-size: 10px;
+
       color: #ffd600;
+
       font-weight: 900;
 
       text-transform: uppercase;
+
+      margin-bottom: 6px;
     }
 
     .name {
       font-weight: 800;
+
       font-size: 14px;
+
       line-height: 1.35;
 
-      margin: 7px 0;
+      margin: 0 0 7px;
     }
 
     .desc {
       color: #999;
+
       font-size: 12px;
+
       line-height: 1.4;
 
+      margin: 0;
+
       /*
-        Mantém uma altura mínima
-        para as descrições.
+        Limita a descrição a 3 linhas.
       */
 
-      min-height: 32px;
-    }
+      display: -webkit-box;
 
-    .price {
-      font-size: 20px;
-      font-weight: 900;
+      -webkit-box-orient: vertical;
 
-      margin: 12px 0;
+      -webkit-line-clamp: 3;
+
+      overflow: hidden;
+
+      min-height: 50px;
     }
 
 
     /* =========================
-       BOTÃO VER OFERTA
+       PREÇO
+    ========================= */
+
+    .price {
+      margin-top: auto;
+
+      margin-bottom: 10px;
+
+      color: #fff;
+
+      font-size: 21px;
+
+      font-weight: 900;
+
+      line-height: 1.2;
+
+      display: flex;
+
+      align-items: baseline;
+
+      gap: 4px;
+    }
+
+    .price-label {
+      font-size: 12px;
+
+      color: #999;
+
+      font-weight: 600;
+    }
+
+
+    /* =========================
+       BOTÃO
     ========================= */
 
     .buy {
       display: block;
 
+      width: 100%;
+
       text-align: center;
 
       background: #ffd600;
+
       color: #000;
 
       border-radius: 9px;
 
-      padding: 11px;
+      padding: 12px;
 
       text-decoration: none;
 
       font-weight: 900;
+
       font-size: 12px;
 
-      /*
-        ESSA LINHA FAZ O BOTÃO
-        IR SEMPRE PARA O FINAL.
-      */
-
-      margin-top: auto;
+      margin-top: 0;
 
       transition:
-        transform 0.15s ease,
-        background 0.15s ease;
+        background 0.2s ease,
+        transform 0.2s ease;
     }
 
     .buy:hover {
-      transform: translateY(-2px);
       background: #ffe44d;
+
+      transform: translateY(-1px);
+    }
+
+    .buy:active {
+      transform: translateY(0);
     }
 
 
@@ -339,7 +484,7 @@
 
       color: #777;
 
-      padding: 50px;
+      padding: 50px 20px;
     }
 
 
@@ -361,8 +506,17 @@
 
 
     /* =========================
-       RESPONSIVIDADE
+       RESPONSIVO
     ========================= */
+
+    @media (max-width: 1000px) {
+
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+    }
+
 
     @media (max-width: 850px) {
 
@@ -370,25 +524,87 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .hero {
+        padding-top: 130px;
+      }
+
     }
 
 
     @media (max-width: 500px) {
 
+      header {
+        height: 64px;
+
+        padding: 0 15px;
+      }
+
+      .logo {
+        width: 36px;
+
+        height: 36px;
+
+        font-size: 19px;
+      }
+
+      .brand b {
+        font-size: 13px;
+      }
+
+      .brand small {
+        font-size: 9px;
+      }
+
+      .hero {
+        padding: 115px 15px 40px;
+      }
+
+      .hero h1 {
+        font-size: 43px;
+
+        letter-spacing: -2px;
+      }
+
+      .wrap {
+        padding: 0 15px 60px;
+      }
+
       .grid {
+        grid-template-columns: repeat(2, 1fr);
+
         gap: 9px;
       }
 
       .info {
         padding: 10px;
+
+        min-height: 195px;
+      }
+
+      .catname {
+        font-size: 8px;
       }
 
       .name {
         font-size: 12px;
       }
 
+      .desc {
+        font-size: 10px;
+
+        min-height: 43px;
+      }
+
       .price {
-        font-size: 17px;
+        font-size: 16px;
+
+        margin-bottom: 8px;
+      }
+
+      .buy {
+        padding: 10px 6px;
+
+        font-size: 10px;
       }
 
     }
@@ -403,7 +619,7 @@
        CABEÇALHO
   ========================= -->
 
-  <header>
+  <header id="header">
 
     <div class="brand">
 
@@ -424,8 +640,9 @@
 
     <!--
       Escondido para visitantes.
-      O admin continua acessível diretamente
-      através de /admin.html
+      O painel continua acessível em:
+
+      /admin.html
     -->
 
     <a
@@ -476,8 +693,8 @@
       <input
         id="search"
         class="search"
-        placeholder="🔎 Procurar produto..."
         type="text"
+        placeholder="🔎 Procurar produto..."
       >
 
       <div
@@ -516,11 +733,10 @@
   <script src="config.js"></script>
 
 
-
   <script>
 
     /* =========================
-       CONEXÃO
+       CONEXÃO SUPABASE
     ========================= */
 
     const db = supabase.createClient(
@@ -530,16 +746,19 @@
 
 
     let products = [];
+
     let selected = "Todos";
 
 
     /* =========================
-       PROTEÇÃO CONTRA HTML
+       PROTEÇÃO HTML
     ========================= */
 
-    const esc = (s) =>
-      String(s ?? "").replace(
+    const esc = (s) => {
+
+      return String(s ?? "").replace(
         /[&<>"']/g,
+
         (m) => ({
           "&": "&amp;",
           "<": "&lt;",
@@ -548,6 +767,8 @@
           "'": "&#039;"
         }[m])
       );
+
+    };
 
 
     /* =========================
@@ -567,7 +788,10 @@
 
       if (r.error) {
 
-        console.error(r.error);
+        console.error(
+          "Erro ao carregar produtos:",
+          r.error
+        );
 
         document.getElementById("grid").innerHTML = `
           <div class="empty">
@@ -581,9 +805,11 @@
 
       products = r.data || [];
 
+
       renderCats();
 
       render();
+
     }
 
 
@@ -598,7 +824,9 @@
         "Todos",
         ...new Set(
           products
-            .map((p) => p.category)
+            .map(
+              (p) => p.category
+            )
             .filter(Boolean)
         )
       ];
@@ -621,11 +849,12 @@
 
       document
         .querySelectorAll(".cat")
-        .forEach((b) => {
+        .forEach((button) => {
 
-          b.onclick = () => {
+          button.onclick = () => {
 
-            selected = b.dataset.cat;
+            selected =
+              button.dataset.cat;
 
             renderCats();
 
@@ -649,91 +878,168 @@
         document
           .getElementById("search")
           .value
-          .toLowerCase();
+          .toLowerCase()
+          .trim();
 
 
-      const list = products.filter(
-        (p) =>
-          (
-            selected === "Todos" ||
-            p.category === selected
-          ) &&
-          `${p.name} ${p.description || ""}`
-            .toLowerCase()
-            .includes(q)
-      );
+      const list =
+        products.filter(
+          (p) => {
+
+            const matchesCategory =
+              selected === "Todos" ||
+              p.category === selected;
+
+
+            const text =
+              `${p.name || ""} ${p.description || ""}`
+                .toLowerCase();
+
+
+            const matchesSearch =
+              text.includes(q);
+
+
+            return (
+              matchesCategory &&
+              matchesSearch
+            );
+
+          }
+        );
+
+
+      if (!list.length) {
+
+        document.getElementById("grid").innerHTML = `
+          <div class="empty">
+            Nenhum produto encontrado.
+          </div>
+        `;
+
+        return;
+      }
 
 
       document.getElementById("grid").innerHTML =
-        list.length
 
-          ? list
-              .map(
-                (p) => `
+        list
+          .map(
+            (p) => {
 
-                  <article class="card">
+              /*
+                Aceita valores como:
+                39,90
+                39.90
+                R$ 39,90
 
-                    <div class="pic">
+                Se você já cadastrar "R$ 39,90",
+                não adiciona R$ novamente.
+              */
 
-                      <img
-                        src="${esc(p.image_url)}"
-                        alt="${esc(p.name)}"
-                        loading="lazy"
-                      >
+              const rawPrice =
+                String(
+                  p.price ?? ""
+                ).trim();
 
+
+              const formattedPrice =
+                rawPrice
+                  ? (
+                      /^r\$/i.test(rawPrice)
+                        ? rawPrice
+                        : `R$ ${rawPrice}`
+                    )
+                  : "Consultar preço";
+
+
+              return `
+
+                <article class="card">
+
+
+                  <!-- IMAGEM -->
+
+                  <div class="pic">
+
+                    <img
+                      src="${esc(p.image_url)}"
+                      alt="${esc(p.name)}"
+                      loading="lazy"
+                    >
+
+                  </div>
+
+
+                  <!-- INFORMAÇÕES -->
+
+                  <div class="info">
+
+
+                    <div class="catname">
+                      ${esc(
+                        p.category ||
+                        "Achadinhos"
+                      )}
                     </div>
 
 
-                    <div class="info">
-
-                      <div class="catname">
-                        ${esc(p.category || "Achadinhos")}
-                      </div>
-
-
-                      <div class="name">
-                        ${esc(p.name)}
-                      </div>
-
-
-                      <div class="desc">
-                        ${esc(
-                          p.description ||
-                          "Confira a oferta."
-                        )}
-                      </div>
-
-
-                      <div class="price">
-                        ${esc(
-                          p.price ||
-                          "Ver oferta"
-                        )}
-                      </div>
-
-
-                      <a
-                        class="buy"
-                        href="${esc(p.affiliate_url)}"
-                        target="_blank"
-                        rel="nofollow sponsored noopener"
-                      >
-                        Ver oferta →
-                      </a>
-
+                    <div class="name">
+                      ${esc(
+                        p.name ||
+                        "Produto"
+                      )}
                     </div>
 
-                  </article>
 
-                `
-              )
-              .join("")
+                    <div class="desc">
+                      ${esc(
+                        p.description ||
+                        "Confira a oferta."
+                      )}
+                    </div>
 
-          : `
-              <div class="empty">
-                Nenhum produto encontrado.
-              </div>
-            `;
+
+                    <!--
+                      O preço fica embaixo
+                      graças ao margin-top:auto.
+                    -->
+
+                    <div class="price">
+                      ${esc(
+                        formattedPrice
+                      )}
+                    </div>
+
+
+                    <!--
+                      O botão fica sempre
+                      logo abaixo do preço.
+                    -->
+
+                    <a
+                      class="buy"
+                      href="${esc(
+                        p.affiliate_url ||
+                        "#"
+                      )}"
+                      target="_blank"
+                      rel="nofollow sponsored noopener"
+                    >
+                      Ver oferta →
+                    </a>
+
+
+                  </div>
+
+                </article>
+
+              `;
+
+            }
+          )
+          .join("");
+
     }
 
 
@@ -744,7 +1050,97 @@
 
     document
       .getElementById("search")
-      .oninput = render;
+      .addEventListener(
+        "input",
+        render
+      );
+
+
+
+    /* =========================
+       ESCONDER CABEÇALHO AO DESCER
+    ========================= */
+
+    const header =
+      document.getElementById(
+        "header"
+      );
+
+
+    let lastScrollY = 0;
+
+
+    window.addEventListener(
+      "scroll",
+      () => {
+
+        const currentScrollY =
+          window.scrollY;
+
+
+        /*
+          No topo:
+          mostra o cabeçalho.
+        */
+
+        if (
+          currentScrollY <= 10
+        ) {
+
+          header.classList.remove(
+            "hide"
+          );
+
+          lastScrollY =
+            currentScrollY;
+
+          return;
+
+        }
+
+
+        /*
+          Descendo:
+          esconde.
+        */
+
+        if (
+          currentScrollY >
+          lastScrollY
+        ) {
+
+          header.classList.add(
+            "hide"
+          );
+
+        }
+
+
+        /*
+          Subindo:
+          mostra novamente.
+        */
+
+        else if (
+          currentScrollY <
+          lastScrollY
+        ) {
+
+          header.classList.remove(
+            "hide"
+          );
+
+        }
+
+
+        lastScrollY =
+          currentScrollY;
+
+      },
+      {
+        passive: true
+      }
+    );
 
 
 
@@ -758,4 +1154,5 @@
 
 
 </body>
+
 </html>
