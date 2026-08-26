@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,35 +90,54 @@
   </style>
 </head>
 
+
 <body>
 
   <div class="box">
 
-    <div class="icon" id="icon">🔄</div>
+    <div class="icon" id="icon">
+      🔄
+    </div>
 
-    <h1 id="title">Conectando...</h1>
+    <h1 id="title">
+      Conectando...
+    </h1>
 
     <p id="message">
       Aguardando resposta do Mercado Livre.
     </p>
 
-    <div class="loading" id="loading"></div>
+    <div
+      class="loading"
+      id="loading">
+    </div>
 
     <div id="result"></div>
 
   </div>
 
 
+  <!-- ========================================================
+       CONFIG DO SUPABASE
+       ======================================================== -->
+
+  <script src="../config.js"></script>
+
+
   <script>
 
     /*
     ============================================================
-    EDGE FUNCTION DO SUPABASE
+    CONFIGURAÇÃO
     ============================================================
     */
 
     const EDGE_FUNCTION_URL =
       "https://xokyvzjeoivmggsmkjjs.supabase.co/functions/v1/mercadolivre-oauth";
+
+
+    const REDIRECT_URI =
+      "https://kvzxs01.github.io/site-garimpo/callback.html";
 
 
     /*
@@ -234,7 +254,25 @@
 
         /*
         --------------------------------------------------------
-        PEGAR OS PARÂMETROS DEVOLVIDOS PELO MERCADO LIVRE
+        VERIFICAR CONFIG.JS
+        --------------------------------------------------------
+        */
+
+        if (
+          typeof SUPABASE_ANON_KEY === "undefined" ||
+          !SUPABASE_ANON_KEY
+        ) {
+
+          throw new Error(
+            "SUPABASE_ANON_KEY não foi encontrada no config.js."
+          );
+
+        }
+
+
+        /*
+        --------------------------------------------------------
+        PEGAR PARÂMETROS DA URL
         --------------------------------------------------------
         */
 
@@ -258,7 +296,7 @@
 
         /*
         --------------------------------------------------------
-        CASO O USUÁRIO TENHA NEGADO
+        ERRO DO MERCADO LIVRE
         --------------------------------------------------------
         */
 
@@ -281,7 +319,7 @@
 
         /*
         --------------------------------------------------------
-        VERIFICAR SE RECEBEU O CODE
+        VERIFICAR CODE
         --------------------------------------------------------
         */
 
@@ -296,7 +334,7 @@
 
         /*
         --------------------------------------------------------
-        ATUALIZAR MENSAGEM
+        ATUALIZAR STATUS
         --------------------------------------------------------
         */
 
@@ -311,7 +349,7 @@
 
         /*
         --------------------------------------------------------
-        ENVIAR CODE PARA A EDGE FUNCTION
+        CHAMAR EDGE FUNCTION
         --------------------------------------------------------
         */
 
@@ -319,18 +357,27 @@
           await fetch(
             EDGE_FUNCTION_URL,
             {
+
               method: "POST",
 
               headers: {
-                "Content-Type": "application/json"
+
+                "Content-Type":
+                  "application/json",
+
+                "Authorization":
+                  "Bearer " +
+                  SUPABASE_ANON_KEY
+
               },
 
               body: JSON.stringify({
 
-                code: code,
+                code:
+                  code,
 
                 redirect_uri:
-                  "https://kvzxs01.github.io/site-garimpo/oauth/callback.html"
+                  REDIRECT_URI
 
               })
 
@@ -340,7 +387,7 @@
 
         /*
         --------------------------------------------------------
-        PEGAR RESPOSTA DA EDGE FUNCTION
+        PEGAR RESPOSTA
         --------------------------------------------------------
         */
 
@@ -375,7 +422,7 @@
 
         /*
         --------------------------------------------------------
-        CASO A EDGE FUNCTION TENHA RETORNADO ERRO
+        ERRO DA EDGE FUNCTION
         --------------------------------------------------------
         */
 
@@ -443,7 +490,7 @@
 
         /*
         --------------------------------------------------------
-        REMOVER O CODE DA URL
+        LIMPAR CODE DA URL
         --------------------------------------------------------
         */
 
@@ -454,6 +501,7 @@
         );
 
       }
+
 
       catch (error) {
 
@@ -484,4 +532,5 @@
   </script>
 
 </body>
+
 </html>
