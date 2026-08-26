@@ -352,35 +352,38 @@
         --------------------------------------------------------
         */
 
-        const response =
-          await fetch(
-            EDGE_FUNCTION_URL,
-            {
 
-              method: "POST",
+ const response = await fetch(
+  "https://xokyvzjeoivmggsmkjjs.supabase.co/functions/v1/mercadolivre-oauth",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      code: code
+    })
+  }
+);
 
+const result = await response.json();
 
-              headers: {
-  
-                "Content-Type": "application/json",
-  
-                "apikey": supabaseAnonKey
+console.log("Resposta da Edge Function:", result);
 
-              },
+if (!response.ok) {
+  throw new Error(
+    result.error ||
+    result.message ||
+    "Erro ao finalizar a conexão."
+  );
+}
 
-              body: JSON.stringify({
+message.textContent = "Conexão concluída com sucesso!";
 
-                code:
-                  code,
-
-                redirect_uri:
-                  REDIRECT_URI
-
-              })
-
-            }
-          );
-
+        console.log(
+          "Tokens recebidos:",
+          result
+        );
 
         /*
         --------------------------------------------------------
