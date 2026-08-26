@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title>Gerenciar — Garimpo Online</title>
+  <title>Painel — Garimpo Online</title>
 
   <style>
     * {
@@ -20,89 +20,59 @@
     }
 
     .wrap {
-      max-width: 900px;
+      max-width: 760px;
       margin: auto;
-      padding: 30px 20px 80px;
+      padding: 30px 20px 70px;
     }
 
     .top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .top h1 {
-      margin: 0;
-      font-size: 26px;
+      align-items: center;
     }
 
     .top a {
       color: #ffd600;
       text-decoration: none;
-      font-size: 13px;
     }
 
     .box {
       background: #111;
       border: 1px solid #292929;
-      border-radius: 15px;
+      border-radius: 14px;
       padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    h3 {
-      margin-top: 0;
+      margin: 18px 0;
     }
 
     label {
       display: block;
-      margin: 15px 0 7px;
       font-size: 12px;
       font-weight: 800;
-      color: #ddd;
+      margin: 14px 0 7px;
     }
 
     input,
     select,
     textarea {
       width: 100%;
-      background: #171717;
-      border: 1px solid #333;
-      color: #fff;
-      border-radius: 9px;
       padding: 12px;
-      outline: none;
-      font-family: inherit;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: #ffd600;
+      background: #171717;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 9px;
     }
 
     textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    button {
-      font-family: inherit;
+      min-height: 80px;
     }
 
     .btn {
       border: 0;
       border-radius: 9px;
-      padding: 11px 15px;
+      padding: 12px 15px;
       font-weight: 900;
       cursor: pointer;
-      margin-top: 12px;
+      margin-top: 15px;
     }
 
     .primary {
@@ -116,51 +86,25 @@
       border: 1px solid #333;
     }
 
+    .danger {
+      background: #411515;
+      color: #ffaaaa;
+    }
+
     .edit {
-      background: #202020;
+      background: #1c1c1c;
       color: #ffd600;
       border: 1px solid #444;
-    }
-
-    .danger {
-      background: #3a1111;
-      color: #ff9999;
-      border: 1px solid #5c2020;
-    }
-
-    .cancel {
-      background: #191919;
-      color: #aaa;
-      border: 1px solid #333;
-    }
-
-    .btn:hover {
-      opacity: .88;
-    }
-
-    .msg {
-      margin-top: 10px;
-      color: #888;
-      font-size: 12px;
-    }
-
-    .success {
-      color: #8dff9d;
-    }
-
-    .error {
-      color: #ff9292;
-    }
-
-    .hidden {
-      display: none !important;
+      margin-left: 6px;
     }
 
     .upload {
-      border: 1px dashed #444;
+      border: 1px dashed #555;
       border-radius: 10px;
-      padding: 15px;
-      color: #888;
+      padding: 18px;
+      text-align: center;
+      color: #999;
+      margin-top: 8px;
     }
 
     .upload input {
@@ -175,165 +119,61 @@
       height: 120px;
       object-fit: cover;
       border-radius: 10px;
-      margin-top: 12px;
+      margin: 12px auto 0;
     }
 
-    /* =========================
-       LISTA DE PRODUTOS
-    ========================= */
-
-    .product {
-      border-bottom: 1px solid #292929;
-      padding: 16px 0;
+    .msg {
+      font-size: 12px;
+      color: #999;
+      margin-top: 10px;
     }
 
-    .product:last-child {
-      border-bottom: 0;
+    .error {
+      color: #ff9b9b;
     }
 
-    .product-row {
+    .success {
+      color: #b7ffb7;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .item {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      border-bottom: 1px solid #292929;
+      padding: 12px 0;
     }
 
-    .product-img {
-      width: 75px;
-      height: 75px;
+    .item img {
+      width: 60px;
+      height: 60px;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 8px;
       background: #fff;
-      flex-shrink: 0;
     }
 
-    .product-info {
+    .item-main {
       flex: 1;
-      min-width: 0;
     }
 
-    .product-name {
-      font-weight: 900;
-      margin-bottom: 5px;
-      word-break: break-word;
-    }
-
-    .product-price {
-      color: #ffd600;
-      font-weight: 900;
-      margin-bottom: 4px;
-    }
-
-    .product-id {
+    .muted {
+      font-size: 11px;
       color: #777;
-      font-size: 10px;
-      word-break: break-all;
     }
 
-    .product-category {
-      color: #999;
+    .ml-id {
+      color: #ffd600;
       font-size: 11px;
       margin-top: 4px;
     }
 
     .actions {
       display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .actions .btn {
-      margin-top: 0;
-      padding: 9px 11px;
-      font-size: 11px;
-    }
-
-    /* =========================
-       EDITOR
-    ========================= */
-
-    .editor {
-      background: #0b0b0b;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 18px;
-      margin-top: 14px;
-    }
-
-    .editor-title {
-      color: #ffd600;
-      margin-bottom: 10px;
-      font-weight: 900;
-    }
-
-    .edit-preview {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 9px;
-      background: #fff;
-      margin-top: 10px;
-      display: block;
-    }
-
-    .editor-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .editor-actions .btn {
-      margin-top: 12px;
-    }
-
-    .status {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 900;
-      margin-top: 7px;
-    }
-
-    .active {
-      color: #8dff9d;
-    }
-
-    .inactive {
-      color: #ff9292;
-    }
-
-    .info-note {
-      margin-top: 8px;
-      color: #777;
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 650px) {
-
-      .wrap {
-        padding: 20px 14px 60px;
-      }
-
-      .top {
-        align-items: flex-start;
-      }
-
-      .product-row {
-        align-items: flex-start;
-      }
-
-      .product-img {
-        width: 60px;
-        height: 60px;
-      }
-
-      .actions {
-        flex-direction: column;
-      }
-
-      .actions .btn {
-        width: 100%;
-      }
+      align-items: center;
     }
   </style>
 </head>
@@ -343,23 +183,22 @@
   <main class="wrap">
 
     <div class="top">
-
-      <h1>⚙ Gerenciar</h1>
-
-      <a href="index.html">
-        ← Voltar para loja
-      </a>
-
+      <h1>Garimpo Online</h1>
+      <a href="index.html">← Ver loja</a>
     </div>
 
 
     <!-- =========================
          LOGIN
-    ========================= -->
+    ========================== -->
 
     <section id="loginBox" class="box">
 
-      <h2>Entrar</h2>
+      <h2>Entrar no painel</h2>
+
+      <p class="muted">
+        Este login é somente para você administrar os produtos.
+      </p>
 
       <label>E-mail</label>
 
@@ -394,44 +233,26 @@
 
     <!-- =========================
          PAINEL
-    ========================= -->
+    ========================== -->
 
     <section
       id="panel"
       class="hidden"
     >
 
-      <!-- =========================
-           NOVO PRODUTO
-      ========================= -->
-
       <div class="box">
 
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          gap:10px;
-        ">
+        <button
+          id="logoutBtn"
+          class="btn secondary"
+        >
+          Sair
+        </button>
 
-          <h2>
-            Adicionar produto
-          </h2>
-
-          <button
-            id="logoutBtn"
-            class="btn secondary"
-            style="margin-top:0"
-          >
-            Sair
-          </button>
-
-        </div>
+        <h2>Adicionar produto</h2>
 
 
-        <label>
-          Nome do produto
-        </label>
+        <label>Nome</label>
 
         <input
           id="name"
@@ -439,77 +260,49 @@
         >
 
 
+        <!-- =========================
+             ID AFILIADO
+        ========================== -->
+
         <label>
-          ID do anúncio do Mercado Livre
+          ID de afiliado do Mercado Livre
         </label>
 
         <input
           id="mercadolivre_id"
-          placeholder="Ex.: MLB123456789"
+          placeholder="Ex.: R6PPBF-4F7N"
         >
 
-        <div class="info-note">
-          Esse ID será usado posteriormente para buscar o preço
-          atualizado do anúncio no Mercado Livre.
+        <div class="msg">
+          Cole aqui o ID que aparece em
+          <b>Copiar ID</b> na Central de Afiliados.
         </div>
 
 
-        <label>
-          Preço atual
-        </label>
+        <!-- =========================
+             CATEGORIA
+        ========================== -->
 
-        <input
-          id="price"
-          placeholder="Ex.: R$ 79,90"
-        >
-
-        <div class="info-note">
-          Por enquanto você pode informar o preço manualmente.
-          Quando a automação estiver ativa, ele poderá ser atualizado
-          pela API do Mercado Livre.
-        </div>
-
-
-        <label>
-          Categoria
-        </label>
+        <label>Categoria</label>
 
         <select id="category">
 
-          <option value="Eletrônicos">
-            Eletrônicos
-          </option>
-
-          <option value="Casa">
-            Casa
-          </option>
-
-          <option value="Games">
-            Games
-          </option>
-
-          <option value="Moda">
-            Moda
-          </option>
-
-          <option value="Beleza">
-            Beleza
-          </option>
-
-          <option value="Automotivo">
-            Automotivo
-          </option>
-
-          <option value="Achadinhos">
-            Achadinhos
-          </option>
+          <option>Eletrônicos</option>
+          <option>Casa</option>
+          <option>Games</option>
+          <option>Moda</option>
+          <option>Beleza</option>
+          <option>Automotivo</option>
+          <option>Achadinhos</option>
 
         </select>
 
 
-        <label>
-          Imagem
-        </label>
+        <!-- =========================
+             IMAGEM
+        ========================== -->
+
+        <label>Imagem</label>
 
         <div class="upload">
 
@@ -519,32 +312,39 @@
             accept="image/jpeg,image/png,image/webp"
           >
 
+          <div>
+            Escolha a imagem do produto
+          </div>
+
           <img
             id="preview"
             class="preview"
-            alt="Prévia"
           >
 
         </div>
 
 
-        <label>
-          Link de afiliado
-        </label>
+        <!-- =========================
+             LINK AFILIADO
+        ========================== -->
+
+        <label>Link de afiliado</label>
 
         <input
           id="affiliate"
-          placeholder="https://..."
+          placeholder="https://meli.la/..."
         >
 
 
-        <label>
-          Descrição
-        </label>
+        <!-- =========================
+             DESCRIÇÃO
+        ========================== -->
+
+        <label>Descrição</label>
 
         <textarea
           id="description"
-          placeholder="Descrição do produto"
+          placeholder="Por que vale a pena?"
         ></textarea>
 
 
@@ -565,13 +365,11 @@
 
       <!-- =========================
            PRODUTOS
-      ========================= -->
+      ========================== -->
 
       <div class="box">
 
-        <h2>
-          Produtos publicados
-        </h2>
+        <h2>Produtos publicados</h2>
 
         <div id="list"></div>
 
@@ -582,6 +380,10 @@
   </main>
 
 
+  <!-- =========================
+       SUPABASE
+  ========================== -->
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script src="config.js"></script>
@@ -589,51 +391,85 @@
 
   <script>
 
-    /* =========================
-       SUPABASE
-    ========================= */
-
-    const db = supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
-
-
-    let editingId = null;
-
-
-    /* =========================
-       UTILIDADE
-    ========================= */
-
-    const $ = id =>
-      document.getElementById(id);
-
-
-    const esc = value =>
-      String(value ?? "").replace(
-        /[&<>"']/g,
-        char => ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
-        })[char]
+    const db =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
       );
+
+
+    const $ =
+      id => document.getElementById(id);
+
+
+    const esc =
+      s =>
+        String(s ?? "")
+          .replace(
+            /[&<>"']/g,
+            m => ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;"
+            }[m])
+          );
+
+
+    /* =========================
+       MOSTRAR PAINEL
+    ========================== */
+
+    function showPanel() {
+
+      $("loginBox")
+        .classList
+        .add("hidden");
+
+      $("panel")
+        .classList
+        .remove("hidden");
+
+      loadProducts();
+
+    }
+
+
+    function showLogin() {
+
+      $("panel")
+        .classList
+        .add("hidden");
+
+      $("loginBox")
+        .classList
+        .remove("hidden");
+
+    }
 
 
     /* =========================
        LOGIN
-    ========================= */
+    ========================== */
 
     async function init() {
 
-      const result =
+      const r =
         await db.auth.getSession();
 
+      if (r.error) {
 
-      if (result.data.session) {
+        $("loginMsg").textContent =
+          r.error.message;
+
+        $("loginMsg").className =
+          "msg error";
+
+        return;
+      }
+
+      if (r.data.session) {
 
         showPanel();
 
@@ -643,64 +479,43 @@
 
       }
 
-    }
 
+      db.auth.onAuthStateChange(
+        (event, session) => {
 
-    function showLogin() {
+          if (session) {
 
-      $("loginBox")
-        .classList.remove("hidden");
+            showPanel();
 
-      $("panel")
-        .classList.add("hidden");
+          } else {
 
-    }
+            showLogin();
 
-
-    function showPanel() {
-
-      $("loginBox")
-        .classList.add("hidden");
-
-      $("panel")
-        .classList.remove("hidden");
-
-      loadProducts();
-
-    }
-
-
-    db.auth.onAuthStateChange(
-      (event, session) => {
-
-        if (session) {
-
-          showPanel();
-
-        } else {
-
-          showLogin();
+          }
 
         }
+      );
 
-      }
-    );
+    }
 
 
     $("loginBtn").onclick =
-      async function () {
+      async () => {
 
         const email =
-          $("email").value.trim();
+          $("email")
+            .value
+            .trim();
 
         const password =
-          $("password").value;
+          $("password")
+            .value;
 
 
         if (!email || !password) {
 
           $("loginMsg").textContent =
-            "Digite seu e-mail e senha.";
+            "Digite e-mail e senha.";
 
           $("loginMsg").className =
             "msg error";
@@ -710,29 +525,28 @@
         }
 
 
-        $("loginBtn").disabled = true;
+        $("loginBtn").disabled =
+          true;
 
         $("loginMsg").textContent =
           "Entrando...";
 
 
-        const result =
+        const r =
           await db.auth.signInWithPassword({
-
-            email: email,
-
-            password: password
-
+            email,
+            password
           });
 
 
-        $("loginBtn").disabled = false;
+        $("loginBtn").disabled =
+          false;
 
 
-        if (result.error) {
+        if (r.error) {
 
           $("loginMsg").textContent =
-            result.error.message;
+            r.error.message;
 
           $("loginMsg").className =
             "msg error";
@@ -743,55 +557,53 @@
 
 
         $("loginMsg").textContent =
-          "Login realizado.";
+          "Login realizado!";
 
         $("loginMsg").className =
           "msg success";
 
-      };
 
-
-    $("logoutBtn").onclick =
-      async function () {
-
-        await db.auth.signOut();
+        showPanel();
 
       };
 
 
     /* =========================
-       PREVIEW
-    ========================= */
+       SAIR
+    ========================== */
+
+    $("logoutBtn").onclick =
+      () => db.auth.signOut();
+
+
+    /* =========================
+       PREVIEW DA IMAGEM
+    ========================== */
 
     $("file").onchange =
-      function () {
+      () => {
 
-        const file =
-          this.files[0];
+        const f =
+          $("file")
+            .files[0];
 
 
-        if (!file) {
-
-          $("preview").style.display =
-            "none";
-
-          return;
-
-        }
+        if (!f) return;
 
 
         if (
-          file.size >
+          f.size >
           5 * 1024 * 1024
         ) {
 
           $("msg").textContent =
-            "A imagem deve ter no máximo 5 MB.";
+            "A imagem deve ter até 5 MB.";
 
           $("msg").className =
             "msg error";
 
-          this.value = "";
+          $("file").value =
+            "";
 
           return;
 
@@ -799,7 +611,7 @@
 
 
         $("preview").src =
-          URL.createObjectURL(file);
+          URL.createObjectURL(f);
 
         $("preview").style.display =
           "block";
@@ -809,41 +621,40 @@
 
     /* =========================
        ADICIONAR PRODUTO
-    ========================= */
+    ========================== */
 
     $("addBtn").onclick =
-      async function () {
+      async () => {
+
+        const f =
+          $("file")
+            .files[0];
 
         const name =
-          $("name").value.trim();
+          $("name")
+            .value
+            .trim();
 
-        const mlId =
+        const mercadolivre_id =
           $("mercadolivre_id")
-            .value.trim();
+            .value
+            .trim();
 
-        const price =
-          $("price")
-            .value.trim();
-
-        const category =
-          $("category").value;
-
-        const affiliate =
+        const link =
           $("affiliate")
-            .value.trim();
-
-        const description =
-          $("description")
-            .value.trim();
-
-        const file =
-          $("file").files[0];
+            .value
+            .trim();
 
 
-        if (!name) {
+        if (
+          !name ||
+          !mercadolivre_id ||
+          !link ||
+          !f
+        ) {
 
           $("msg").textContent =
-            "Digite o nome do produto.";
+            "Preencha nome, ID de afiliado, link e imagem.";
 
           $("msg").className =
             "msg error";
@@ -853,48 +664,25 @@
         }
 
 
-        if (!affiliate) {
-
-          $("msg").textContent =
-            "Digite o link de afiliado.";
-
-          $("msg").className =
-            "msg error";
-
-          return;
-
-        }
-
-
-        if (!file) {
-
-          $("msg").textContent =
-            "Escolha uma imagem.";
-
-          $("msg").className =
-            "msg error";
-
-          return;
-
-        }
-
-
-        $("addBtn").disabled = true;
+        $("addBtn").disabled =
+          true;
 
         $("msg").textContent =
           "Enviando imagem...";
 
-        $("msg").className =
-          "msg";
 
+        /* =========================
+           UPLOAD
+        ========================== */
 
         const ext =
           (
-            file.name
+            f.name
               .split(".")
               .pop() ||
             "jpg"
-          ).toLowerCase();
+          )
+            .toLowerCase();
 
 
         const path =
@@ -905,24 +693,24 @@
           ext;
 
 
-        const upload =
+        const up =
           await db.storage
             .from("product-images")
             .upload(
               path,
-              file,
+              f,
               {
                 contentType:
-                  file.type
+                  f.type
               }
             );
 
 
-        if (upload.error) {
+        if (up.error) {
 
           $("msg").textContent =
             "Erro no upload: " +
-            upload.error.message;
+            up.error.message;
 
           $("msg").className =
             "msg error";
@@ -935,41 +723,39 @@
         }
 
 
-        const imageUrl =
+        const image_url =
           db.storage
             .from("product-images")
             .getPublicUrl(path)
-            .data.publicUrl;
+            .data
+            .publicUrl;
 
 
-        $("msg").textContent =
-          "Salvando produto...";
+        /* =========================
+           SALVAR PRODUTO
+        ========================== */
 
-
-        const insert =
+        const ins =
           await db
             .from("products")
             .insert({
 
-              name: name,
+              name,
 
-              mercadolivre_id:
-                mlId || null,
-
-              price:
-                price || null,
+              mercadolivre_id,
 
               category:
-                category,
+                $("category").value,
 
-              image_url:
-                imageUrl,
+              image_url,
 
               affiliate_url:
-                affiliate,
+                link,
 
               description:
-                description,
+                $("description")
+                  .value
+                  .trim(),
 
               active:
                 true
@@ -977,33 +763,48 @@
             });
 
 
-        if (insert.error) {
+        if (ins.error) {
 
           $("msg").textContent =
             "Erro ao salvar: " +
-            insert.error.message;
+            ins.error.message;
 
           $("msg").className =
             "msg error";
 
-          $("addBtn").disabled =
-            false;
+        } else {
 
-          return;
+          $("msg").textContent =
+            "Produto publicado com sucesso!";
+
+          $("msg").className =
+            "msg success";
+
+
+          [
+            "name",
+            "mercadolivre_id",
+            "affiliate",
+            "description"
+          ]
+            .forEach(
+              id =>
+                $(id).value = ""
+            );
+
+
+          $("file").value =
+            "";
+
+          $("preview")
+            .style
+            .display =
+            "none";
+
+
+          loadProducts();
 
         }
-
-
-        $("msg").textContent =
-          "Produto publicado com sucesso!";
-
-        $("msg").className =
-          "msg success";
-
-
-        clearForm();
-
-        loadProducts();
 
 
         $("addBtn").disabled =
@@ -1013,76 +814,30 @@
 
 
     /* =========================
-       LIMPAR FORMULÁRIO
-    ========================= */
-
-    function clearForm() {
-
-      $("name").value = "";
-
-      $("mercadolivre_id").value = "";
-
-      $("price").value = "";
-
-      $("affiliate").value = "";
-
-      $("description").value = "";
-
-      $("file").value = "";
-
-      $("preview").style.display =
-        "none";
-
-    }
-
-
-    /* =========================
        CARREGAR PRODUTOS
-    ========================= */
+    ========================== */
 
     async function loadProducts() {
 
-      const result =
+      const r =
         await db
           .from("products")
           .select("*")
           .order(
             "created_at",
             {
-              ascending: false
+              ascending:
+                false
             }
           );
 
 
-      if (result.error) {
+      if (r.error) {
 
-        $("list").innerHTML = `
-
-          <div class="msg error">
-            Erro ao carregar produtos:
-            ${esc(result.error.message)}
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      const products =
-        result.data || [];
-
-
-      if (!products.length) {
-
-        $("list").innerHTML = `
-
-          <div class="msg">
-            Nenhum produto cadastrado.
-          </div>
-
-        `;
+        $("list").innerHTML =
+          "<p class='msg error'>" +
+          esc(r.error.message) +
+          "</p>";
 
         return;
 
@@ -1090,677 +845,109 @@
 
 
       $("list").innerHTML =
-        products.map(product => `
+        (
+          r.data || []
+        )
+          .map(
+            p => `
 
-          <div class="product">
+              <div class="item">
 
-            <div class="product-row">
+                <img
+                  src="${esc(p.image_url)}"
+                >
 
-              <img
-                class="product-img"
-                src="${esc(product.image_url)}"
-                alt="${esc(product.name)}"
-              >
+                <div class="item-main">
 
+                  <b>
+                    ${esc(p.name)}
+                  </b>
 
-              <div class="product-info">
+                  <div class="ml-id">
 
-                <div class="product-name">
-                  ${esc(product.name)}
-                </div>
+                    ID afiliado:
+                    ${esc(
+                      p.mercadolivre_id ||
+                      "não informado"
+                    )}
 
+                  </div>
 
-                <div class="product-price">
+                  <div class="muted">
 
-                  ${esc(
-                    product.price ||
-                    "Preço não informado"
-                  )}
-
-                </div>
-
-
-                <div class="product-category">
-
-                  ${esc(
-                    product.category ||
-                    "Achadinhos"
-                  )}
-
-                </div>
-
-
-                ${
-                  product.mercadolivre_id
-                    ? `
-                      <div class="product-id">
-
-                        ID Mercado Livre:
-                        ${esc(
-                          product.mercadolivre_id
-                        )}
-
-                      </div>
-                    `
-                    : `
-                      <div class="product-id">
-
-                        ID Mercado Livre:
-                        não informado
-
-                      </div>
-                    `
-                }
-
-
-                <div
-                  class="
-                    status
                     ${
-                      product.active
-                        ? "active"
-                        : "inactive"
+                      p.current_price
+                        ? "Preço atual: R$ " +
+                          Number(
+                            p.current_price
+                          ).toFixed(2)
+                        : "Preço aguardando atualização"
                     }
-                  "
-                >
 
-                  ${
-                    product.active
-                      ? "● Publicado"
-                      : "● Oculto"
-                  }
+                  </div>
+
+                </div>
+
+                <div class="actions">
+
+                  <button
+                    class="btn danger"
+                    onclick="removeProduct('${p.id}')"
+                  >
+                    Excluir
+                  </button>
 
                 </div>
 
               </div>
 
-
-              <div class="actions">
-
-                <button
-                  class="btn edit"
-                  onclick="editProduct('${product.id}')"
-                >
-                  ✏️ Editar
-                </button>
+            `
+          )
+          .join("")
 
 
-                <button
-                  class="btn danger"
-                  onclick="deleteProduct('${product.id}')"
-                >
-                  🗑️ Excluir
-                </button>
+        ||
 
-              </div>
-
-            </div>
-
-
-            <div
-              id="editor-${product.id}"
-              class="editor hidden"
-            ></div>
-
-          </div>
-
-        `).join("");
+        "<p class='muted'>" +
+        "Nenhum produto ainda." +
+        "</p>";
 
     }
-
-
-    /* =========================
-       EDITAR
-    ========================= */
-
-    window.editProduct =
-      async function (id) {
-
-        const result =
-          await db
-            .from("products")
-            .select("*")
-            .eq("id", id)
-            .single();
-
-
-        if (result.error) {
-
-          alert(
-            "Erro ao carregar produto: " +
-            result.error.message
-          );
-
-          return;
-
-        }
-
-
-        const product =
-          result.data;
-
-
-        const editor =
-          $("editor-" + id);
-
-
-        editor.classList.remove(
-          "hidden"
-        );
-
-
-        editor.innerHTML = `
-
-          <div class="editor-title">
-            ✏️ Editando produto
-          </div>
-
-
-          <label>
-            Nome do produto
-          </label>
-
-          <input
-            id="edit-name-${id}"
-            value="${esc(product.name)}"
-          >
-
-
-          <label>
-            ID do Mercado Livre
-          </label>
-
-          <input
-            id="edit-mlid-${id}"
-            value="${esc(
-              product.mercadolivre_id || ""
-            )}"
-            placeholder="Ex.: MLB123456789"
-          >
-
-
-          <label>
-            Preço
-          </label>
-
-          <input
-            id="edit-price-${id}"
-            value="${esc(
-              product.price || ""
-            )}"
-            placeholder="Ex.: R$ 79,90"
-          >
-
-
-          <label>
-            Categoria
-          </label>
-
-          <select id="edit-category-${id}">
-
-            ${makeCategoryOptions(
-              product.category
-            )}
-
-          </select>
-
-
-          <label>
-            Link de afiliado
-          </label>
-
-          <input
-            id="edit-affiliate-${id}"
-            value="${esc(
-              product.affiliate_url || ""
-            )}"
-            placeholder="https://..."
-          >
-
-
-          <label>
-            Descrição
-          </label>
-
-          <textarea
-            id="edit-description-${id}"
-          >${esc(
-            product.description || ""
-          )}</textarea>
-
-
-          <label>
-            Trocar imagem
-          </label>
-
-          <input
-            id="edit-file-${id}"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-          >
-
-
-          <img
-            id="edit-preview-${id}"
-            class="edit-preview"
-            src="${esc(
-              product.image_url || ""
-            )}"
-            alt="Imagem atual"
-          >
-
-
-          <div class="editor-actions">
-
-            <button
-              class="btn primary"
-              onclick="saveProduct('${id}')"
-            >
-              💾 Salvar alterações
-            </button>
-
-
-            <button
-              class="btn cancel"
-              onclick="cancelEdit('${id}')"
-            >
-              Cancelar
-            </button>
-
-          </div>
-
-
-          <div
-            id="edit-msg-${id}"
-            class="msg"
-          ></div>
-
-        `;
-
-
-        const file =
-          $("edit-file-" + id);
-
-
-        file.onchange =
-          function () {
-
-            const selected =
-              this.files[0];
-
-
-            if (!selected) return;
-
-
-            if (
-              selected.size >
-              5 * 1024 * 1024
-            ) {
-
-              $("edit-msg-" + id)
-                .textContent =
-                "A imagem deve ter no máximo 5 MB.";
-
-              $("edit-msg-" + id)
-                .className =
-                "msg error";
-
-              this.value = "";
-
-              return;
-
-            }
-
-
-            $("edit-preview-" + id)
-              .src =
-              URL.createObjectURL(
-                selected
-              );
-
-          };
-
-      };
-
-
-    /* =========================
-       CATEGORIAS
-    ========================= */
-
-    function makeCategoryOptions(
-      selected
-    ) {
-
-      const categories = [
-
-        "Eletrônicos",
-        "Casa",
-        "Games",
-        "Moda",
-        "Beleza",
-        "Automotivo",
-        "Achadinhos"
-
-      ];
-
-
-      return categories
-        .map(category => `
-
-          <option
-            value="${esc(category)}"
-            ${
-              category === selected
-                ? "selected"
-                : ""
-            }
-          >
-            ${esc(category)}
-          </option>
-
-        `)
-        .join("");
-
-    }
-
-
-    /* =========================
-       CANCELAR EDIÇÃO
-    ========================= */
-
-    window.cancelEdit =
-      function (id) {
-
-        const editor =
-          $("editor-" + id);
-
-
-        editor.classList.add(
-          "hidden"
-        );
-
-
-        editor.innerHTML = "";
-
-      };
-
-
-    /* =========================
-       SALVAR EDIÇÃO
-    ========================= */
-
-    window.saveProduct =
-      async function (id) {
-
-        const msg =
-          $("edit-msg-" + id);
-
-
-        const name =
-          $("edit-name-" + id)
-            .value.trim();
-
-
-        const mlId =
-          $("edit-mlid-" + id)
-            .value.trim();
-
-
-        const price =
-          $("edit-price-" + id)
-            .value.trim();
-
-
-        const category =
-          $("edit-category-" + id)
-            .value;
-
-
-        const affiliate =
-          $("edit-affiliate-" + id)
-            .value.trim();
-
-
-        const description =
-          $("edit-description-" + id)
-            .value.trim();
-
-
-        const file =
-          $("edit-file-" + id)
-            .files[0];
-
-
-        if (!name) {
-
-          msg.textContent =
-            "Digite o nome do produto.";
-
-          msg.className =
-            "msg error";
-
-          return;
-
-        }
-
-
-        if (!affiliate) {
-
-          msg.textContent =
-            "Digite o link de afiliado.";
-
-          msg.className =
-            "msg error";
-
-          return;
-
-        }
-
-
-        msg.textContent =
-          "Salvando...";
-
-        msg.className =
-          "msg";
-
-
-        /* =========================
-           IMAGEM ATUAL
-        ========================= */
-
-        const current =
-          await db
-            .from("products")
-            .select("image_url")
-            .eq("id", id)
-            .single();
-
-
-        if (current.error) {
-
-          msg.textContent =
-            "Erro: " +
-            current.error.message;
-
-          msg.className =
-            "msg error";
-
-          return;
-
-        }
-
-
-        let imageUrl =
-          current.data.image_url;
-
-
-        /* =========================
-           NOVA IMAGEM
-        ========================= */
-
-        if (file) {
-
-          msg.textContent =
-            "Enviando nova imagem...";
-
-
-          const ext =
-            (
-              file.name
-                .split(".")
-                .pop() ||
-              "jpg"
-            ).toLowerCase();
-
-
-          const path =
-            Date.now() +
-            "-" +
-            crypto.randomUUID() +
-            "." +
-            ext;
-
-
-          const upload =
-            await db.storage
-              .from("product-images")
-              .upload(
-                path,
-                file,
-                {
-                  contentType:
-                    file.type
-                }
-              );
-
-
-          if (upload.error) {
-
-            msg.textContent =
-              "Erro no upload: " +
-              upload.error.message;
-
-            msg.className =
-              "msg error";
-
-            return;
-
-          }
-
-
-          imageUrl =
-            db.storage
-              .from("product-images")
-              .getPublicUrl(path)
-              .data.publicUrl;
-
-        }
-
-
-        /* =========================
-           ATUALIZAR PRODUTO
-        ========================= */
-
-        msg.textContent =
-          "Atualizando produto...";
-
-
-        const update =
-          await db
-            .from("products")
-            .update({
-
-              name:
-                name,
-
-              mercadolivre_id:
-                mlId || null,
-
-              price:
-                price || null,
-
-              category:
-                category,
-
-              affiliate_url:
-                affiliate,
-
-              description:
-                description,
-
-              image_url:
-                imageUrl
-
-            })
-            .eq("id", id);
-
-
-        if (update.error) {
-
-          msg.textContent =
-            "Erro ao atualizar: " +
-            update.error.message;
-
-          msg.className =
-            "msg error";
-
-          return;
-
-        }
-
-
-        msg.textContent =
-          "Produto atualizado!";
-
-        msg.className =
-          "msg success";
-
-
-        setTimeout(
-          () => {
-
-            loadProducts();
-
-          },
-          700
-        );
-
-      };
 
 
     /* =========================
        EXCLUIR
-    ========================= */
+    ========================== */
 
-    window.deleteProduct =
-      async function (id) {
+    window.removeProduct =
+      async id => {
 
-        const confirmed =
-          confirm(
-            "Tem certeza que deseja excluir este produto?"
-          );
+        if (
+          !confirm(
+            "Excluir este produto?"
+          )
+        ) {
 
-
-        if (!confirmed) {
           return;
+
         }
 
 
-        const result =
+        const r =
           await db
             .from("products")
             .delete()
-            .eq("id", id);
+            .eq(
+              "id",
+              id
+            );
 
 
-        if (result.error) {
+        if (r.error) {
 
           alert(
-            "Erro ao excluir: " +
-            result.error.message
+            r.error.message
           );
-
-          return;
 
         }
 
@@ -1772,7 +959,7 @@
 
     /* =========================
        INICIAR
-    ========================= */
+    ========================== */
 
     init();
 
