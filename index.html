@@ -11,10 +11,6 @@
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       margin: 0;
       background: #080808;
@@ -29,11 +25,9 @@
     header {
       height: 72px;
       border-bottom: 1px solid #292929;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 0 6%;
 
       position: fixed;
@@ -41,17 +35,12 @@
       left: 0;
       right: 0;
 
-      background: rgba(8, 8, 8, 0.94);
+      background: #080808ee;
       backdrop-filter: blur(10px);
 
       z-index: 1000;
 
-      transform: translateY(0);
       transition: transform 0.3s ease;
-    }
-
-    header.hide {
-      transform: translateY(-100%);
     }
 
     .brand {
@@ -63,7 +52,6 @@
     .logo {
       width: 40px;
       height: 40px;
-
       border-radius: 10px;
 
       background: #ffd600;
@@ -76,10 +64,6 @@
       font-size: 22px;
     }
 
-    .brand b {
-      font-size: 15px;
-    }
-
     .brand small {
       display: block;
       color: #888;
@@ -88,14 +72,20 @@
     }
 
     /*
-      Gerenciar fica escondido para visitantes.
-      Você ainda pode acessar diretamente:
-      admin.html
+      O botão Gerenciar fica escondido
+      para visitantes.
     */
 
     .admin {
       display: none;
+      color: #bbb;
+      border: 1px solid #333;
+      padding: 9px 12px;
+      border-radius: 9px;
+      text-decoration: none;
+      font-size: 12px;
     }
+
 
     /* =========================
        HERO
@@ -104,7 +94,6 @@
     .hero {
       max-width: 1100px;
       margin: auto;
-
       padding: 145px 20px 55px;
     }
 
@@ -116,16 +105,15 @@
       font-size: clamp(42px, 7vw, 74px);
       line-height: 0.98;
       letter-spacing: -3px;
-
       margin: 16px 0;
     }
 
     .hero p {
       max-width: 600px;
-
       color: #999;
       line-height: 1.6;
     }
+
 
     /* =========================
        CONTEÚDO
@@ -134,20 +122,13 @@
     .wrap {
       max-width: 1100px;
       margin: auto;
-
       padding: 0 20px 80px;
     }
-
-    /* =========================
-       BUSCA
-    ========================= */
 
     .bar {
       display: flex;
       gap: 10px;
-
       flex-wrap: wrap;
-
       margin-bottom: 25px;
     }
 
@@ -156,24 +137,18 @@
       min-width: 220px;
 
       background: #111;
-
       border: 1px solid #333;
 
       color: #fff;
 
       border-radius: 9px;
-
       padding: 13px;
-      outline: none;
     }
 
     .search:focus {
+      outline: none;
       border-color: #ffd600;
     }
-
-    /* =========================
-       CATEGORIAS
-    ========================= */
 
     .cats {
       display: flex;
@@ -183,86 +158,103 @@
 
     .cat {
       background: #111;
-
       color: #bbb;
 
       border: 1px solid #333;
-
       border-radius: 9px;
 
       padding: 10px 12px;
 
       cursor: pointer;
-
-      transition: 0.2s;
-    }
-
-    .cat:hover {
-      border-color: #ffd600;
-      color: #fff;
     }
 
     .cat.active {
       background: #ffd600;
       color: #000;
-
       font-weight: 800;
     }
 
+
     /* =========================
-       PRODUTOS
+       GRID DOS PRODUTOS
     ========================= */
 
     .grid {
       display: grid;
-
       grid-template-columns: repeat(4, 1fr);
-
       gap: 15px;
+
+      /*
+        Faz os cards da mesma linha
+        terem a mesma altura.
+      */
+      align-items: stretch;
     }
+
+
+    /* =========================
+       CARD DO PRODUTO
+    ========================= */
 
     .card {
       background: #111;
-
       border: 1px solid #292929;
-
       border-radius: 15px;
 
       overflow: hidden;
 
-      transition:
-        transform 0.2s ease,
-        border-color 0.2s ease;
+      /*
+        ESSA É UMA DAS PRINCIPAIS
+        ALTERAÇÕES.
+      */
+
+      display: flex;
+      flex-direction: column;
+
+      height: 100%;
     }
 
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: #444;
-    }
+
+    /* =========================
+       IMAGEM
+    ========================= */
 
     .pic {
       aspect-ratio: 1;
       background: #fff;
+
+      flex-shrink: 0;
     }
 
     .pic img {
       width: 100%;
       height: 100%;
-
       object-fit: cover;
-
       display: block;
     }
 
+
+    /* =========================
+       INFORMAÇÕES
+    ========================= */
+
     .info {
       padding: 14px;
+
+      /*
+        Faz o conteúdo ocupar
+        toda a altura restante.
+      */
+
+      display: flex;
+      flex-direction: column;
+
+      flex: 1;
     }
 
     .catname {
       font-size: 10px;
-
       color: #ffd600;
-
       font-weight: 900;
 
       text-transform: uppercase;
@@ -270,9 +262,7 @@
 
     .name {
       font-weight: 800;
-
       font-size: 14px;
-
       line-height: 1.35;
 
       margin: 7px 0;
@@ -280,21 +270,28 @@
 
     .desc {
       color: #999;
-
       font-size: 12px;
-
       line-height: 1.4;
+
+      /*
+        Mantém uma altura mínima
+        para as descrições.
+      */
 
       min-height: 32px;
     }
 
     .price {
       font-size: 20px;
-
       font-weight: 900;
 
       margin: 12px 0;
     }
+
+
+    /* =========================
+       BOTÃO VER OFERTA
+    ========================= */
 
     .buy {
       display: block;
@@ -302,7 +299,6 @@
       text-align: center;
 
       background: #ffd600;
-
       color: #000;
 
       border-radius: 9px;
@@ -312,16 +308,29 @@
       text-decoration: none;
 
       font-weight: 900;
-
       font-size: 12px;
 
-      transition: 0.2s;
+      /*
+        ESSA LINHA FAZ O BOTÃO
+        IR SEMPRE PARA O FINAL.
+      */
+
+      margin-top: auto;
+
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease;
     }
 
     .buy:hover {
-      background: #ffe34d;
-      transform: scale(1.02);
+      transform: translateY(-2px);
+      background: #ffe44d;
     }
+
+
+    /* =========================
+       VAZIO
+    ========================= */
 
     .empty {
       grid-column: 1 / -1;
@@ -332,6 +341,7 @@
 
       padding: 50px;
     }
+
 
     /* =========================
        RODAPÉ
@@ -349,24 +359,21 @@
       font-size: 11px;
     }
 
+
     /* =========================
-       RESPONSIVO
+       RESPONSIVIDADE
     ========================= */
 
     @media (max-width: 850px) {
+
       .grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .hero {
-        padding-top: 130px;
-      }
     }
 
+
     @media (max-width: 500px) {
-      header {
-        padding: 0 15px;
-      }
 
       .grid {
         gap: 9px;
@@ -384,24 +391,25 @@
         font-size: 17px;
       }
 
-      .hero h1 {
-        letter-spacing: -2px;
-      }
     }
   </style>
 </head>
 
+
 <body>
+
 
   <!-- =========================
        CABEÇALHO
   ========================= -->
 
-  <header id="header">
+  <header>
 
     <div class="brand">
 
-      <div class="logo">G</div>
+      <div class="logo">
+        G
+      </div>
 
       <div>
         <b>Garimpo Online</b>
@@ -413,7 +421,13 @@
 
     </div>
 
-    <!-- Escondido dos visitantes -->
+
+    <!--
+      Escondido para visitantes.
+      O admin continua acessível diretamente
+      através de /admin.html
+    -->
+
     <a
       class="admin"
       href="admin.html"
@@ -422,6 +436,7 @@
     </a>
 
   </header>
+
 
 
   <!-- =========================
@@ -449,6 +464,7 @@
   </section>
 
 
+
   <!-- =========================
        PRODUTOS
   ========================= -->
@@ -471,12 +487,14 @@
 
     </div>
 
+
     <div
       id="grid"
       class="grid"
     ></div>
 
   </main>
+
 
 
   <!-- =========================
@@ -488,31 +506,35 @@
   </footer>
 
 
-  <!-- SUPABASE -->
+
+  <!-- =========================
+       SUPABASE
+  ========================= -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script src="config.js"></script>
 
 
-  <!-- =========================
-       JAVASCRIPT
-  ========================= -->
 
   <script>
+
+    /* =========================
+       CONEXÃO
+    ========================= */
 
     const db = supabase.createClient(
       SUPABASE_URL,
       SUPABASE_ANON_KEY
     );
 
-    let products = [];
 
+    let products = [];
     let selected = "Todos";
 
 
     /* =========================
-       ESCAPAR HTML
+       PROTEÇÃO CONTRA HTML
     ========================= */
 
     const esc = (s) =>
@@ -524,7 +546,7 @@
           ">": "&gt;",
           '"': "&quot;",
           "'": "&#039;"
-        })[m]
+        }[m])
       );
 
 
@@ -545,13 +567,13 @@
 
       if (r.error) {
 
-        console.error(
-          "Erro ao carregar produtos:",
-          r.error
-        );
+        console.error(r.error);
 
-        document.getElementById("grid").innerHTML =
-          "<div class='empty'>Erro ao carregar produtos.</div>";
+        document.getElementById("grid").innerHTML = `
+          <div class="empty">
+            Erro ao carregar produtos.
+          </div>
+        `;
 
         return;
       }
@@ -565,43 +587,45 @@
     }
 
 
+
     /* =========================
        CATEGORIAS
     ========================= */
 
     function renderCats() {
 
-      const categories = products
-        .map(p => p.category)
-        .filter(Boolean);
-
       const cats = [
         "Todos",
-        ...new Set(categories)
+        ...new Set(
+          products
+            .map((p) => p.category)
+            .filter(Boolean)
+        )
       ];
 
 
       document.getElementById("cats").innerHTML =
-        cats.map(c => `
-
-          <button
-            class="cat ${c === selected ? "active" : ""}"
-            data-cat="${esc(c)}"
-          >
-            ${esc(c)}
-          </button>
-
-        `).join("");
+        cats
+          .map(
+            (c) => `
+              <button
+                class="cat ${c === selected ? "active" : ""}"
+                data-cat="${esc(c)}"
+              >
+                ${esc(c)}
+              </button>
+            `
+          )
+          .join("");
 
 
       document
         .querySelectorAll(".cat")
-        .forEach(button => {
+        .forEach((b) => {
 
-          button.onclick = () => {
+          b.onclick = () => {
 
-            selected =
-              button.dataset.cat;
+            selected = b.dataset.cat;
 
             renderCats();
 
@@ -614,8 +638,9 @@
     }
 
 
+
     /* =========================
-       MOSTRAR PRODUTOS
+       RENDERIZAR PRODUTOS
     ========================= */
 
     function render() {
@@ -627,96 +652,90 @@
           .toLowerCase();
 
 
-      const list = products.filter(p => {
-
-        const categoryOK =
-          selected === "Todos" ||
-          p.category === selected;
-
-
-        const text =
-          `${p.name || ""} ${p.description || ""}`
-            .toLowerCase();
-
-
-        return categoryOK &&
-          text.includes(q);
-
-      });
+      const list = products.filter(
+        (p) =>
+          (
+            selected === "Todos" ||
+            p.category === selected
+          ) &&
+          `${p.name} ${p.description || ""}`
+            .toLowerCase()
+            .includes(q)
+      );
 
 
-      const grid =
-        document.getElementById("grid");
+      document.getElementById("grid").innerHTML =
+        list.length
+
+          ? list
+              .map(
+                (p) => `
+
+                  <article class="card">
+
+                    <div class="pic">
+
+                      <img
+                        src="${esc(p.image_url)}"
+                        alt="${esc(p.name)}"
+                        loading="lazy"
+                      >
+
+                    </div>
 
 
-      if (!list.length) {
+                    <div class="info">
 
-        grid.innerHTML =
-          "<div class='empty'>Nenhum produto encontrado.</div>";
-
-        return;
-      }
+                      <div class="catname">
+                        ${esc(p.category || "Achadinhos")}
+                      </div>
 
 
-      grid.innerHTML = list.map(p => `
-
-        <article class="card">
-
-          <div class="pic">
-
-            <img
-              src="${esc(p.image_url)}"
-              alt="${esc(p.name)}"
-              loading="lazy"
-            >
-
-          </div>
+                      <div class="name">
+                        ${esc(p.name)}
+                      </div>
 
 
-          <div class="info">
-
-            <div class="catname">
-              ${esc(p.category || "Achadinhos")}
-            </div>
-
-
-            <div class="name">
-              ${esc(p.name)}
-            </div>
+                      <div class="desc">
+                        ${esc(
+                          p.description ||
+                          "Confira a oferta."
+                        )}
+                      </div>
 
 
-            <div class="desc">
-              ${esc(
-                p.description ||
-                "Confira a oferta."
-              )}
-            </div>
+                      <div class="price">
+                        ${esc(
+                          p.price ||
+                          "Ver oferta"
+                        )}
+                      </div>
 
 
-            <div class="price">
-              ${esc(
-                p.price ||
-                "Ver oferta"
-              )}
-            </div>
+                      <a
+                        class="buy"
+                        href="${esc(p.affiliate_url)}"
+                        target="_blank"
+                        rel="nofollow sponsored noopener"
+                      >
+                        Ver oferta →
+                      </a>
 
+                    </div>
 
-            <a
-              class="buy"
-              href="${esc(p.affiliate_url)}"
-              target="_blank"
-              rel="nofollow sponsored noopener"
-            >
-              Ver oferta →
-            </a>
+                  </article>
 
-          </div>
+                `
+              )
+              .join("")
 
-        </article>
-
-      `).join("");
-
+          : `
+              <div class="empty">
+                Nenhum produto encontrado.
+              </div>
+            `;
     }
+
 
 
     /* =========================
@@ -725,79 +744,8 @@
 
     document
       .getElementById("search")
-      .addEventListener(
-        "input",
-        render
-      );
+      .oninput = render;
 
-
-    /* =========================
-       CABEÇALHO:
-       ESCONDE AO DESCER
-       APARECE AO SUBIR
-    ========================= */
-
-    const header =
-      document.getElementById("header");
-
-    let lastScroll = 0;
-
-
-    window.addEventListener(
-      "scroll",
-      () => {
-
-        const currentScroll =
-          window.pageYOffset ||
-          document.documentElement.scrollTop;
-
-
-        /*
-          No topo:
-          sempre mostra o cabeçalho
-        */
-
-        if (currentScroll <= 20) {
-
-          header.classList.remove("hide");
-
-          lastScroll = currentScroll;
-
-          return;
-        }
-
-
-        /*
-          Descendo:
-          esconde
-        */
-
-        if (currentScroll > lastScroll) {
-
-          header.classList.add("hide");
-
-        }
-
-
-        /*
-          Subindo:
-          mostra
-        */
-
-        else if (currentScroll < lastScroll) {
-
-          header.classList.remove("hide");
-
-        }
-
-
-        lastScroll = currentScroll;
-
-      },
-      {
-        passive: true
-      }
-    );
 
 
     /* =========================
@@ -807,6 +755,7 @@
     load();
 
   </script>
+
 
 </body>
 </html>
