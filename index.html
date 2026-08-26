@@ -1,717 +1,812 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Garimpo Online</title>
+  <title>Garimpo Online</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        body {
-            margin: 0;
-            padding-top: 72px;
-            background: #080808;
-            color: #fff;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+    body {
+      margin: 0;
+      background: #080808;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-        /* =========================
-           CABEÇALHO
-        ========================= */
+    /* =========================
+       CABEÇALHO
+    ========================= */
 
-        header {
-            height: 72px;
-            border-bottom: 1px solid #292929;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 6%;
+    header {
+      height: 72px;
+      border-bottom: 1px solid #292929;
 
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-            background: #080808ee;
-            backdrop-filter: blur(10px);
+      padding: 0 6%;
 
-            z-index: 1000;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
 
-            transition: transform 0.3s ease;
-        }
+      background: rgba(8, 8, 8, 0.94);
+      backdrop-filter: blur(10px);
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+      z-index: 1000;
 
-        .logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: #ffd600;
-            color: #000;
-            display: grid;
-            place-items: center;
-            font-weight: 900;
-            font-size: 22px;
-        }
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+    }
 
-        .brand b {
-            font-size: 16px;
-        }
+    header.hide {
+      transform: translateY(-100%);
+    }
 
-        .brand small {
-            display: block;
-            color: #888;
-            font-size: 10px;
-            margin-top: 3px;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        /* Escondido dos visitantes */
-        .admin {
-            display: none !important;
-        }
+    .logo {
+      width: 40px;
+      height: 40px;
 
-        /* =========================
-           HERO
-        ========================= */
+      border-radius: 10px;
 
-        .hero {
-            max-width: 1100px;
-            margin: auto;
-            padding: 75px 20px 55px;
-        }
+      background: #ffd600;
+      color: #000;
 
-        .yellow {
-            color: #ffd600;
-        }
+      display: grid;
+      place-items: center;
 
-        .hero h1 {
-            font-size: clamp(42px, 7vw, 74px);
-            line-height: 0.98;
-            letter-spacing: -3px;
-            margin: 16px 0;
-        }
+      font-weight: 900;
+      font-size: 22px;
+    }
 
-        .hero p {
-            max-width: 600px;
-            color: #999;
-            line-height: 1.6;
-        }
+    .brand b {
+      font-size: 15px;
+    }
 
-        /* =========================
-           ÁREA DE PRODUTOS
-        ========================= */
+    .brand small {
+      display: block;
+      color: #888;
+      font-size: 10px;
+      margin-top: 3px;
+    }
 
-        .wrap {
-            max-width: 1100px;
-            margin: auto;
-            padding: 0 20px 80px;
-        }
+    /*
+      Gerenciar fica escondido para visitantes.
+      Você ainda pode acessar diretamente:
+      admin.html
+    */
 
-        .bar {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-        }
+    .admin {
+      display: none;
+    }
 
-        .search {
-            flex: 1;
-            min-width: 220px;
-            background: #111;
-            border: 1px solid #333;
-            color: #fff;
-            border-radius: 9px;
-            padding: 13px;
-            outline: none;
-        }
+    /* =========================
+       HERO
+    ========================= */
 
-        .search:focus {
-            border-color: #ffd600;
-        }
+    .hero {
+      max-width: 1100px;
+      margin: auto;
 
-        .cats {
-            display: flex;
-            gap: 7px;
-            flex-wrap: wrap;
-        }
+      padding: 145px 20px 55px;
+    }
 
-        .cat {
-            background: #111;
-            color: #bbb;
-            border: 1px solid #333;
-            border-radius: 9px;
-            padding: 10px 12px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+    .yellow {
+      color: #ffd600;
+    }
 
-        .cat:hover {
-            border-color: #ffd600;
-            color: #fff;
-        }
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 74px);
+      line-height: 0.98;
+      letter-spacing: -3px;
 
-        .cat.active {
-            background: #ffd600;
-            color: #000;
-            font-weight: 800;
-        }
+      margin: 16px 0;
+    }
 
-        /* =========================
-           GRID
-        ========================= */
+    .hero p {
+      max-width: 600px;
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
+      color: #999;
+      line-height: 1.6;
+    }
 
-        .card {
-            background: #111;
-            border: 1px solid #292929;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.2s, border-color 0.2s;
-        }
+    /* =========================
+       CONTEÚDO
+    ========================= */
 
-        .card:hover {
-            transform: translateY(-3px);
-            border-color: #444;
-        }
+    .wrap {
+      max-width: 1100px;
+      margin: auto;
 
-        .pic {
-            aspect-ratio: 1;
-            background: #fff;
-        }
+      padding: 0 20px 80px;
+    }
 
-        .pic img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+    /* =========================
+       BUSCA
+    ========================= */
 
-        .info {
-            padding: 14px;
-        }
+    .bar {
+      display: flex;
+      gap: 10px;
 
-        .catname {
-            font-size: 10px;
-            color: #ffd600;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
+      flex-wrap: wrap;
 
-        .name {
-            font-weight: 800;
-            font-size: 14px;
-            line-height: 1.35;
-            margin: 7px 0;
-        }
+      margin-bottom: 25px;
+    }
 
-        .desc {
-            color: #999;
-            font-size: 12px;
-            line-height: 1.4;
-            min-height: 32px;
-        }
+    .search {
+      flex: 1;
+      min-width: 220px;
 
-        .price {
-            font-size: 20px;
-            font-weight: 900;
-            margin: 12px 0;
-        }
+      background: #111;
 
-        .buy {
-            display: block;
-            text-align: center;
-            background: #ffd600;
-            color: #000;
-            border-radius: 9px;
-            padding: 11px;
-            text-decoration: none;
-            font-weight: 900;
-            font-size: 12px;
-            transition: 0.2s;
-        }
+      border: 1px solid #333;
 
-        .buy:hover {
-            background: #fff;
-        }
+      color: #fff;
 
-        .empty {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: #777;
-            padding: 50px;
-        }
+      border-radius: 9px;
 
-        /* =========================
-           RODAPÉ
-        ========================= */
+      padding: 13px;
+      outline: none;
+    }
 
-        footer {
-            text-align: center;
-            border-top: 1px solid #292929;
-            padding: 30px;
-            color: #777;
-            font-size: 11px;
-        }
+    .search:focus {
+      border-color: #ffd600;
+    }
 
-        /* =========================
-           CELULAR / TABLET
-        ========================= */
+    /* =========================
+       CATEGORIAS
+    ========================= */
 
-        @media (max-width: 850px) {
-            .grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+    .cats {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
 
-        @media (max-width: 500px) {
+    .cat {
+      background: #111;
 
-            header {
-                padding: 0 4%;
-            }
+      color: #bbb;
 
-            .brand b {
-                font-size: 14px;
-            }
+      border: 1px solid #333;
 
-            .hero {
-                padding-top: 55px;
-            }
+      border-radius: 9px;
 
-            .hero h1 {
-                font-size: 43px;
-                letter-spacing: -2px;
-            }
+      padding: 10px 12px;
 
-            .grid {
-                gap: 9px;
-            }
+      cursor: pointer;
 
-            .info {
-                padding: 10px;
-            }
+      transition: 0.2s;
+    }
 
-            .name {
-                font-size: 12px;
-            }
+    .cat:hover {
+      border-color: #ffd600;
+      color: #fff;
+    }
 
-            .price {
-                font-size: 17px;
-            }
+    .cat.active {
+      background: #ffd600;
+      color: #000;
 
-            .buy {
-                padding: 10px 5px;
-            }
-        }
-    </style>
+      font-weight: 800;
+    }
+
+    /* =========================
+       PRODUTOS
+    ========================= */
+
+    .grid {
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 15px;
+    }
+
+    .card {
+      background: #111;
+
+      border: 1px solid #292929;
+
+      border-radius: 15px;
+
+      overflow: hidden;
+
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #444;
+    }
+
+    .pic {
+      aspect-ratio: 1;
+      background: #fff;
+    }
+
+    .pic img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+    }
+
+    .info {
+      padding: 14px;
+    }
+
+    .catname {
+      font-size: 10px;
+
+      color: #ffd600;
+
+      font-weight: 900;
+
+      text-transform: uppercase;
+    }
+
+    .name {
+      font-weight: 800;
+
+      font-size: 14px;
+
+      line-height: 1.35;
+
+      margin: 7px 0;
+    }
+
+    .desc {
+      color: #999;
+
+      font-size: 12px;
+
+      line-height: 1.4;
+
+      min-height: 32px;
+    }
+
+    .price {
+      font-size: 20px;
+
+      font-weight: 900;
+
+      margin: 12px 0;
+    }
+
+    .buy {
+      display: block;
+
+      text-align: center;
+
+      background: #ffd600;
+
+      color: #000;
+
+      border-radius: 9px;
+
+      padding: 11px;
+
+      text-decoration: none;
+
+      font-weight: 900;
+
+      font-size: 12px;
+
+      transition: 0.2s;
+    }
+
+    .buy:hover {
+      background: #ffe34d;
+      transform: scale(1.02);
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+
+      text-align: center;
+
+      color: #777;
+
+      padding: 50px;
+    }
+
+    /* =========================
+       RODAPÉ
+    ========================= */
+
+    footer {
+      text-align: center;
+
+      border-top: 1px solid #292929;
+
+      padding: 30px;
+
+      color: #777;
+
+      font-size: 11px;
+    }
+
+    /* =========================
+       RESPONSIVO
+    ========================= */
+
+    @media (max-width: 850px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero {
+        padding-top: 130px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      header {
+        padding: 0 15px;
+      }
+
+      .grid {
+        gap: 9px;
+      }
+
+      .info {
+        padding: 10px;
+      }
+
+      .name {
+        font-size: 12px;
+      }
+
+      .price {
+        font-size: 17px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- =========================
-         CABEÇALHO
-    ========================== -->
+  <!-- =========================
+       CABEÇALHO
+  ========================= -->
 
-    <header id="siteHeader">
+  <header id="header">
 
-        <div class="brand">
+    <div class="brand">
 
-            <div class="logo">
-                G
-            </div>
+      <div class="logo">G</div>
 
-            <div>
-                <b>Garimpo Online</b>
+      <div>
+        <b>Garimpo Online</b>
 
-                <small>
-                    Achadinhos que valem a pena
-                </small>
-            </div>
+        <small>
+          Achadinhos que valem a pena
+        </small>
+      </div>
 
-        </div>
+    </div>
 
-        <!-- Gerenciar escondido dos visitantes -->
-        <a
-            class="admin"
-            href="admin.html">
-            ⚙ Gerenciar
-        </a>
+    <!-- Escondido dos visitantes -->
+    <a
+      class="admin"
+      href="admin.html"
+    >
+      ⚙ Gerenciar
+    </a>
 
-    </header>
-
-
-    <!-- =========================
-         HERO
-    ========================== -->
-
-    <section class="hero">
-
-        <div class="yellow">
-            🔥 ACHADOS • OFERTAS • DESCONTOS
-        </div>
-
-        <h1>
-            Produtos que
-            <span class="yellow">
-                valem o clique.
-            </span>
-        </h1>
-
-        <p>
-            Uma seleção de achadinhos de diferentes lojas e
-            programas de afiliados.
-        </p>
-
-    </section>
+  </header>
 
 
-    <!-- =========================
-         PRODUTOS
-    ========================== -->
+  <!-- =========================
+       HERO
+  ========================= -->
 
-    <main class="wrap">
+  <section class="hero">
 
-        <div class="bar">
+    <div class="yellow">
+      🔥 ACHADOS • OFERTAS • DESCONTOS
+    </div>
 
-            <input
-                id="search"
-                class="search"
-                placeholder="🔎 Procurar produto..."
-                type="search"
-            >
+    <h1>
+      Produtos que
+      <span class="yellow">
+        valem o clique.
+      </span>
+    </h1>
 
-            <div
-                id="cats"
-                class="cats">
-            </div>
+    <p>
+      Uma seleção de achadinhos de diferentes lojas
+      e programas de afiliados.
+    </p>
 
-        </div>
-
-        <div
-            id="grid"
-            class="grid">
-        </div>
-
-    </main>
+  </section>
 
 
-    <!-- =========================
-         RODAPÉ
-    ========================== -->
+  <!-- =========================
+       PRODUTOS
+  ========================= -->
 
-    <footer>
-        Garimpo Online · Links de afiliados podem gerar comissão.
-    </footer>
+  <main class="wrap">
+
+    <div class="bar">
+
+      <input
+        id="search"
+        class="search"
+        placeholder="🔎 Procurar produto..."
+        type="text"
+      >
+
+      <div
+        id="cats"
+        class="cats"
+      ></div>
+
+    </div>
+
+    <div
+      id="grid"
+      class="grid"
+    ></div>
+
+  </main>
 
 
-    <!-- =========================
-         SUPABASE
-    ========================== -->
+  <!-- =========================
+       RODAPÉ
+  ========================= -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <footer>
+    Garimpo Online · Links de afiliados podem gerar comissão.
+  </footer>
 
-    <script src="config.js"></script>
+
+  <!-- SUPABASE -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="config.js"></script>
 
 
-    <script>
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
 
-        const db = supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
+  <script>
+
+    const db = supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+    let products = [];
+
+    let selected = "Todos";
+
+
+    /* =========================
+       ESCAPAR HTML
+    ========================= */
+
+    const esc = (s) =>
+      String(s ?? "").replace(
+        /[&<>"']/g,
+        (m) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        })[m]
+      );
+
+
+    /* =========================
+       CARREGAR PRODUTOS
+    ========================= */
+
+    async function load() {
+
+      const r = await db
+        .from("products")
+        .select("*")
+        .eq("active", true)
+        .order("created_at", {
+          ascending: false
+        });
+
+
+      if (r.error) {
+
+        console.error(
+          "Erro ao carregar produtos:",
+          r.error
         );
 
+        document.getElementById("grid").innerHTML =
+          "<div class='empty'>Erro ao carregar produtos.</div>";
 
-        let products = [];
-        let selected = "Todos";
-
-
-        /* =========================
-           ESCAPAR HTML
-        ========================== */
-
-        const esc = (s) =>
-            String(s ?? "").replace(
-                /[&<>"']/g,
-                (m) => ({
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    ">": "&gt;",
-                    '"': "&quot;",
-                    "'": "&#039;"
-                }[m])
-            );
+        return;
+      }
 
 
-        /* =========================
-           CARREGAR PRODUTOS
-        ========================== */
+      products = r.data || [];
 
-        async function load() {
+      renderCats();
 
-            const r = await db
-                .from("products")
-                .select("*")
-                .eq("active", true)
-                .order("created_at", {
-                    ascending: false
-                });
+      render();
+    }
 
 
-            if (r.error) {
+    /* =========================
+       CATEGORIAS
+    ========================= */
 
-                console.error(r.error);
+    function renderCats() {
 
-                document.getElementById("grid").innerHTML =
-                    "<div class='empty'>Erro ao carregar produtos.</div>";
+      const categories = products
+        .map(p => p.category)
+        .filter(Boolean);
 
-                return;
-            }
+      const cats = [
+        "Todos",
+        ...new Set(categories)
+      ];
 
 
-            products = r.data || [];
+      document.getElementById("cats").innerHTML =
+        cats.map(c => `
+
+          <button
+            class="cat ${c === selected ? "active" : ""}"
+            data-cat="${esc(c)}"
+          >
+            ${esc(c)}
+          </button>
+
+        `).join("");
+
+
+      document
+        .querySelectorAll(".cat")
+        .forEach(button => {
+
+          button.onclick = () => {
+
+            selected =
+              button.dataset.cat;
 
             renderCats();
+
             render();
-        }
+
+          };
+
+        });
+
+    }
 
 
-        /* =========================
-           CATEGORIAS
-        ========================== */
+    /* =========================
+       MOSTRAR PRODUTOS
+    ========================= */
 
-        function renderCats() {
+    function render() {
 
-            const cats = [
-                "Todos",
-                ...new Set(
-                    products
-                        .map(p => p.category)
-                        .filter(Boolean)
-                )
-            ];
-
-
-            document.getElementById("cats").innerHTML =
-                cats
-                    .map(
-                        c => `
-                            <button
-                                class="cat ${c === selected ? "active" : ""}"
-                                data-cat="${esc(c)}">
-                                ${esc(c)}
-                            </button>
-                        `
-                    )
-                    .join("");
-
-
-            document
-                .querySelectorAll(".cat")
-                .forEach(
-                    b => {
-
-                        b.onclick = () => {
-
-                            selected = b.dataset.cat;
-
-                            renderCats();
-                            render();
-                        };
-
-                    }
-                );
-        }
-
-
-        /* =========================
-           RENDERIZAR PRODUTOS
-        ========================== */
-
-        function render() {
-
-            const q =
-                document
-                    .getElementById("search")
-                    .value
-                    .toLowerCase();
-
-
-            const list =
-                products.filter(
-                    p =>
-
-                        (
-                            selected === "Todos" ||
-                            p.category === selected
-                        )
-
-                        &&
-
-                        (
-                            `${p.name} ${p.description || ""}`
-                        )
-                            .toLowerCase()
-                            .includes(q)
-                );
-
-
-            document.getElementById("grid").innerHTML =
-
-                list.length
-
-                    ?
-
-                    list
-                        .map(
-                            p => `
-
-                                <article class="card">
-
-                                    <div class="pic">
-
-                                        <img
-                                            src="${esc(p.image_url)}"
-                                            alt="${esc(p.name)}"
-                                            loading="lazy"
-                                        >
-
-                                    </div>
-
-
-                                    <div class="info">
-
-                                        <div class="catname">
-                                            ${esc(
-                                                p.category ||
-                                                "Achadinhos"
-                                            )}
-                                        </div>
-
-
-                                        <div class="name">
-                                            ${esc(p.name)}
-                                        </div>
-
-
-                                        <div class="desc">
-                                            ${esc(
-                                                p.description ||
-                                                "Confira a oferta."
-                                            )}
-                                        </div>
-
-
-                                        <div class="price">
-                                            ${esc(
-                                                p.price ||
-                                                "Ver oferta"
-                                            )}
-                                        </div>
-
-
-                                        <a
-                                            class="buy"
-                                            href="${esc(p.affiliate_url)}"
-                                            target="_blank"
-                                            rel="nofollow sponsored noopener">
-
-                                            Ver oferta →
-
-                                        </a>
-
-                                    </div>
-
-                                </article>
-
-                            `
-                        )
-                        .join("")
-
-                    :
-
-                    "<div class='empty'>Nenhum produto encontrado.</div>";
-        }
-
-
-        /* =========================
-           BUSCA
-        ========================== */
-
+      const q =
         document
-            .getElementById("search")
-            .oninput = render;
+          .getElementById("search")
+          .value
+          .toLowerCase();
 
 
-        /* =========================
-           CABEÇALHO ESCONDE AO DESCER
-           E APARECE AO SUBIR
-        ========================== */
+      const list = products.filter(p => {
 
-        let ultimaRolagem = window.scrollY;
-
-        const header =
-            document.getElementById("siteHeader");
+        const categoryOK =
+          selected === "Todos" ||
+          p.category === selected;
 
 
-        window.addEventListener(
-            "scroll",
-            () => {
-
-                const rolagemAtual =
-                    window.scrollY;
+        const text =
+          `${p.name || ""} ${p.description || ""}`
+            .toLowerCase();
 
 
-                if (
-                    rolagemAtual > ultimaRolagem &&
-                    rolagemAtual > 80
-                ) {
+        return categoryOK &&
+          text.includes(q);
 
-                    // Descendo
-                    header.style.transform =
-                        "translateY(-100%)";
-
-                } else {
-
-                    // Subindo
-                    header.style.transform =
-                        "translateY(0)";
-
-                }
+      });
 
 
-                ultimaRolagem =
-                    rolagemAtual;
-
-            },
-            { passive: true }
-        );
+      const grid =
+        document.getElementById("grid");
 
 
-        /* =========================
-           INICIAR
-        ========================== */
+      if (!list.length) {
 
-        load();
+        grid.innerHTML =
+          "<div class='empty'>Nenhum produto encontrado.</div>";
 
-    </script>
+        return;
+      }
+
+
+      grid.innerHTML = list.map(p => `
+
+        <article class="card">
+
+          <div class="pic">
+
+            <img
+              src="${esc(p.image_url)}"
+              alt="${esc(p.name)}"
+              loading="lazy"
+            >
+
+          </div>
+
+
+          <div class="info">
+
+            <div class="catname">
+              ${esc(p.category || "Achadinhos")}
+            </div>
+
+
+            <div class="name">
+              ${esc(p.name)}
+            </div>
+
+
+            <div class="desc">
+              ${esc(
+                p.description ||
+                "Confira a oferta."
+              )}
+            </div>
+
+
+            <div class="price">
+              ${esc(
+                p.price ||
+                "Ver oferta"
+              )}
+            </div>
+
+
+            <a
+              class="buy"
+              href="${esc(p.affiliate_url)}"
+              target="_blank"
+              rel="nofollow sponsored noopener"
+            >
+              Ver oferta →
+            </a>
+
+          </div>
+
+        </article>
+
+      `).join("");
+
+    }
+
+
+    /* =========================
+       PESQUISA
+    ========================= */
+
+    document
+      .getElementById("search")
+      .addEventListener(
+        "input",
+        render
+      );
+
+
+    /* =========================
+       CABEÇALHO:
+       ESCONDE AO DESCER
+       APARECE AO SUBIR
+    ========================= */
+
+    const header =
+      document.getElementById("header");
+
+    let lastScroll = 0;
+
+
+    window.addEventListener(
+      "scroll",
+      () => {
+
+        const currentScroll =
+          window.pageYOffset ||
+          document.documentElement.scrollTop;
+
+
+        /*
+          No topo:
+          sempre mostra o cabeçalho
+        */
+
+        if (currentScroll <= 20) {
+
+          header.classList.remove("hide");
+
+          lastScroll = currentScroll;
+
+          return;
+        }
+
+
+        /*
+          Descendo:
+          esconde
+        */
+
+        if (currentScroll > lastScroll) {
+
+          header.classList.add("hide");
+
+        }
+
+
+        /*
+          Subindo:
+          mostra
+        */
+
+        else if (currentScroll < lastScroll) {
+
+          header.classList.remove("hide");
+
+        }
+
+
+        lastScroll = currentScroll;
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    /* =========================
+       INICIAR
+    ========================= */
+
+    load();
+
+  </script>
 
 </body>
-
 </html>
