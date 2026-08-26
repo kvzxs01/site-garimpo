@@ -3,64 +3,344 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conectando Mercado Livre...</title>
+
+  <title>Conectando Mercado Livre</title>
 
   <style>
     body {
       margin: 0;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #080808;
-      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f5;
       font-family: Arial, sans-serif;
+      color: #333;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background: white;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       text-align: center;
     }
 
-    .box {
-      max-width: 500px;
-      padding: 30px;
-    }
-
     h1 {
-      color: #ffd600;
+      margin-top: 0;
+      font-size: 26px;
     }
 
-    p {
-      color: #aaa;
+    #message {
+      white-space: pre-wrap;
+      line-height: 1.6;
+      margin-top: 20px;
+    }
+
+    .success {
+      color: #16803c;
+    }
+
+    .error {
+      color: #c62828;
+    }
+
+    .token-box {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f1f1f1;
+      border-radius: 8px;
+      text-align: left;
+      word-break: break-all;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="box">
+  <div class="container">
+
     <h1>Conectando...</h1>
-    <p id="status">Finalizando conexão com o Mercado Livre.</p>
+
+    <div id="message">
+      Aguardando resposta do Mercado Livre...
+    </div>
+
+    <div id="tokenBox" class="token-box hidden"></div>
+
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
+    /*
+    ========================================================
+    CONFIGURAÇÃO
+    ========================================================
+    */
 
-    const code = params.get("code");
-    const error = params.get("error");
+    const EDGE_FUNCTION_URL =
+      "https://xokyvzjeoivmggsmkjjs.supabase.co/functions/v1/mercadolivre-oauth";
 
-    const status = document.getElementById("status");
+    const message =
+      document.getElementById("message");
 
-    if (error) {
-      status.textContent =
-        "A autorização foi recusada: " + error;
-    } else if (code) {
-      status.textContent =
-        "Código recebido. Finalizando conexão...";
-      
-      // Próxima etapa:
-      // enviar esse código para a Edge Function
-      console.log("Authorization code recebido:", code);
-    } else {
-      status.textContent =
-        "Nenhum código de autorização foi recebido.";
+    const tokenBox =
+      document.getElementById("tokenBox");
+
+
+    /*
+    ========================================================
+    FUNÇÃO PRINCIPAL
+    ========================================================
+    */
+
+    async function conectarMercadoLivre() {
+
+      try {
+
+        /*
+        ----------------------------------------------------
+        PEGAR PARÂMETROS DA URL
+        ----------------------------------------------------
+        */
+
+        const params =
+          new URLSearchParams(
+            window.location.search
+          );
+
+        const code =
+          params.get("code");
+
+        const error =
+          params.get("error");
+
+        const errorDescription =
+          params.get("error_description");
+
+
+        /*
+        ----------------------------------------------------
+        VERIFICAR ERRO DO MERCADO LIVRE
+        ----------------------------------------------------
+        */
+
+        if (error) {
+
+          throw new Error(
+            "O Mercado Livre recusou a autorização.\n\n" +
+            "Erro: " +
+            error +
+            "\n\n" +
+            "Detalhes: " +
+            (
+              errorDescription ||
+              "não informado"
+            )
+          );
+
+        }
+
+
+        /*
+        ----------------------------------------------------
+        VERIFICAR CODE
+        ----------------------------------------------------
+        */
+
+        if (!code) {
+
+          throw new Error(
+            "Nenhum código de autorização foi recebido do Mercado Livre."
+          );
+
+        }
+
+
+        /*
+        ----------------------------------------------------
+        STATUS
+        ----------------------------------------------------
+        */
+
+        message.textContent =
+          "Código recebido. Enviando para finalizar a conexão...";
+
+        console.log(
+          "Authorization code recebido."
+        );
+
+
+        /*
+        ----------------------------------------------------
+        CHAMAR EDGE FUNCTION
+        ----------------------------------------------------
+        */
+
+        const response =
+          await fetch(
+            EDGE_FUNCTION_URL,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json"
+              },
+
+              body: JSON.stringify({
+                code: code
+              })
+            }
+          );
+
+
+        /*
+        ----------------------------------------------------
+        PEGAR RESPOSTA
+        ----------------------------------------------------
+        */
+
+        const responseText =
+          await response.text();
+
+        console.log(
+          "Status da Edge Function:",
+          response.status
+        );
+
+        console.log(
+          "Resposta da Edge Function:",
+          responseText
+        );
+
+
+        /*
+        ----------------------------------------------------
+        CONVERTER JSON
+        ----------------------------------------------------
+        */
+
+        let result;
+
+        try {
+
+          result =
+            JSON.parse(responseText);
+
+        } catch {
+
+          throw new Error(
+            "A Edge Function retornou uma resposta inválida:\n\n" +
+            responseText
+          );
+
+        }
+
+
+        /*
+        ----------------------------------------------------
+        VERIFICAR ERRO
+        ----------------------------------------------------
+        */
+
+        if (!response.ok || result.success === false) {
+
+          throw new Error(
+            result.error ||
+            result.message ||
+            "A Edge Function recusou a autorização."
+          );
+
+        }
+
+
+        /*
+        ----------------------------------------------------
+        SUCESSO
+        ----------------------------------------------------
+        */
+
+        message.className =
+          "success";
+
+        message.textContent =
+          "Conexão concluída com sucesso!\n\n" +
+          "O Mercado Livre autorizou sua conta.";
+
+        console.log(
+          "OAuth concluído:",
+          result
+        );
+
+
+        /*
+        ----------------------------------------------------
+        MOSTRAR TOKEN PARA TESTE
+        ----------------------------------------------------
+
+        IMPORTANTE:
+        Isso é apenas temporário para confirmar
+        que a troca do código funcionou.
+
+        Depois vamos remover isso e salvar o token
+        com segurança no Supabase.
+        ----------------------------------------------------
+        */
+
+        if (result.access_token) {
+
+          tokenBox.classList.remove(
+            "hidden"
+          );
+
+          tokenBox.innerHTML =
+            "<strong>Access Token recebido:</strong><br><br>" +
+            result.access_token;
+
+        }
+
+      } catch (error) {
+
+        /*
+        ----------------------------------------------------
+        ERRO
+        ----------------------------------------------------
+        */
+
+        console.error(
+          "Erro completo:",
+          error
+        );
+
+        message.className =
+          "error";
+
+        message.textContent =
+          "Erro ao conectar com o Mercado Livre.\n\n" +
+          (
+            error.message ||
+            "Erro desconhecido."
+          );
+
+      }
+
     }
+
+
+    /*
+    ========================================================
+    INICIAR
+    ========================================================
+    */
+
+    conectarMercadoLivre();
+
   </script>
 
 </body>
