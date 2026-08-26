@@ -90,37 +90,29 @@
   </style>
 </head>
 
-
 <body>
 
   <div class="box">
 
-    <div class="icon" id="icon">
-      🔄
-    </div>
+    <div class="icon" id="icon">🔄</div>
 
-    <h1 id="title">
-      Conectando...
-    </h1>
+    <h1 id="title">Conectando...</h1>
 
     <p id="message">
       Aguardando resposta do Mercado Livre.
     </p>
 
-    <div
-      class="loading"
-      id="loading">
-    </div>
+    <div class="loading" id="loading"></div>
 
     <div id="result"></div>
 
   </div>
 
 
-  <!-- ========================================================
-       CONFIG DO SUPABASE
-       ======================================================== -->
-
+  <!--
+    O callback está dentro de /oauth/
+    Por isso usamos ../config.js
+  -->
   <script src="../config.js"></script>
 
 
@@ -137,7 +129,7 @@
 
 
     const REDIRECT_URI =
-      "https://kvzxs01.github.io/site-garimpo/callback.html";
+      "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
 
 
     /*
@@ -190,7 +182,7 @@
 
     /*
     ============================================================
-    MOSTRAR ERRO
+    ERRO
     ============================================================
     */
 
@@ -217,7 +209,7 @@
 
     /*
     ============================================================
-    MOSTRAR SUCESSO
+    SUCESSO
     ============================================================
     */
 
@@ -244,7 +236,7 @@
 
     /*
     ============================================================
-    CONECTAR MERCADO LIVRE
+    CONECTAR
     ============================================================
     */
 
@@ -254,14 +246,21 @@
 
         /*
         --------------------------------------------------------
-        VERIFICAR CONFIG.JS
+        PEGAR A CHAVE DO CONFIG.JS
         --------------------------------------------------------
         */
 
-        if (
-          typeof SUPABASE_ANON_KEY === "undefined" ||
-          !SUPABASE_ANON_KEY
-        ) {
+        const supabaseAnonKey =
+          window.SUPABASE_ANON_KEY;
+
+
+        /*
+        --------------------------------------------------------
+        VERIFICAR CHAVE
+        --------------------------------------------------------
+        */
+
+        if (!supabaseAnonKey) {
 
           throw new Error(
             "SUPABASE_ANON_KEY não foi encontrada no config.js."
@@ -272,7 +271,7 @@
 
         /*
         --------------------------------------------------------
-        PEGAR PARÂMETROS DA URL
+        PEGAR PARÂMETROS DO MERCADO LIVRE
         --------------------------------------------------------
         */
 
@@ -296,7 +295,7 @@
 
         /*
         --------------------------------------------------------
-        ERRO DO MERCADO LIVRE
+        VERIFICAR ERRO DO MERCADO LIVRE
         --------------------------------------------------------
         */
 
@@ -334,7 +333,7 @@
 
         /*
         --------------------------------------------------------
-        ATUALIZAR STATUS
+        STATUS
         --------------------------------------------------------
         */
 
@@ -367,7 +366,7 @@
 
                 "Authorization":
                   "Bearer " +
-                  SUPABASE_ANON_KEY
+                  supabaseAnonKey
 
               },
 
@@ -387,7 +386,7 @@
 
         /*
         --------------------------------------------------------
-        PEGAR RESPOSTA
+        LER RESPOSTA
         --------------------------------------------------------
         */
 
@@ -422,7 +421,7 @@
 
         /*
         --------------------------------------------------------
-        ERRO DA EDGE FUNCTION
+        VERIFICAR HTTP
         --------------------------------------------------------
         */
 
@@ -490,7 +489,7 @@
 
         /*
         --------------------------------------------------------
-        LIMPAR CODE DA URL
+        REMOVER CODE DA URL
         --------------------------------------------------------
         */
 
@@ -501,7 +500,6 @@
         );
 
       }
-
 
       catch (error) {
 
