@@ -20,7 +20,7 @@
     }
 
     .wrap {
-      max-width: 760px;
+      max-width: 800px;
       margin: auto;
       padding: 30px 20px 70px;
     }
@@ -64,6 +64,7 @@
 
     textarea {
       min-height: 80px;
+      resize: vertical;
     }
 
     .btn {
@@ -73,6 +74,11 @@
       font-weight: 900;
       cursor: pointer;
       margin-top: 15px;
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
     }
 
     .primary {
@@ -92,10 +98,9 @@
     }
 
     .edit {
-      background: #1c1c1c;
+      background: #222;
       color: #ffd600;
       border: 1px solid #444;
-      margin-left: 6px;
     }
 
     .upload {
@@ -137,7 +142,7 @@
     }
 
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     .item {
@@ -145,12 +150,12 @@
       align-items: center;
       gap: 12px;
       border-bottom: 1px solid #292929;
-      padding: 12px 0;
+      padding: 14px 0;
     }
 
     .item img {
-      width: 60px;
-      height: 60px;
+      width: 65px;
+      height: 65px;
       object-fit: cover;
       border-radius: 8px;
       background: #fff;
@@ -158,812 +163,1024 @@
 
     .item-main {
       flex: 1;
+      min-width: 0;
     }
 
     .muted {
       font-size: 11px;
       color: #777;
+      margin-top: 4px;
     }
 
     .ml-id {
-      color: #ffd600;
       font-size: 11px;
-      margin-top: 4px;
+      color: #ffd600;
+      margin-top: 5px;
+    }
+
+    .price {
+      font-size: 13px;
+      margin-top: 5px;
     }
 
     .actions {
       display: flex;
+      gap: 5px;
       align-items: center;
+    }
+
+    .actions .btn {
+      margin-top: 0;
+      padding: 9px 11px;
+      font-size: 11px;
+    }
+
+    .editing {
+      border-color: #ffd600;
+    }
+
+    @media(max-width:600px) {
+      .item {
+        align-items: flex-start;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .actions .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <main class="wrap">
+<main class="wrap">
 
-    <div class="top">
-      <h1>Garimpo Online</h1>
-      <a href="index.html">← Ver loja</a>
+  <div class="top">
+    <h1>Garimpo Online</h1>
+    <a href="index.html">← Ver loja</a>
+  </div>
+
+
+  <!-- LOGIN -->
+
+  <section id="loginBox" class="box">
+
+    <h2>Entrar no painel</h2>
+
+    <p class="muted">
+      Este login é somente para administrar os produtos.
+    </p>
+
+    <label>E-mail</label>
+
+    <input
+      id="email"
+      type="email"
+      autocomplete="username"
+    >
+
+    <label>Senha</label>
+
+    <input
+      id="password"
+      type="password"
+      autocomplete="current-password"
+    >
+
+    <button
+      id="loginBtn"
+      class="btn primary"
+    >
+      Entrar
+    </button>
+
+    <div id="loginMsg" class="msg"></div>
+
+  </section>
+
+
+  <!-- PAINEL -->
+
+  <section id="panel" class="hidden">
+
+    <div class="box">
+
+      <button
+        id="logoutBtn"
+        class="btn secondary"
+      >
+        Sair
+      </button>
+
+      <h2 id="formTitle">
+        Adicionar produto
+      </h2>
+
+
+      <label>Nome</label>
+
+      <input
+        id="name"
+        placeholder="Ex.: Fone Bluetooth"
+      >
+
+
+      <label>
+        ID de afiliado do Mercado Livre
+      </label>
+
+      <input
+        id="mercadolivre_id"
+        placeholder="Ex.: R6PPBF-4F7N"
+      >
+
+      <div class="msg">
+        Use o ID obtido em <b>Copiar ID</b> na Central de Afiliados.
+      </div>
+
+
+      <label>Categoria</label>
+
+      <select id="category">
+        <option>Eletrônicos</option>
+        <option>Casa</option>
+        <option>Games</option>
+        <option>Moda</option>
+        <option>Beleza</option>
+        <option>Automotivo</option>
+        <option>Achadinhos</option>
+      </select>
+
+
+      <label>Imagem</label>
+
+      <div class="upload">
+
+        <input
+          id="file"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+        >
+
+        <div>
+          Escolha a imagem do produto
+        </div>
+
+        <img
+          id="preview"
+          class="preview"
+        >
+
+      </div>
+
+
+      <label>Link de afiliado</label>
+
+      <input
+        id="affiliate"
+        placeholder="https://meli.la/..."
+      >
+
+
+      <label>Descrição</label>
+
+      <textarea
+        id="description"
+        placeholder="Por que vale a pena?"
+      ></textarea>
+
+
+      <button
+        id="addBtn"
+        class="btn primary"
+      >
+        ＋ Publicar produto
+      </button>
+
+      <button
+        id="cancelEditBtn"
+        class="btn secondary hidden"
+      >
+        Cancelar edição
+      </button>
+
+      <div id="msg" class="msg"></div>
+
     </div>
 
 
-    <!-- =========================
-         LOGIN
-    ========================== -->
+    <!-- PRODUTOS -->
 
-    <section id="loginBox" class="box">
+    <div class="box">
 
-      <h2>Entrar no painel</h2>
+      <h2>Produtos publicados</h2>
 
-      <p class="muted">
-        Este login é somente para você administrar os produtos.
-      </p>
+      <div id="list"></div>
 
-      <label>E-mail</label>
+    </div>
 
-      <input
-        id="email"
-        type="email"
-        autocomplete="username"
-      >
+  </section>
 
-      <label>Senha</label>
+</main>
 
-      <input
-        id="password"
-        type="password"
-        autocomplete="current-password"
-      >
 
-      <button
-        id="loginBtn"
-        class="btn primary"
-      >
-        Entrar
-      </button>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-      <div
-        id="loginMsg"
-        class="msg"
-      ></div>
+<script src="config.js"></script>
 
-    </section>
+<script>
 
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
-    <!-- =========================
-         PAINEL
-    ========================== -->
 
-    <section
-      id="panel"
-      class="hidden"
-    >
+const $ =
+  id => document.getElementById(id);
 
-      <div class="box">
 
-        <button
-          id="logoutBtn"
-          class="btn secondary"
-        >
-          Sair
-        </button>
-
-        <h2>Adicionar produto</h2>
-
-
-        <label>Nome</label>
-
-        <input
-          id="name"
-          placeholder="Ex.: Fone Bluetooth"
-        >
-
-
-        <!-- =========================
-             ID AFILIADO
-        ========================== -->
-
-        <label>
-          ID de afiliado do Mercado Livre
-        </label>
-
-        <input
-          id="mercadolivre_id"
-          placeholder="Ex.: R6PPBF-4F7N"
-        >
-
-        <div class="msg">
-          Cole aqui o ID que aparece em
-          <b>Copiar ID</b> na Central de Afiliados.
-        </div>
-
-
-        <!-- =========================
-             CATEGORIA
-        ========================== -->
-
-        <label>Categoria</label>
-
-        <select id="category">
-
-          <option>Eletrônicos</option>
-          <option>Casa</option>
-          <option>Games</option>
-          <option>Moda</option>
-          <option>Beleza</option>
-          <option>Automotivo</option>
-          <option>Achadinhos</option>
-
-        </select>
-
-
-        <!-- =========================
-             IMAGEM
-        ========================== -->
-
-        <label>Imagem</label>
-
-        <div class="upload">
-
-          <input
-            id="file"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-          >
-
-          <div>
-            Escolha a imagem do produto
-          </div>
-
-          <img
-            id="preview"
-            class="preview"
-          >
-
-        </div>
-
-
-        <!-- =========================
-             LINK AFILIADO
-        ========================== -->
-
-        <label>Link de afiliado</label>
-
-        <input
-          id="affiliate"
-          placeholder="https://meli.la/..."
-        >
-
-
-        <!-- =========================
-             DESCRIÇÃO
-        ========================== -->
-
-        <label>Descrição</label>
-
-        <textarea
-          id="description"
-          placeholder="Por que vale a pena?"
-        ></textarea>
-
-
-        <button
-          id="addBtn"
-          class="btn primary"
-        >
-          ＋ Publicar produto
-        </button>
-
-        <div
-          id="msg"
-          class="msg"
-        ></div>
-
-      </div>
-
-
-      <!-- =========================
-           PRODUTOS
-      ========================== -->
-
-      <div class="box">
-
-        <h2>Produtos publicados</h2>
-
-        <div id="list"></div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- =========================
-       SUPABASE
-  ========================== -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script src="config.js"></script>
-
-
-  <script>
-
-    const db =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
+const esc =
+  s =>
+    String(s ?? "")
+      .replace(
+        /[&<>"']/g,
+        m => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        }[m])
       );
 
 
-    const $ =
-      id => document.getElementById(id);
+let editingId = null;
 
 
-    const esc =
-      s =>
-        String(s ?? "")
-          .replace(
-            /[&<>"']/g,
-            m => ({
-              "&": "&amp;",
-              "<": "&lt;",
-              ">": "&gt;",
-              '"': "&quot;",
-              "'": "&#039;"
-            }[m])
-          );
+/* LOGIN */
+
+function showPanel() {
+
+  $("loginBox")
+    .classList
+    .add("hidden");
+
+  $("panel")
+    .classList
+    .remove("hidden");
+
+  loadProducts();
+
+}
 
 
-    /* =========================
-       MOSTRAR PAINEL
-    ========================== */
+function showLogin() {
 
-    function showPanel() {
+  $("panel")
+    .classList
+    .add("hidden");
 
-      $("loginBox")
-        .classList
-        .add("hidden");
+  $("loginBox")
+    .classList
+    .remove("hidden");
 
-      $("panel")
-        .classList
-        .remove("hidden");
+}
+
+
+async function init() {
+
+  const r =
+    await db.auth.getSession();
+
+  if (r.error) {
+
+    $("loginMsg").textContent =
+      r.error.message;
+
+    $("loginMsg").className =
+      "msg error";
+
+    return;
+
+  }
+
+  if (r.data.session) {
+
+    showPanel();
+
+  } else {
+
+    showLogin();
+
+  }
+
+
+  db.auth.onAuthStateChange(
+    (event, session) => {
+
+      if (session) {
+        showPanel();
+      } else {
+        showLogin();
+      }
+
+    }
+  );
+
+}
+
+
+$("loginBtn").onclick =
+async () => {
+
+  const email =
+    $("email")
+      .value
+      .trim();
+
+  const password =
+    $("password")
+      .value;
+
+
+  if (!email || !password) {
+
+    $("loginMsg").textContent =
+      "Digite e-mail e senha.";
+
+    $("loginMsg").className =
+      "msg error";
+
+    return;
+
+  }
+
+
+  $("loginBtn").disabled =
+    true;
+
+  $("loginMsg").textContent =
+    "Entrando...";
+
+
+  const r =
+    await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+
+  $("loginBtn").disabled =
+    false;
+
+
+  if (r.error) {
+
+    $("loginMsg").textContent =
+      r.error.message;
+
+    $("loginMsg").className =
+      "msg error";
+
+    return;
+
+  }
+
+
+  $("loginMsg").textContent =
+    "Login realizado!";
+
+  $("loginMsg").className =
+    "msg success";
+
+  showPanel();
+
+};
+
+
+$("logoutBtn").onclick =
+  () => db.auth.signOut();
+
+
+/* IMAGEM */
+
+$("file").onchange =
+() => {
+
+  const f =
+    $("file")
+      .files[0];
+
+  if (!f) return;
+
+
+  if (
+    f.size >
+    5 * 1024 * 1024
+  ) {
+
+    $("msg").textContent =
+      "A imagem deve ter até 5 MB.";
+
+    $("msg").className =
+      "msg error";
+
+    $("file").value =
+      "";
+
+    return;
+
+  }
+
+
+  $("preview").src =
+    URL.createObjectURL(f);
+
+  $("preview").style.display =
+    "block";
+
+};
+
+
+/* LIMPAR FORMULÁRIO */
+
+function clearForm() {
+
+  editingId = null;
+
+  $("formTitle").textContent =
+    "Adicionar produto";
+
+  $("addBtn").textContent =
+    "＋ Publicar produto";
+
+  $("cancelEditBtn")
+    .classList
+    .add("hidden");
+
+  [
+    "name",
+    "mercadolivre_id",
+    "affiliate",
+    "description"
+  ]
+    .forEach(
+      id => $(id).value = ""
+    );
+
+  $("file").value =
+    "";
+
+  $("preview")
+    .style
+    .display =
+    "none";
+
+  $("msg").textContent =
+    "";
+
+}
+
+
+/* ADICIONAR / EDITAR */
+
+$("addBtn").onclick =
+async () => {
+
+  const f =
+    $("file")
+      .files[0];
+
+  const name =
+    $("name")
+      .value
+      .trim();
+
+  const mercadolivre_id =
+    $("mercadolivre_id")
+      .value
+      .trim();
+
+  const link =
+    $("affiliate")
+      .value
+      .trim();
+
+  const category =
+    $("category")
+      .value;
+
+  const description =
+    $("description")
+      .value
+      .trim();
+
+
+  if (
+    !name ||
+    !mercadolivre_id ||
+    !link
+  ) {
+
+    $("msg").textContent =
+      "Preencha nome, ID de afiliado e link.";
+
+    $("msg").className =
+      "msg error";
+
+    return;
+
+  }
+
+
+  if (!editingId && !f) {
+
+    $("msg").textContent =
+      "Escolha uma imagem.";
+
+    $("msg").className =
+      "msg error";
+
+    return;
+
+  }
+
+
+  $("addBtn").disabled =
+    true;
+
+  $("msg").textContent =
+    editingId
+      ? "Salvando alterações..."
+      : "Enviando produto...";
+
+
+  let image_url = null;
+
+
+  /* UPLOAD DE NOVA IMAGEM */
+
+  if (f) {
+
+    if (
+      f.size >
+      5 * 1024 * 1024
+    ) {
+
+      $("msg").textContent =
+        "A imagem deve ter até 5 MB.";
+
+      $("msg").className =
+        "msg error";
+
+      $("addBtn").disabled =
+        false;
+
+      return;
+
+    }
+
+
+    const ext =
+      (
+        f.name
+          .split(".")
+          .pop() ||
+        "jpg"
+      )
+        .toLowerCase();
+
+
+    const path =
+      Date.now() +
+      "-" +
+      crypto.randomUUID() +
+      "." +
+      ext;
+
+
+    const up =
+      await db.storage
+        .from("product-images")
+        .upload(
+          path,
+          f,
+          {
+            contentType:
+              f.type
+          }
+        );
+
+
+    if (up.error) {
+
+      $("msg").textContent =
+        "Erro no upload: " +
+        up.error.message;
+
+      $("msg").className =
+        "msg error";
+
+      $("addBtn").disabled =
+        false;
+
+      return;
+
+    }
+
+
+    image_url =
+      db.storage
+        .from("product-images")
+        .getPublicUrl(path)
+        .data
+        .publicUrl;
+
+  }
+
+
+  /* EDITAR */
+
+  if (editingId) {
+
+    const updateData = {
+
+      name,
+
+      mercadolivre_id,
+
+      category,
+
+      affiliate_url:
+        link,
+
+      description
+
+    };
+
+
+    if (image_url) {
+
+      updateData.image_url =
+        image_url;
+
+    }
+
+
+    const r =
+      await db
+        .from("products")
+        .update(updateData)
+        .eq(
+          "id",
+          editingId
+        );
+
+
+    if (r.error) {
+
+      $("msg").textContent =
+        "Erro ao atualizar: " +
+        r.error.message;
+
+      $("msg").className =
+        "msg error";
+
+    } else {
+
+      $("msg").textContent =
+        "Produto atualizado!";
+
+      $("msg").className =
+        "msg success";
+
+      clearForm();
 
       loadProducts();
 
     }
 
 
-    function showLogin() {
+    $("addBtn").disabled =
+      false;
 
-      $("panel")
-        .classList
-        .add("hidden");
+    return;
 
-      $("loginBox")
-        .classList
-        .remove("hidden");
-
-    }
+  }
 
 
-    /* =========================
-       LOGIN
-    ========================== */
+  /* NOVO PRODUTO */
 
-    async function init() {
+  const ins =
+    await db
+      .from("products")
+      .insert({
 
-      const r =
-        await db.auth.getSession();
+        name,
 
-      if (r.error) {
+        mercadolivre_id,
 
-        $("loginMsg").textContent =
-          r.error.message;
+        category,
 
-        $("loginMsg").className =
-          "msg error";
+        image_url,
 
-        return;
-      }
+        affiliate_url:
+          link,
 
-      if (r.data.session) {
+        description,
 
-        showPanel();
+        active:
+          true
 
-      } else {
-
-        showLogin();
-
-      }
+      });
 
 
-      db.auth.onAuthStateChange(
-        (event, session) => {
+  if (ins.error) {
 
-          if (session) {
+    $("msg").textContent =
+      "Erro ao salvar: " +
+      ins.error.message;
 
-            showPanel();
+    $("msg").className =
+      "msg error";
 
-          } else {
+  } else {
 
-            showLogin();
+    $("msg").textContent =
+      "Produto publicado com sucesso!";
 
-          }
+    $("msg").className =
+      "msg success";
 
+    clearForm();
+
+    loadProducts();
+
+  }
+
+
+  $("addBtn").disabled =
+    false;
+
+};
+
+
+/* CANCELAR EDIÇÃO */
+
+$("cancelEditBtn").onclick =
+() => clearForm();
+
+
+/* EDITAR PRODUTO */
+
+window.editProduct =
+async id => {
+
+  const r =
+    await db
+      .from("products")
+      .select("*")
+      .eq(
+        "id",
+        id
+      )
+      .single();
+
+
+  if (r.error) {
+
+    alert(
+      r.error.message
+    );
+
+    return;
+
+  }
+
+
+  const p =
+    r.data;
+
+
+  editingId =
+    p.id;
+
+
+  $("formTitle").textContent =
+    "Editar produto";
+
+
+  $("addBtn").textContent =
+    "✓ Salvar alterações";
+
+
+  $("cancelEditBtn")
+    .classList
+    .remove("hidden");
+
+
+  $("name").value =
+    p.name || "";
+
+
+  $("mercadolivre_id").value =
+    p.mercadolivre_id || "";
+
+
+  $("category").value =
+    p.category || "Achadinhos";
+
+
+  $("affiliate").value =
+    p.affiliate_url || "";
+
+
+  $("description").value =
+    p.description || "";
+
+
+  if (p.image_url) {
+
+    $("preview").src =
+      p.image_url;
+
+    $("preview").style.display =
+      "block";
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+};
+
+
+/* EXCLUIR */
+
+window.removeProduct =
+async id => {
+
+  if (
+    !confirm(
+      "Excluir este produto?"
+    )
+  ) {
+    return;
+  }
+
+
+  const r =
+    await db
+      .from("products")
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (r.error) {
+
+    alert(
+      r.error.message
+    );
+
+    return;
+
+  }
+
+
+  loadProducts();
+
+};
+
+
+/* LISTA */
+
+async function loadProducts() {
+
+  const r =
+    await db
+      .from("products")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
         }
       );
 
-    }
 
+  if (r.error) {
 
-    $("loginBtn").onclick =
-      async () => {
+    $("list").innerHTML =
+      "<p class='msg error'>" +
+      esc(r.error.message) +
+      "</p>";
 
-        const email =
-          $("email")
-            .value
-            .trim();
+    return;
 
-        const password =
-          $("password")
-            .value;
+  }
 
 
-        if (!email || !password) {
+  $("list").innerHTML =
+    (r.data || [])
+      .map(
+        p => `
 
-          $("loginMsg").textContent =
-            "Digite e-mail e senha.";
+          <div class="item">
 
-          $("loginMsg").className =
-            "msg error";
+            <img
+              src="${esc(p.image_url)}"
+            >
 
-          return;
+            <div class="item-main">
 
-        }
+              <b>
+                ${esc(p.name)}
+              </b>
 
+              <div class="ml-id">
+                ID afiliado:
+                ${esc(
+                  p.mercadolivre_id ||
+                  "não informado"
+                )}
+              </div>
 
-        $("loginBtn").disabled =
-          true;
+              <div class="price">
 
-        $("loginMsg").textContent =
-          "Entrando...";
-
-
-        const r =
-          await db.auth.signInWithPassword({
-            email,
-            password
-          });
-
-
-        $("loginBtn").disabled =
-          false;
-
-
-        if (r.error) {
-
-          $("loginMsg").textContent =
-            r.error.message;
-
-          $("loginMsg").className =
-            "msg error";
-
-          return;
-
-        }
-
-
-        $("loginMsg").textContent =
-          "Login realizado!";
-
-        $("loginMsg").className =
-          "msg success";
-
-
-        showPanel();
-
-      };
-
-
-    /* =========================
-       SAIR
-    ========================== */
-
-    $("logoutBtn").onclick =
-      () => db.auth.signOut();
-
-
-    /* =========================
-       PREVIEW DA IMAGEM
-    ========================== */
-
-    $("file").onchange =
-      () => {
-
-        const f =
-          $("file")
-            .files[0];
-
-
-        if (!f) return;
-
-
-        if (
-          f.size >
-          5 * 1024 * 1024
-        ) {
-
-          $("msg").textContent =
-            "A imagem deve ter até 5 MB.";
-
-          $("msg").className =
-            "msg error";
-
-          $("file").value =
-            "";
-
-          return;
-
-        }
-
-
-        $("preview").src =
-          URL.createObjectURL(f);
-
-        $("preview").style.display =
-          "block";
-
-      };
-
-
-    /* =========================
-       ADICIONAR PRODUTO
-    ========================== */
-
-    $("addBtn").onclick =
-      async () => {
-
-        const f =
-          $("file")
-            .files[0];
-
-        const name =
-          $("name")
-            .value
-            .trim();
-
-        const mercadolivre_id =
-          $("mercadolivre_id")
-            .value
-            .trim();
-
-        const link =
-          $("affiliate")
-            .value
-            .trim();
-
-
-        if (
-          !name ||
-          !mercadolivre_id ||
-          !link ||
-          !f
-        ) {
-
-          $("msg").textContent =
-            "Preencha nome, ID de afiliado, link e imagem.";
-
-          $("msg").className =
-            "msg error";
-
-          return;
-
-        }
-
-
-        $("addBtn").disabled =
-          true;
-
-        $("msg").textContent =
-          "Enviando imagem...";
-
-
-        /* =========================
-           UPLOAD
-        ========================== */
-
-        const ext =
-          (
-            f.name
-              .split(".")
-              .pop() ||
-            "jpg"
-          )
-            .toLowerCase();
-
-
-        const path =
-          Date.now() +
-          "-" +
-          crypto.randomUUID() +
-          "." +
-          ext;
-
-
-        const up =
-          await db.storage
-            .from("product-images")
-            .upload(
-              path,
-              f,
-              {
-                contentType:
-                  f.type
-              }
-            );
-
-
-        if (up.error) {
-
-          $("msg").textContent =
-            "Erro no upload: " +
-            up.error.message;
-
-          $("msg").className =
-            "msg error";
-
-          $("addBtn").disabled =
-            false;
-
-          return;
-
-        }
-
-
-        const image_url =
-          db.storage
-            .from("product-images")
-            .getPublicUrl(path)
-            .data
-            .publicUrl;
-
-
-        /* =========================
-           SALVAR PRODUTO
-        ========================== */
-
-        const ins =
-          await db
-            .from("products")
-            .insert({
-
-              name,
-
-              mercadolivre_id,
-
-              category:
-                $("category").value,
-
-              image_url,
-
-              affiliate_url:
-                link,
-
-              description:
-                $("description")
-                  .value
-                  .trim(),
-
-              active:
-                true
-
-            });
-
-
-        if (ins.error) {
-
-          $("msg").textContent =
-            "Erro ao salvar: " +
-            ins.error.message;
-
-          $("msg").className =
-            "msg error";
-
-        } else {
-
-          $("msg").textContent =
-            "Produto publicado com sucesso!";
-
-          $("msg").className =
-            "msg success";
-
-
-          [
-            "name",
-            "mercadolivre_id",
-            "affiliate",
-            "description"
-          ]
-            .forEach(
-              id =>
-                $(id).value = ""
-            );
-
-
-          $("file").value =
-            "";
-
-          $("preview")
-            .style
-            .display =
-            "none";
-
-
-          loadProducts();
-
-        }
-
-
-        $("addBtn").disabled =
-          false;
-
-      };
-
-
-    /* =========================
-       CARREGAR PRODUTOS
-    ========================== */
-
-    async function loadProducts() {
-
-      const r =
-        await db
-          .from("products")
-          .select("*")
-          .order(
-            "created_at",
-            {
-              ascending:
-                false
-            }
-          );
-
-
-      if (r.error) {
-
-        $("list").innerHTML =
-          "<p class='msg error'>" +
-          esc(r.error.message) +
-          "</p>";
-
-        return;
-
-      }
-
-
-      $("list").innerHTML =
-        (
-          r.data || []
-        )
-          .map(
-            p => `
-
-              <div class="item">
-
-                <img
-                  src="${esc(p.image_url)}"
-                >
-
-                <div class="item-main">
-
-                  <b>
-                    ${esc(p.name)}
-                  </b>
-
-                  <div class="ml-id">
-
-                    ID afiliado:
-                    ${esc(
-                      p.mercadolivre_id ||
-                      "não informado"
-                    )}
-
-                  </div>
-
-                  <div class="muted">
-
-                    ${
-                      p.current_price
-                        ? "Preço atual: R$ " +
-                          Number(
-                            p.current_price
-                          ).toFixed(2)
-                        : "Preço aguardando atualização"
-                    }
-
-                  </div>
-
-                </div>
-
-                <div class="actions">
-
-                  <button
-                    class="btn danger"
-                    onclick="removeProduct('${p.id}')"
-                  >
-                    Excluir
-                  </button>
-
-                </div>
+                ${
+                  p.current_price != null
+                    ? "Preço atual: R$ " +
+                      Number(
+                        p.current_price
+                      ).toFixed(2)
+                    : "Preço ainda não atualizado"
+                }
 
               </div>
 
-            `
-          )
-          .join("")
+              <div class="muted">
+                ${
+                  p.price_updated_at
+                    ? "Atualizado em: " +
+                      new Date(
+                        p.price_updated_at
+                      ).toLocaleString("pt-BR")
+                    : ""
+                }
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                class="btn edit"
+                onclick="editProduct('${p.id}')"
+              >
+                Editar
+              </button>
+
+              <button
+                class="btn danger"
+                onclick="removeProduct('${p.id}')"
+              >
+                Excluir
+              </button>
+
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("")
 
 
-        ||
+    ||
 
-        "<p class='muted'>" +
-        "Nenhum produto ainda." +
-        "</p>";
+    "<p class='muted'>" +
+    "Nenhum produto ainda." +
+    "</p>";
 
-    }
-
-
-    /* =========================
-       EXCLUIR
-    ========================== */
-
-    window.removeProduct =
-      async id => {
-
-        if (
-          !confirm(
-            "Excluir este produto?"
-          )
-        ) {
-
-          return;
-
-        }
+}
 
 
-        const r =
-          await db
-            .from("products")
-            .delete()
-            .eq(
-              "id",
-              id
-            );
+init();
 
-
-        if (r.error) {
-
-          alert(
-            r.error.message
-          );
-
-        }
-
-
-        loadProducts();
-
-      };
-
-
-    /* =========================
-       INICIAR
-    ========================== */
-
-    init();
-
-  </script>
+</script>
 
 </body>
 </html>
