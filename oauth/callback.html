@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conectando ao Mercado Livre</title>
+  <title>Conectando ao Mercado Livre...</title>
 
   <style>
     body {
@@ -12,70 +12,30 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: Arial, sans-serif;
       background: #f5f5f5;
-      color: #333;
+      font-family: Arial, sans-serif;
     }
 
     .box {
-      width: min(90%, 520px);
+      width: min(90%, 420px);
       padding: 30px;
       background: white;
-      border-radius: 14px;
-      box-shadow: 0 4px 20px rgba(0,0,0,.10);
+      border-radius: 16px;
       text-align: center;
+      box-shadow: 0 5px 25px rgba(0,0,0,.08);
     }
 
     h1 {
-      margin-top: 0;
-      font-size: 24px;
+      font-size: 22px;
     }
 
-    #status {
-      margin-top: 15px;
+    p {
+      color: #666;
       line-height: 1.5;
-      white-space: pre-wrap;
-      word-break: break-word;
     }
 
-    .loading {
-      font-size: 18px;
-    }
-
-    .success {
-      color: #16803c;
-    }
-
-    .error {
-      color: #c62828;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 11px 18px;
-      border: 0;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #3483fa;
-      color: white;
-      font-size: 15px;
-    }
-
-    button:hover {
-      opacity: .9;
-    }
-
-    details {
-      margin-top: 20px;
-      text-align: left;
-    }
-
-    pre {
-      overflow-x: auto;
-      background: #f1f1f1;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 12px;
+    .erro {
+      color: #d00;
     }
   </style>
 </head>
@@ -83,475 +43,111 @@
 <body>
 
   <div class="box">
-    <h1>Conectando...</h1>
-
-    <div id="status" class="loading">
-      Aguardando resposta do Mercado Livre...
-    </div>
-
-    <div id="actions"></div>
+    <h1 id="titulo">Conectando...</h1>
+    <p id="mensagem">
+      Aguarde enquanto finalizamos a conexão com o Mercado Livre.
+    </p>
   </div>
 
-<script>
-/* =========================================================
-   CONFIGURAÇÃO
-   ========================================================= */
+  <script>
+    const SUPABASE_URL =
+      "https://xokyvzjeoivmggsmkjjs.supabase.co";
 
-// URL DA SUA EDGE FUNCTION
-// TROQUE SOMENTE ESTA URL PELA URL REAL DA SUA FUNÇÃO.
-const EDGE_FUNCTION_URL =
-  "https://xokyvzjeoivmggsmkjjs.supabase.co/functions/v1/mercadolivre-oauth";
+    const EDGE_FUNCTION =
+      SUPABASE_URL + "/functions/v1/mercadolivre-auth";
 
-// Seu Client ID público
-const ML_CLIENT_ID = "3125220410520940";
+    async function conectar() {
 
-// Redirect URI - precisa ser IDÊNTICO ao cadastrado no Mercado Livre
-const REDIRECT_URI =
-  "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
+      const params = new URLSearchParams(window.location.search);
 
+      const code = params.get("code");
+      const error = params.get("error");
 
-/* =========================================================
-   ELEMENTOS
-   ========================================================= */
+      if (error) {
+        document.getElementById("titulo").textContent =
+          "Erro na autorização";
 
-const statusElement = document.getElementById("status");
-const actionsElement = document.getElementById("actions");
+        document.getElementById("mensagem").textContent =
+          params.get("error_description") || error;
 
+        return;
+      }
 
-/* =========================================================
-   FUNÇÕES AUXILIARES
-   ========================================================= */
+      if (!code) {
+        document.getElementById("titulo").textContent =
+          "Nenhum código recebido";
 
-function setStatus(message, type = "") {
-  statusElement.className = type;
-  statusElement.textContent = message;
-}
+        document.getElementById("mensagem").textContent =
+          "O Mercado Livre não enviou um código de autorização.";
 
-function addRetryButton() {
-  actionsElement.innerHTML = "";
+        return;
+      }
 
-  const button = document.createElement("button");
-  button.textContent = "Tentar novamente";
+      document.getElementById("titulo").textContent =
+        "Código recebido";
 
-  button.onclick = () => {
-    window.location.href =
-      "https://auth.mercadolivre.com.br/authorization" +
-      "?response_type=code" +
-      "&client_id=" + encodeURIComponent(ML_CLIENT_ID) +
-      "&redirect_uri=" + encodeURIComponent(REDIRECT_URI);
-  };
+      document.getElementById("mensagem").textContent =
+        "Finalizando conexão...";
 
-  actionsElement.appendChild(button);
-}
+      try {
 
-function safeString(value) {
-  if (value === undefined || value === null) {
-    return "";
-  }
-
-  if (typeof value === "string") {
-    return value;
-  }
-
-  try {
-    return JSON.stringify(value);
-  } catch {
-    return String(value);
-  }
-}
-
-
-/* =========================================================
-   INÍCIO
-   ========================================================= */
-
-async function connectMercadoLivre() {
-
-  console.log("====================================");
-  console.log("Mercado Livre OAuth iniciado");
-  console.log("====================================");
-
-  try {
-
-    /* -----------------------------------------------------
-       1. LER URL
-       ----------------------------------------------------- */
-
-    const url = new URL(window.location.href);
-
-    const params = url.searchParams;
-
-    const code = params.get("code");
-
-    const oauthError = params.get("error");
-    const oauthErrorDescription =
-      params.get("error_description");
-
-    const state = params.get("state");
-
-
-    console.log("URL atual:", window.location.href);
-    console.log("Code recebido:", !!code);
-    console.log("OAuth error:", oauthError || "nenhum");
-    console.log("State:", state || "nenhum");
-
-
-    /* -----------------------------------------------------
-       2. VERIFICAR ERRO DO MERCADO LIVRE
-       ----------------------------------------------------- */
-
-    if (oauthError) {
-
-      const mensagem =
-        oauthErrorDescription ||
-        oauthError ||
-        "O Mercado Livre recusou a autorização.";
-
-      setStatus(
-        "O Mercado Livre não autorizou a conexão.\n\n" +
-        mensagem,
-        "error"
-      );
-
-      addRetryButton();
-
-      return;
-    }
-
-
-    /* -----------------------------------------------------
-       3. VERIFICAR CODE
-       ----------------------------------------------------- */
-
-    if (!code) {
-
-      setStatus(
-        "Nenhum código de autorização foi recebido.\n\n" +
-        "Volte ao Mercado Livre e tente autorizar novamente.",
-        "error"
-      );
-
-      addRetryButton();
-
-      return;
-    }
-
-
-    /* -----------------------------------------------------
-       4. VALIDAR CODE
-       ----------------------------------------------------- */
-
-    if (code.length < 5) {
-
-      setStatus(
-        "O código recebido parece inválido.",
-        "error"
-      );
-
-      console.error("Code inválido:", code);
-
-      addRetryButton();
-
-      return;
-    }
-
-
-    console.log("Código recebido corretamente.");
-    console.log("Tamanho do código:", code.length);
-
-
-    /* -----------------------------------------------------
-       5. AVISAR USUÁRIO
-       ----------------------------------------------------- */
-
-    setStatus(
-      "Código recebido.\n" +
-      "Finalizando conexão com o Mercado Livre..."
-    );
-
-
-    /* -----------------------------------------------------
-       6. TIMEOUT
-       ----------------------------------------------------- */
-
-    const controller = new AbortController();
-
-    const timeout = setTimeout(() => {
-      controller.abort();
-    }, 30000);
-
-
-    let response;
-
-    try {
-
-      /* ---------------------------------------------------
-         7. ENVIAR CODE PARA EDGE FUNCTION
-         --------------------------------------------------- */
-
-      response = await fetch(
-        EDGE_FUNCTION_URL,
-        {
+        const response = await fetch(EDGE_FUNCTION, {
           method: "POST",
 
           headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
+            "Content-Type": "application/json"
           },
 
           body: JSON.stringify({
-            code: code
-          }),
+            code: code,
 
-          signal: controller.signal
-        }
-      );
+            redirect_uri:
+              "https://kvzxs01.github.io/site-garimpo/oauth/callback.html"
+          })
+        });
 
-    } catch (fetchError) {
+        const data = await response.json();
 
-      if (fetchError.name === "AbortError") {
-
-        throw new Error(
-          "A Edge Function demorou mais de 30 segundos para responder."
+        console.log(
+          "Status da Edge Function:",
+          response.status
         );
 
-      }
+        console.log(
+          "Resposta da Edge Function:",
+          data
+        );
 
-      throw new Error(
-        "Não foi possível acessar a Edge Function.\n\n" +
-        fetchError.message
-      );
-
-    } finally {
-
-      clearTimeout(timeout);
-
-    }
-
-
-    /* -----------------------------------------------------
-       8. LER RESPOSTA
-       ----------------------------------------------------- */
-
-    const responseText = await response.text();
-
-    console.log(
-      "Status da Edge Function:",
-      response.status
-    );
-
-    console.log(
-      "Resposta da Edge Function:",
-      responseText
-    );
-
-
-    /* -----------------------------------------------------
-       9. TENTAR CONVERTER JSON
-       ----------------------------------------------------- */
-
-    let result;
-
-    try {
-
-      result = responseText
-        ? JSON.parse(responseText)
-        : {};
-
-    } catch (jsonError) {
-
-      console.error(
-        "Resposta não é JSON:",
-        responseText
-      );
-
-      throw new Error(
-        "A Edge Function respondeu com conteúdo inválido.\n\n" +
-        "HTTP " +
-        response.status +
-        "\n\n" +
-        responseText.substring(0, 1000)
-      );
-    }
-
-
-    /* -----------------------------------------------------
-       10. ERRO HTTP
-       ----------------------------------------------------- */
-
-    if (!response.ok) {
-
-      console.error(
-        "Erro HTTP da Edge Function:",
-        result
-      );
-
-      let detalhe = "";
-
-      if (result.mercado_livre_response) {
-
-        const ml = result.mercado_livre_response;
-
-        if (typeof ml === "object") {
-
-          detalhe =
-            ml.message ||
-            ml.error_description ||
-            ml.error ||
-            safeString(ml);
-
-        } else {
-
-          detalhe = String(ml);
-
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.error ||
+            "Erro ao conectar com o Mercado Livre."
+          );
         }
 
-      } else {
+        document.getElementById("titulo").textContent =
+          "Conectado com sucesso!";
 
-        detalhe =
-          result.details ||
-          result.message ||
-          result.error ||
-          responseText;
+        document.getElementById("mensagem").textContent =
+          "Sua conta do Mercado Livre foi conectada.";
 
+      } catch (err) {
+
+        console.error(err);
+
+        document.getElementById("titulo").textContent =
+          "Erro ao conectar";
+
+        document.getElementById("mensagem").textContent =
+          err.message;
+
+        document.getElementById("mensagem")
+          .classList.add("erro");
       }
-
-
-      throw new Error(
-        "A Edge Function retornou HTTP " +
-        response.status +
-        ".\n\n" +
-        detalhe
-      );
     }
 
-
-    /* -----------------------------------------------------
-       11. VERIFICAR SUCCESS
-       ----------------------------------------------------- */
-
-    if (!result.success) {
-
-      console.error(
-        "Edge Function informou falha:",
-        result
-      );
-
-      let detalhe = "";
-
-      if (result.mercado_livre_response) {
-
-        const ml = result.mercado_livre_response;
-
-        detalhe =
-          ml?.message ||
-          ml?.error_description ||
-          ml?.error ||
-          safeString(ml);
-
-      } else {
-
-        detalhe =
-          result.details ||
-          result.message ||
-          result.error ||
-          "Erro desconhecido.";
-
-      }
-
-
-      throw new Error(detalhe);
-    }
-
-
-    /* -----------------------------------------------------
-       12. SUCESSO
-       ----------------------------------------------------- */
-
-    console.log(
-      "Mercado Livre conectado com sucesso."
-    );
-
-    console.log(
-      "User ID:",
-      result.user_id
-    );
-
-    console.log(
-      "Token recebido:",
-      !!result.access_token
-    );
-
-    console.log(
-      "Refresh Token recebido:",
-      !!result.refresh_token
-    );
-
-
-    setStatus(
-      "Mercado Livre conectado com sucesso!\n\n" +
-      "Sua conta foi autorizada.",
-      "success"
-    );
-
-
-    /* -----------------------------------------------------
-       13. NÃO MOSTRAR TOKENS NA TELA
-       ----------------------------------------------------- */
-
-    actionsElement.innerHTML = "";
-
-    const info = document.createElement("div");
-
-    info.style.marginTop = "20px";
-    info.style.fontSize = "14px";
-
-    info.textContent =
-      "Você pode fechar esta página.";
-
-    actionsElement.appendChild(info);
-
-
-  } catch (error) {
-
-    console.error(
-      "===================================="
-    );
-
-    console.error(
-      "ERRO NO OAUTH"
-    );
-
-    console.error(
-      error
-    );
-
-    console.error(
-      "===================================="
-    );
-
-
-    setStatus(
-      "Erro ao conectar com o Mercado Livre.\n\n" +
-      safeString(error.message || error),
-      "error"
-    );
-
-
-    addRetryButton();
-
-  }
-
-}
-
-
-/* =========================================================
-   EXECUTAR
-   ========================================================= */
-
-connectMercadoLivre();
-
-</script>
+    conectar();
+  </script>
 
 </body>
 </html>
