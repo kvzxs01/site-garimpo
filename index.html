@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,44 +91,11 @@
     }
 
     /* =========================
-       BOTÃO MERCADO LIVRE
-    ========================= */
-
-    .ml-connect {
-      background: #ffd600;
-      color: #000;
-
-      border: 0;
-      border-radius: 9px;
-
-      padding: 10px 14px;
-
-      font-size: 12px;
-      font-weight: 900;
-
-      cursor: pointer;
-
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-    }
-
-    .ml-connect:hover {
-      background: #ffe44d;
-      transform: translateY(-1px);
-    }
-
-    .ml-connect:active {
-      transform: translateY(0);
-    }
-
-    /* =========================
        HERO
     ========================= */
 
     .hero {
       max-width: 1100px;
-
       margin: auto;
 
       padding: 145px 20px 55px;
@@ -248,7 +216,6 @@
 
     .cat:hover {
       border-color: #555;
-
       color: #fff;
     }
 
@@ -503,13 +470,16 @@
     ========================= */
 
     @media (max-width: 1000px) {
+
       .grid {
         grid-template-columns:
           repeat(3, 1fr);
       }
+
     }
 
     @media (max-width: 850px) {
+
       .grid {
         grid-template-columns:
           repeat(2, 1fr);
@@ -518,9 +488,11 @@
       .hero {
         padding-top: 130px;
       }
+
     }
 
     @media (max-width: 500px) {
+
       header {
         height: 64px;
 
@@ -540,12 +512,6 @@
 
       .brand small {
         font-size: 9px;
-      }
-
-      .ml-connect {
-        padding: 9px 10px;
-
-        font-size: 10px;
       }
 
       .hero {
@@ -602,9 +568,11 @@
 
         font-size: 10px;
       }
+
     }
   </style>
 </head>
+
 
 <body>
 
@@ -621,27 +589,18 @@
       </div>
 
       <div>
-        <b>Garimpo Online</b>
+
+        <b>
+          Garimpo Online
+        </b>
 
         <small>
           Achadinhos que valem a pena
         </small>
+
       </div>
 
     </div>
-
-
-    <!-- =========================
-         CONECTAR MERCADO LIVRE
-    ========================= -->
-
-    <button
-      id="mlConnectButton"
-      class="ml-connect"
-      type="button"
-    >
-      🛒 Conectar Mercado Livre
-    </button>
 
   </header>
 
@@ -657,10 +616,13 @@
     </div>
 
     <h1>
+
       Produtos que
+
       <span class="yellow">
         valem o clique.
       </span>
+
     </h1>
 
     <p>
@@ -721,239 +683,14 @@
   <script src="config.js"></script>
 
 
-  <!-- =========================
-       MERCADO LIVRE + SITE
-  ========================= -->
-
   <script>
 
     /* =====================================================
-       MERCADO LIVRE - CONFIGURAÇÃO
-    ===================================================== */
-
-    const ML_CLIENT_ID =
-      "3125220410520940";
-
-    const ML_REDIRECT_URI =
-      "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
-
-
-    /* =====================================================
-       GERAR STRING ALEATÓRIA PARA PKCE
-    ===================================================== */
-
-    function gerarStringAleatoria(tamanho = 64) {
-
-      const caracteres =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-        "abcdefghijklmnopqrstuvwxyz" +
-        "0123456789-._~";
-
-      const valores =
-        new Uint8Array(tamanho);
-
-      crypto.getRandomValues(valores);
-
-      let resultado = "";
-
-      for (const valor of valores) {
-
-        resultado +=
-          caracteres[
-            valor % caracteres.length
-          ];
-
-      }
-
-      return resultado;
-    }
-
-
-    /* =====================================================
-       GERAR CODE CHALLENGE PKCE
-    ===================================================== */
-
-    async function gerarCodeChallenge(
-      verifier
-    ) {
-
-      const encoder =
-        new TextEncoder();
-
-      const data =
-        encoder.encode(verifier);
-
-      const hash =
-        await crypto.subtle.digest(
-          "SHA-256",
-          data
-        );
-
-      const bytes =
-        new Uint8Array(hash);
-
-      let binary = "";
-
-      for (const byte of bytes) {
-
-        binary +=
-          String.fromCharCode(byte);
-
-      }
-
-      return btoa(binary)
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=/g, "");
-
-    }
-
-
-    /* =====================================================
-       INICIAR CONEXÃO COM MERCADO LIVRE
-    ===================================================== */
-
-    async function conectarMercadoLivre() {
-
-      try {
-
-        /*
-         * Gerar verifier.
-         *
-         * Esse valor NÃO vai para o Mercado Livre
-         * diretamente nesta etapa.
-         *
-         * Ele será guardado no navegador e usado
-         * depois quando o code voltar.
-         */
-
-        const codeVerifier =
-          gerarStringAleatoria(64);
-
-
-        /*
-         * Gerar challenge a partir do verifier.
-         */
-
-        const codeChallenge =
-          await gerarCodeChallenge(
-            codeVerifier
-          );
-
-
-        /*
-         * Gerar state de segurança.
-         */
-
-        const state =
-          gerarStringAleatoria(32);
-
-
-        /*
-         * Guardar os dados temporariamente.
-         */
-
-        sessionStorage.setItem(
-          "ml_code_verifier",
-          codeVerifier
-        );
-
-        sessionStorage.setItem(
-          "ml_oauth_state",
-          state
-        );
-
-
-        /*
-         * Montar URL de autorização.
-         */
-
-        const params =
-          new URLSearchParams({
-
-            response_type:
-              "code",
-
-            client_id:
-              ML_CLIENT_ID,
-
-            redirect_uri:
-              ML_REDIRECT_URI,
-
-            code_challenge:
-              codeChallenge,
-
-            code_challenge_method:
-              "S256",
-
-            state:
-              state
-
-          });
-
-
-        const authorizationUrl =
-          "https://auth.mercadolivre.com.br/authorization?" +
-          params.toString();
-
-
-        console.log(
-          "Iniciando autorização do Mercado Livre..."
-        );
-
-
-        /*
-         * Mandar usuário para o Mercado Livre.
-         */
-
-        window.location.href =
-          authorizationUrl;
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Erro ao iniciar OAuth:",
-          error
-        );
-
-        alert(
-          "Não foi possível iniciar a conexão com o Mercado Livre."
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       BOTÃO MERCADO LIVRE
-    ===================================================== */
-
-    const mlButton =
-      document.getElementById(
-        "mlConnectButton"
-      );
-
-    if (mlButton) {
-
-      mlButton.addEventListener(
-        "click",
-        conectarMercadoLivre
-      );
-
-    }
-
-
-    /* =====================================================
-       VERIFICAR CONFIGURAÇÃO DO SUPABASE
+       VERIFICAR CONFIGURAÇÃO
     ===================================================== */
 
     const grid =
-      document.getElementById(
-        "grid"
-      );
+      document.getElementById("grid");
 
 
     if (
@@ -1083,7 +820,7 @@
       try {
 
         /*
-         * Primeiro tenta somente produtos ativos.
+         * Busca os produtos ativos.
          */
 
         let result =
@@ -1103,11 +840,8 @@
 
 
         /*
-         * FALLBACK
-         *
-         * Caso a coluna active não exista
-         * ou a consulta apresente erro,
-         * busca sem o filtro.
+         * Caso a coluna active não exista,
+         * tenta novamente sem o filtro.
          */
 
         if (result.error) {
@@ -1144,12 +878,16 @@
 
           grid.innerHTML = `
             <div class="empty">
+
               Erro ao carregar produtos.
+
               <br><br>
+
               <small>
                 Abra o Console do navegador
                 (F12) para ver o erro do Supabase.
               </small>
+
             </div>
           `;
 
@@ -1206,7 +944,9 @@
         products
           .map(
             function (product) {
+
               return product.category;
+
             }
           )
           .filter(Boolean);
@@ -1343,20 +1083,44 @@
             function (product) {
 
               /*
-               * PREÇO
+               * =================================================
+               * PREÇO ATUAL
+               * =================================================
                *
-               * Prioridade:
+               * O sistema dá prioridade para current_price.
                *
-               * 1. current_price
-               * 2. price
+               * Se current_price estiver preenchido:
+               *     mostra current_price
+               *
+               * Se estiver vazio:
+               *     usa price
+               *
+               * Portanto o site está preparado para receber
+               * o preço atualizado pelo backend.
                */
 
-              const currentPrice =
+              let currentPrice;
+
+
+              if (
                 product.current_price !== null &&
                 product.current_price !== undefined &&
-                product.current_price !== ""
-                  ? product.current_price
-                  : product.price;
+                String(
+                  product.current_price
+                ).trim() !== ""
+              ) {
+
+                currentPrice =
+                  product.current_price;
+
+              }
+
+              else {
+
+                currentPrice =
+                  product.price;
+
+              }
 
 
               const formattedPrice =
@@ -1366,7 +1130,9 @@
 
 
               /*
+               * =================================================
                * LINK DE AFILIADO
+               * =================================================
                */
 
               const affiliateUrl =
@@ -1377,7 +1143,9 @@
 
 
               /*
+               * =================================================
                * IMAGEM
+               * =================================================
                */
 
               const imageUrl =
