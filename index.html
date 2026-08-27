@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
   <title>Garimpo Online</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -91,22 +89,36 @@
       margin-top: 3px;
     }
 
-    /* Gerenciar fica escondido para visitantes */
+    /* =========================
+       BOTÃO MERCADO LIVRE
+    ========================= */
 
-    .admin {
-      display: none;
+    .ml-connect {
+      background: #ffd600;
+      color: #000;
 
-      color: #bbb;
-
-      border: 1px solid #333;
-
-      padding: 9px 12px;
-
+      border: 0;
       border-radius: 9px;
 
-      text-decoration: none;
+      padding: 10px 14px;
 
       font-size: 12px;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .ml-connect:hover {
+      background: #ffe44d;
+      transform: translateY(-1px);
+    }
+
+    .ml-connect:active {
+      transform: translateY(0);
     }
 
     /* =========================
@@ -257,7 +269,8 @@
     .grid {
       display: grid;
 
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns:
+        repeat(4, 1fr);
 
       gap: 15px;
 
@@ -294,7 +307,9 @@
 
       border-color: #444;
 
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.35);
     }
 
     /* =========================
@@ -313,14 +328,14 @@
 
     .pic img {
       width: 100%;
-
       height: 100%;
 
       object-fit: cover;
 
       display: block;
 
-      transition: transform 0.3s ease;
+      transition:
+        transform 0.3s ease;
     }
 
     .card:hover .pic img {
@@ -488,27 +503,24 @@
     ========================= */
 
     @media (max-width: 1000px) {
-
       .grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns:
+          repeat(3, 1fr);
       }
-
     }
 
     @media (max-width: 850px) {
-
       .grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
 
       .hero {
         padding-top: 130px;
       }
-
     }
 
     @media (max-width: 500px) {
-
       header {
         height: 64px;
 
@@ -517,7 +529,6 @@
 
       .logo {
         width: 36px;
-
         height: 36px;
 
         font-size: 19px;
@@ -531,8 +542,15 @@
         font-size: 9px;
       }
 
+      .ml-connect {
+        padding: 9px 10px;
+
+        font-size: 10px;
+      }
+
       .hero {
-        padding: 115px 15px 40px;
+        padding:
+          115px 15px 40px;
       }
 
       .hero h1 {
@@ -542,11 +560,13 @@
       }
 
       .wrap {
-        padding: 0 15px 60px;
+        padding:
+          0 15px 60px;
       }
 
       .grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
 
         gap: 9px;
       }
@@ -582,9 +602,7 @@
 
         font-size: 10px;
       }
-
     }
-
   </style>
 </head>
 
@@ -603,29 +621,27 @@
       </div>
 
       <div>
-
         <b>Garimpo Online</b>
 
         <small>
           Achadinhos que valem a pena
         </small>
-
       </div>
 
     </div>
 
-    <!--
-      Escondido para visitantes.
-      O painel continua acessível em:
-      /admin.html
-    -->
 
-    <a
-      class="admin"
-      href="admin.html"
+    <!-- =========================
+         CONECTAR MERCADO LIVRE
+    ========================= -->
+
+    <button
+      id="mlConnectButton"
+      class="ml-connect"
+      type="button"
     >
-      ⚙ Gerenciar
-    </a>
+      🛒 Conectar Mercado Livre
+    </button>
 
   </header>
 
@@ -642,7 +658,6 @@
 
     <h1>
       Produtos que
-
       <span class="yellow">
         valem o clique.
       </span>
@@ -669,6 +684,7 @@
         class="search"
         type="text"
         placeholder="🔎 Procurar produto..."
+        autocomplete="off"
       >
 
       <div
@@ -705,14 +721,239 @@
   <script src="config.js"></script>
 
 
+  <!-- =========================
+       MERCADO LIVRE + SITE
+  ========================= -->
+
   <script>
 
-    /* =========================
-       VERIFICAR CONFIGURAÇÃO
-    ========================= */
+    /* =====================================================
+       MERCADO LIVRE - CONFIGURAÇÃO
+    ===================================================== */
+
+    const ML_CLIENT_ID =
+      "3125220410520940";
+
+    const ML_REDIRECT_URI =
+      "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
+
+
+    /* =====================================================
+       GERAR STRING ALEATÓRIA PARA PKCE
+    ===================================================== */
+
+    function gerarStringAleatoria(tamanho = 64) {
+
+      const caracteres =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+        "abcdefghijklmnopqrstuvwxyz" +
+        "0123456789-._~";
+
+      const valores =
+        new Uint8Array(tamanho);
+
+      crypto.getRandomValues(valores);
+
+      let resultado = "";
+
+      for (const valor of valores) {
+
+        resultado +=
+          caracteres[
+            valor % caracteres.length
+          ];
+
+      }
+
+      return resultado;
+    }
+
+
+    /* =====================================================
+       GERAR CODE CHALLENGE PKCE
+    ===================================================== */
+
+    async function gerarCodeChallenge(
+      verifier
+    ) {
+
+      const encoder =
+        new TextEncoder();
+
+      const data =
+        encoder.encode(verifier);
+
+      const hash =
+        await crypto.subtle.digest(
+          "SHA-256",
+          data
+        );
+
+      const bytes =
+        new Uint8Array(hash);
+
+      let binary = "";
+
+      for (const byte of bytes) {
+
+        binary +=
+          String.fromCharCode(byte);
+
+      }
+
+      return btoa(binary)
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=/g, "");
+
+    }
+
+
+    /* =====================================================
+       INICIAR CONEXÃO COM MERCADO LIVRE
+    ===================================================== */
+
+    async function conectarMercadoLivre() {
+
+      try {
+
+        /*
+         * Gerar verifier.
+         *
+         * Esse valor NÃO vai para o Mercado Livre
+         * diretamente nesta etapa.
+         *
+         * Ele será guardado no navegador e usado
+         * depois quando o code voltar.
+         */
+
+        const codeVerifier =
+          gerarStringAleatoria(64);
+
+
+        /*
+         * Gerar challenge a partir do verifier.
+         */
+
+        const codeChallenge =
+          await gerarCodeChallenge(
+            codeVerifier
+          );
+
+
+        /*
+         * Gerar state de segurança.
+         */
+
+        const state =
+          gerarStringAleatoria(32);
+
+
+        /*
+         * Guardar os dados temporariamente.
+         */
+
+        sessionStorage.setItem(
+          "ml_code_verifier",
+          codeVerifier
+        );
+
+        sessionStorage.setItem(
+          "ml_oauth_state",
+          state
+        );
+
+
+        /*
+         * Montar URL de autorização.
+         */
+
+        const params =
+          new URLSearchParams({
+
+            response_type:
+              "code",
+
+            client_id:
+              ML_CLIENT_ID,
+
+            redirect_uri:
+              ML_REDIRECT_URI,
+
+            code_challenge:
+              codeChallenge,
+
+            code_challenge_method:
+              "S256",
+
+            state:
+              state
+
+          });
+
+
+        const authorizationUrl =
+          "https://auth.mercadolivre.com.br/authorization?" +
+          params.toString();
+
+
+        console.log(
+          "Iniciando autorização do Mercado Livre..."
+        );
+
+
+        /*
+         * Mandar usuário para o Mercado Livre.
+         */
+
+        window.location.href =
+          authorizationUrl;
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Erro ao iniciar OAuth:",
+          error
+        );
+
+        alert(
+          "Não foi possível iniciar a conexão com o Mercado Livre."
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       BOTÃO MERCADO LIVRE
+    ===================================================== */
+
+    const mlButton =
+      document.getElementById(
+        "mlConnectButton"
+      );
+
+    if (mlButton) {
+
+      mlButton.addEventListener(
+        "click",
+        conectarMercadoLivre
+      );
+
+    }
+
+
+    /* =====================================================
+       VERIFICAR CONFIGURAÇÃO DO SUPABASE
+    ===================================================== */
 
     const grid =
-      document.getElementById("grid");
+      document.getElementById(
+        "grid"
+      );
 
 
     if (
@@ -737,9 +978,9 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        CONEXÃO SUPABASE
-    ========================= */
+    ===================================================== */
 
     const db =
       supabase.createClient(
@@ -753,39 +994,35 @@
     let selected = "Todos";
 
 
-    /* =========================
+    /* =====================================================
        PROTEÇÃO HTML
-    ========================= */
+    ===================================================== */
 
-    const esc = (s) => {
+    function esc(value) {
 
       return String(
-        s ?? ""
+        value ?? ""
       ).replace(
         /[&<>"']/g,
+        function (match) {
 
-        (m) => ({
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+          }[match];
 
-          "&": "&amp;",
-
-          "<": "&lt;",
-
-          ">": "&gt;",
-
-          '"': "&quot;",
-
-          "'": "&#039;"
-
-        }[m])
-
+        }
       );
 
-    };
+    }
 
 
-    /* =========================
+    /* =====================================================
        FORMATAR PREÇO
-    ========================= */
+    ===================================================== */
 
     function formatPrice(value) {
 
@@ -837,21 +1074,17 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        CARREGAR PRODUTOS
-    ========================= */
+    ===================================================== */
 
     async function load() {
 
       try {
 
         /*
-          Mantém o filtro de produtos ativos.
-
-          Se a coluna active estiver causando
-          erro, fazemos uma segunda consulta
-          sem esse filtro.
-        */
+         * Primeiro tenta somente produtos ativos.
+         */
 
         let result =
           await db
@@ -870,12 +1103,12 @@
 
 
         /*
-          FALLBACK
-
-          Se a primeira consulta falhar,
-          tenta buscar os produtos sem
-          utilizar a coluna active.
-        */
+         * FALLBACK
+         *
+         * Caso a coluna active não exista
+         * ou a consulta apresente erro,
+         * busca sem o filtro.
+         */
 
         if (result.error) {
 
@@ -883,7 +1116,6 @@
             "Consulta com active falhou. Tentando sem filtro active.",
             result.error
           );
-
 
           result =
             await db
@@ -899,9 +1131,9 @@
         }
 
 
-        /* =========================
+        /* =================================================
            VERIFICAR ERRO
-        ========================= */
+        ================================================= */
 
         if (result.error) {
 
@@ -910,22 +1142,15 @@
             result.error
           );
 
-
           grid.innerHTML = `
-
             <div class="empty">
-
               Erro ao carregar produtos.
-
               <br><br>
-
               <small>
                 Abra o Console do navegador
                 (F12) para ver o erro do Supabase.
               </small>
-
             </div>
-
           `;
 
           return;
@@ -933,9 +1158,9 @@
         }
 
 
-        /* =========================
+        /* =================================================
            PRODUTOS RECEBIDOS
-        ========================= */
+        ================================================= */
 
         products =
           result.data || [];
@@ -951,23 +1176,19 @@
 
         render();
 
+      }
 
-      } catch (error) {
+      catch (error) {
 
         console.error(
           "Erro inesperado:",
           error
         );
 
-
         grid.innerHTML = `
-
           <div class="empty">
-
             Erro ao carregar produtos.
-
           </div>
-
         `;
 
       }
@@ -975,88 +1196,80 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        CATEGORIAS
-    ========================= */
+    ===================================================== */
 
     function renderCats() {
 
+      const categorias =
+        products
+          .map(
+            function (product) {
+              return product.category;
+            }
+          )
+          .filter(Boolean);
+
+
       const cats = [
-
         "Todos",
-
-        ...new Set(
-
-          products
-
-            .map(
-              (p) =>
-                p.category
-            )
-
-            .filter(Boolean)
-
-        )
-
+        ...new Set(categorias)
       ];
 
 
       document
         .getElementById("cats")
         .innerHTML =
-
         cats
-
           .map(
+            function (category) {
 
-            (c) => `
+              return `
+                <button
+                  class="cat ${
+                    category === selected
+                      ? "active"
+                      : ""
+                  }"
+                  data-cat="${esc(category)}"
+                  type="button"
+                >
+                  ${esc(category)}
+                </button>
+              `;
 
-              <button
-                class="cat ${
-                  c === selected
-                    ? "active"
-                    : ""
-                }"
-                data-cat="${esc(c)}"
-              >
-                ${esc(c)}
-              </button>
-
-            `
-
+            }
           )
-
           .join("");
 
 
       document
         .querySelectorAll(".cat")
         .forEach(
+          function (button) {
 
-          (button) => {
+            button.onclick =
+              function () {
 
-            button.onclick = () => {
+                selected =
+                  button.dataset.cat;
 
-              selected =
-                button.dataset.cat;
+                renderCats();
 
+                render();
 
-              renderCats();
-
-              render();
-
-            };
+              };
 
           }
-
         );
 
     }
 
 
-    /* =========================
+    /* =====================================================
        RENDERIZAR PRODUTOS
-    ========================= */
+    ===================================================== */
 
     function render() {
 
@@ -1076,25 +1289,17 @@
 
       const list =
         products.filter(
-
-          (p) => {
+          function (product) {
 
             const matchesCategory =
-
               selected === "Todos" ||
-
-              p.category ===
-                selected;
+              product.category === selected;
 
 
             const text =
-
-              `${
-                p.name || ""
-              } ${
-                p.description || ""
+              `${product.name || ""} ${
+                product.description || ""
               }`
-
                 .toLowerCase();
 
 
@@ -1108,24 +1313,19 @@
             );
 
           }
-
         );
 
 
-      /* =========================
+      /* =================================================
          NENHUM PRODUTO
-      ========================= */
+      ================================================= */
 
       if (!list.length) {
 
         grid.innerHTML = `
-
           <div class="empty">
-
             Nenhum produto encontrado.
-
           </div>
-
         `;
 
         return;
@@ -1133,50 +1333,30 @@
       }
 
 
-      /* =========================
+      /* =================================================
          MONTAR CARDS
-      ========================= */
+      ================================================= */
 
       grid.innerHTML =
-
         list
-
           .map(
-
-            (p) => {
+            function (product) {
 
               /*
-                IMPORTANTE:
-
-                O Mercado Livre atualiza:
-
-                current_price
-
-                O preço cadastrado manualmente
-                continua em:
-
-                price
-
-                Portanto:
-
-                1. usa current_price quando
-                   existir;
-
-                2. caso ainda não exista,
-                   usa price.
-              */
+               * PREÇO
+               *
+               * Prioridade:
+               *
+               * 1. current_price
+               * 2. price
+               */
 
               const currentPrice =
-
-                p.current_price !== null &&
-
-                p.current_price !== undefined &&
-
-                p.current_price !== ""
-
-                  ? p.current_price
-
-                  : p.price;
+                product.current_price !== null &&
+                product.current_price !== undefined &&
+                product.current_price !== ""
+                  ? product.current_price
+                  : product.price;
 
 
               const formattedPrice =
@@ -1186,37 +1366,37 @@
 
 
               /*
-                LINK DE AFILIADO
-
-                A coluna que você já possui
-                é affiliate_url.
-
-                Não usamos ml_item_id
-                como link do botão.
-              */
+               * LINK DE AFILIADO
+               */
 
               const affiliateUrl =
-
                 String(
-                  p.affiliate_url ||
+                  product.affiliate_url ||
                   "#"
                 ).trim();
 
 
+              /*
+               * IMAGEM
+               */
+
+              const imageUrl =
+                String(
+                  product.image_url ||
+                  ""
+                ).trim();
+
+
               return `
-
                 <article class="card">
-
-                  <!-- IMAGEM -->
 
                   <div class="pic">
 
                     <img
-                      src="${esc(
-                        p.image_url
-                      )}"
+                      src="${esc(imageUrl)}"
                       alt="${esc(
-                        p.name
+                        product.name ||
+                        "Produto"
                       )}"
                       loading="lazy"
                     >
@@ -1224,52 +1404,38 @@
                   </div>
 
 
-                  <!-- INFORMAÇÕES -->
-
                   <div class="info">
 
                     <div class="catname">
-
                       ${esc(
-                        p.category ||
+                        product.category ||
                         "Achadinhos"
                       )}
-
                     </div>
 
 
                     <div class="name">
-
                       ${esc(
-                        p.name ||
+                        product.name ||
                         "Produto"
                       )}
-
                     </div>
 
 
                     <div class="desc">
-
                       ${esc(
-                        p.description ||
+                        product.description ||
                         "Confira a oferta."
                       )}
-
                     </div>
 
 
-                    <!-- PREÇO ATUAL -->
-
                     <div class="price">
-
                       ${esc(
                         formattedPrice
                       )}
-
                     </div>
 
-
-                    <!-- LINK DE AFILIADO -->
 
                     <a
                       class="buy"
@@ -1279,44 +1445,36 @@
                       target="_blank"
                       rel="nofollow sponsored noopener"
                     >
-
                       Ver oferta →
-
                     </a>
-
 
                   </div>
 
                 </article>
-
               `;
 
             }
-
           )
-
           .join("");
 
     }
 
 
-    /* =========================
+    /* =====================================================
        PESQUISA
-    ========================= */
+    ===================================================== */
 
     document
-      .getElementById(
-        "search"
-      )
+      .getElementById("search")
       .addEventListener(
         "input",
         render
       );
 
 
-    /* =========================
-       ESCONDER CABEÇALHO
-    ========================= */
+    /* =====================================================
+       ESCONDER CABEÇALHO AO ROLAR
+    ===================================================== */
 
     const header =
       document.getElementById(
@@ -1328,10 +1486,8 @@
 
 
     window.addEventListener(
-
       "scroll",
-
-      () => {
+      function () {
 
         const currentScrollY =
           window.scrollY;
@@ -1345,10 +1501,8 @@
             "hide"
           );
 
-
           lastScrollY =
             currentScrollY;
-
 
           return;
 
@@ -1366,7 +1520,6 @@
 
         }
 
-
         else if (
           currentScrollY <
           lastScrollY
@@ -1383,22 +1536,19 @@
           currentScrollY;
 
       },
-
       {
         passive: true
       }
-
     );
 
 
-    /* =========================
+    /* =====================================================
        INICIALIZAÇÃO
-    ========================= */
+    ===================================================== */
 
     load();
 
   </script>
 
 </body>
-
 </html>
