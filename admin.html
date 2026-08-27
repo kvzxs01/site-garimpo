@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -27,7 +28,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
     }
 
     .top a {
@@ -103,37 +103,11 @@
     }
 
     .ml-connect {
-      background: #ffd600;
-      color: #000;
+      background: #ffe600;
+      color: #222;
       width: 100%;
-      font-size: 14px;
-    }
-
-    .ml-disconnect {
-      background: #191919;
-      color: #ffaaaa;
-      border: 1px solid #522;
-    }
-
-    .ml-status {
-      border: 1px solid #292929;
-      background: #0c0c0c;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 12px;
-    }
-
-    .ml-status-title {
-      font-weight: 900;
-      margin-bottom: 6px;
-    }
-
-    .ml-connected {
-      color: #8cff8c;
-    }
-
-    .ml-disconnected {
-      color: #ff9b9b;
+      font-size: 15px;
+      padding: 14px;
     }
 
     .upload {
@@ -240,10 +214,6 @@
       .actions .btn {
         width: 100%;
       }
-
-      .top {
-        align-items: flex-start;
-      }
     }
   </style>
 </head>
@@ -257,9 +227,7 @@
     <a href="index.html">← Ver loja</a>
   </div>
 
-
   <!-- LOGIN -->
-
   <section id="loginBox" class="box">
 
     <h2>Entrar no painel</h2>
@@ -297,53 +265,22 @@
 
 
   <!-- PAINEL -->
-
   <section id="panel" class="hidden">
 
-
     <!-- MERCADO LIVRE -->
-
     <div class="box">
 
       <h2>Mercado Livre</h2>
 
       <p class="muted">
-        Conecte sua conta para permitir que o sistema
-        consulte e atualize informações dos produtos.
+        Conecte sua conta do Mercado Livre para permitir a atualização automática dos preços.
       </p>
-
-      <div id="mlStatus" class="ml-status">
-
-        <div
-          id="mlStatusTitle"
-          class="ml-status-title"
-        >
-          Verificando conexão...
-        </div>
-
-        <div
-          id="mlStatusText"
-          class="muted"
-        >
-          Aguarde...
-        </div>
-
-      </div>
-
 
       <button
         id="connectMlBtn"
         class="btn ml-connect"
       >
-        🔗 Conectar Mercado Livre
-      </button>
-
-
-      <button
-        id="disconnectMlBtn"
-        class="btn ml-disconnect hidden"
-      >
-        Desconectar Mercado Livre
+        🟡 Conectar Mercado Livre
       </button>
 
       <div
@@ -354,8 +291,7 @@
     </div>
 
 
-    <!-- PRODUTOS -->
-
+    <!-- FORMULÁRIO -->
     <div class="box">
 
       <button
@@ -388,15 +324,13 @@
       >
 
       <div class="msg">
-        Use o ID obtido em <b>Copiar ID</b>
-        na Central de Afiliados.
+        Use o ID obtido em <b>Copiar ID</b> na Central de Afiliados.
       </div>
 
 
       <label>Categoria</label>
 
       <select id="category">
-
         <option>Eletrônicos</option>
         <option>Casa</option>
         <option>Games</option>
@@ -404,7 +338,6 @@
         <option>Beleza</option>
         <option>Automotivo</option>
         <option>Achadinhos</option>
-
       </select>
 
 
@@ -453,14 +386,12 @@
         ＋ Publicar produto
       </button>
 
-
       <button
         id="cancelEditBtn"
         class="btn secondary hidden"
       >
         Cancelar edição
       </button>
-
 
       <div
         id="msg"
@@ -470,8 +401,7 @@
     </div>
 
 
-    <!-- PRODUTOS PUBLICADOS -->
-
+    <!-- PRODUTOS -->
     <div class="box">
 
       <h2>Produtos publicados</h2>
@@ -487,7 +417,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
-
 
 <script>
 
@@ -535,9 +464,6 @@ function showPanel() {
     .remove("hidden");
 
   loadProducts();
-
-  checkMercadoLivre();
-
 }
 
 
@@ -550,7 +476,6 @@ function showLogin() {
   $("loginBox")
     .classList
     .remove("hidden");
-
 }
 
 
@@ -568,7 +493,6 @@ async function init() {
       "msg error";
 
     return;
-
   }
 
 
@@ -603,7 +527,7 @@ async function init() {
 
 
 /* =====================================================
-   LOGIN BUTTON
+   LOGIN
 ===================================================== */
 
 $("loginBtn").onclick =
@@ -628,7 +552,6 @@ async () => {
       "msg error";
 
     return;
-
   }
 
 
@@ -659,7 +582,6 @@ async () => {
       "msg error";
 
     return;
-
   }
 
 
@@ -669,287 +591,130 @@ async () => {
   $("loginMsg").className =
     "msg success";
 
-
   showPanel();
 
 };
 
 
+/* =====================================================
+   LOGOUT
+===================================================== */
+
 $("logoutBtn").onclick =
-  () => db.auth.signOut();
+() => db.auth.signOut();
 
 
 /* =====================================================
-   MERCADO LIVRE
+   MERCADO LIVRE OAUTH + PKCE
 ===================================================== */
-
-/*
-  IMPORTANTE:
-
-  O client_id pode ficar no navegador.
-
-  O client_secret NÃO deve ficar aqui.
-
-  A troca do authorization code pelo token
-  acontece na Edge Function.
-*/
-
-
-const ML_CLIENT_ID =
-  "3125220410520940";
-
-
-const ML_REDIRECT_URI =
-  "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
-
-
-const ML_AUTH_URL =
-  "https://auth.mercadolivre.com.br/authorization";
-
-
-function setMlStatus(
-  connected,
-  text
-) {
-
-  const title =
-    $("mlStatusTitle");
-
-  const statusText =
-    $("mlStatusText");
-
-
-  if (connected) {
-
-    title.textContent =
-      "✓ Mercado Livre conectado";
-
-    title.className =
-      "ml-status-title ml-connected";
-
-    statusText.textContent =
-      text ||
-      "Sua conta do Mercado Livre está conectada.";
-
-    $("connectMlBtn")
-      .classList
-      .add("hidden");
-
-    $("disconnectMlBtn")
-      .classList
-      .remove("hidden");
-
-  } else {
-
-    title.textContent =
-      "Mercado Livre não conectado";
-
-    title.className =
-      "ml-status-title ml-disconnected";
-
-    statusText.textContent =
-      text ||
-      "Conecte sua conta para continuar.";
-
-    $("connectMlBtn")
-      .classList
-      .remove("hidden");
-
-    $("disconnectMlBtn")
-      .classList
-      .add("hidden");
-
-  }
-
-}
-
-
-/*
-  Verifica se existe uma conexão salva
-  para o usuário logado.
-
-  A tabela precisa ter os dados da conexão
-  protegidos pelo Supabase.
-*/
-
-async function checkMercadoLivre() {
-
-  setMlStatus(
-    false,
-    "Verificando conexão..."
-  );
-
-
-  try {
-
-    const {
-      data: {
-        session
-      }
-    } =
-      await db.auth.getSession();
-
-
-    if (!session) {
-
-      setMlStatus(
-        false,
-        "Faça login no painel."
-      );
-
-      return;
-
-    }
-
-
-    /*
-      Consulta a tabela de conexões.
-
-      Se sua tabela ainda não existir,
-      o sistema simplesmente mostrará
-      como desconectado.
-    */
-
-    const result =
-      await db
-        .from("mercadolivre_connections")
-        .select("id, user_id, nickname, expires_at")
-        .eq(
-          "user_id",
-          session.user.id
-        )
-        .maybeSingle();
-
-
-    if (result.error) {
-
-      console.warn(
-        "Tabela de conexão ainda não disponível:",
-        result.error
-      );
-
-      setMlStatus(
-        false,
-        "Nenhuma conta conectada."
-      );
-
-      return;
-
-    }
-
-
-    if (!result.data) {
-
-      setMlStatus(
-        false,
-        "Nenhuma conta do Mercado Livre conectada."
-      );
-
-      return;
-
-    }
-
-
-    const nickname =
-      result.data.nickname;
-
-
-    setMlStatus(
-      true,
-      nickname
-        ? "Conta conectada: " + nickname
-        : "Sua conta do Mercado Livre está conectada."
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Erro ao verificar Mercado Livre:",
-      error
-    );
-
-    setMlStatus(
-      false,
-      "Nenhuma conta conectada."
-    );
-
-  }
-
-}
-
-
-/*
-  INICIAR OAUTH
-*/
 
 $("connectMlBtn").onclick =
 async () => {
 
-  $("mlMsg").textContent =
-    "Preparando conexão...";
-
-  $("mlMsg").className =
-    "msg";
-
-
   try {
 
+    $("connectMlBtn").disabled =
+      true;
+
+    $("mlMsg").textContent =
+      "Preparando conexão...";
+
+    $("mlMsg").className =
+      "msg";
+
+
     /*
-      PKCE
-
-      Criamos o code_verifier no navegador
-      e guardamos temporariamente no sessionStorage.
-
-      O callback recupera esse valor para
-      completar a troca do código.
+      CLIENT ID DO MERCADO LIVRE
     */
+    const CLIENT_ID =
+      "3125220410520940";
 
-    const random =
+
+    /*
+      CALLBACK EXATO
+    */
+    const REDIRECT_URI =
+      "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
+
+
+    /*
+      GERAR STATE
+    */
+    const stateArray =
       new Uint8Array(32);
 
-    crypto.getRandomValues(random);
+    crypto.getRandomValues(
+      stateArray
+    );
 
-
-    const codeVerifier =
+    const state =
       Array.from(
-        random,
-        b =>
-          b.toString(16).padStart(2, "0")
+        stateArray,
+        b => b.toString(16).padStart(2, "0")
       ).join("");
 
 
+    /*
+      GERAR CODE VERIFIER
+    */
+    const verifierArray =
+      new Uint8Array(32);
+
+    crypto.getRandomValues(
+      verifierArray
+    );
+
+    const codeVerifier =
+      Array.from(
+        verifierArray,
+        b => b.toString(16).padStart(2, "0")
+      ).join("");
+
+
+    /*
+      TRANSFORMAR VERIFIER EM SHA-256
+      PARA O PKCE
+    */
     const encoder =
       new TextEncoder();
-
 
     const data =
       encoder.encode(
         codeVerifier
       );
 
-
-    const digest =
+    const hash =
       await crypto.subtle.digest(
         "SHA-256",
         data
       );
 
 
+    /*
+      BASE64URL
+    */
     const base64 =
       btoa(
         String.fromCharCode(
-          ...new Uint8Array(digest)
+          ...new Uint8Array(hash)
         )
-      );
+      )
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
 
 
     const codeChallenge =
-      base64
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=+$/, "");
+      base64;
 
+
+    /*
+      SALVAR NO SESSION STORAGE
+    */
+    sessionStorage.setItem(
+      "ml_oauth_state",
+      state
+    );
 
     sessionStorage.setItem(
       "ml_code_verifier",
@@ -957,139 +722,63 @@ async () => {
     );
 
 
-    sessionStorage.setItem(
-      "ml_oauth_started",
-      "1"
+    /*
+      CONFIRMAÇÃO NO CONSOLE
+    */
+    console.log(
+      "OAuth state salvo:",
+      state
+    );
+
+    console.log(
+      "OAuth code_verifier salvo."
     );
 
 
-    const params =
-      new URLSearchParams({
-
-        response_type:
-          "code",
-
-        client_id:
-          ML_CLIENT_ID,
-
-        redirect_uri:
-          ML_REDIRECT_URI,
-
-        code_challenge:
-          codeChallenge,
-
-        code_challenge_method:
-          "S256"
-
-      });
+    /*
+      URL DO MERCADO LIVRE
+    */
+    const authUrl =
+      "https://auth.mercadolivre.com.br/authorization" +
+      "?response_type=code" +
+      "&client_id=" +
+      encodeURIComponent(CLIENT_ID) +
+      "&redirect_uri=" +
+      encodeURIComponent(REDIRECT_URI) +
+      "&state=" +
+      encodeURIComponent(state) +
+      "&code_challenge=" +
+      encodeURIComponent(codeChallenge) +
+      "&code_challenge_method=S256";
 
 
+    $("mlMsg").textContent =
+      "Abrindo Mercado Livre...";
+
+
+    /*
+      REDIRECIONAR
+    */
     window.location.href =
-      ML_AUTH_URL +
-      "?" +
-      params.toString();
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    $("mlMsg").textContent =
-      "Erro ao iniciar conexão.";
-
-    $("mlMsg").className =
-      "msg error";
+      authUrl;
 
   }
 
-};
+  catch (error) {
 
-
-/*
-  DESCONECTAR
-*/
-
-$("disconnectMlBtn").onclick =
-async () => {
-
-  const confirmed =
-    confirm(
-      "Deseja desconectar sua conta do Mercado Livre?"
+    console.error(
+      error
     );
 
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  $("mlMsg").textContent =
-    "Desconectando...";
-
-
-  try {
-
-    const {
-      data: {
-        session
-      }
-    } =
-      await db.auth.getSession();
-
-
-    if (!session) {
-
-      $("mlMsg").textContent =
-        "Sessão expirada.";
-
-      $("mlMsg").className =
-        "msg error";
-
-      return;
-
-    }
-
-
-    const result =
-      await db
-        .from("mercadolivre_connections")
-        .delete()
-        .eq(
-          "user_id",
-          session.user.id
-        );
-
-
-    if (result.error) {
-
-      throw result.error;
-
-    }
-
-
-    setMlStatus(
-      false,
-      "Conta desconectada."
-    );
-
-
     $("mlMsg").textContent =
-      "Mercado Livre desconectado.";
-
-    $("mlMsg").className =
-      "msg success";
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    $("mlMsg").textContent =
-      "Erro ao desconectar: " +
+      "Erro ao iniciar conexão: " +
       error.message;
 
     $("mlMsg").className =
       "msg error";
+
+    $("connectMlBtn").disabled =
+      false;
 
   }
 
@@ -1107,10 +796,7 @@ $("file").onchange =
     $("file")
       .files[0];
 
-
-  if (!f) {
-    return;
-  }
+  if (!f) return;
 
 
   if (
@@ -1128,7 +814,6 @@ $("file").onchange =
       "";
 
     return;
-
   }
 
 
@@ -1149,14 +834,11 @@ function clearForm() {
 
   editingId = null;
 
-
   $("formTitle").textContent =
     "Adicionar produto";
 
-
   $("addBtn").textContent =
     "＋ Publicar produto";
-
 
   $("cancelEditBtn")
     .classList
@@ -1178,12 +860,10 @@ function clearForm() {
   $("file").value =
     "";
 
-
   $("preview")
     .style
     .display =
     "none";
-
 
   $("msg").textContent =
     "";
@@ -1202,29 +882,24 @@ async () => {
     $("file")
       .files[0];
 
-
   const name =
     $("name")
       .value
       .trim();
-
 
   const mercadolivre_id =
     $("mercadolivre_id")
       .value
       .trim();
 
-
   const link =
     $("affiliate")
       .value
       .trim();
 
-
   const category =
     $("category")
       .value;
-
 
   const description =
     $("description")
@@ -1245,7 +920,6 @@ async () => {
       "msg error";
 
     return;
-
   }
 
 
@@ -1258,13 +932,11 @@ async () => {
       "msg error";
 
     return;
-
   }
 
 
   $("addBtn").disabled =
     true;
-
 
   $("msg").textContent =
     editingId
@@ -1272,34 +944,11 @@ async () => {
       : "Enviando produto...";
 
 
-  let image_url =
-    null;
+  let image_url = null;
 
 
-  /*
-    UPLOAD DE NOVA IMAGEM
-  */
-
+  /* UPLOAD */
   if (f) {
-
-    if (
-      f.size >
-      5 * 1024 * 1024
-    ) {
-
-      $("msg").textContent =
-        "A imagem deve ter até 5 MB.";
-
-      $("msg").className =
-        "msg error";
-
-      $("addBtn").disabled =
-        false;
-
-      return;
-
-    }
-
 
     const ext =
       (
@@ -1308,7 +957,7 @@ async () => {
           .pop() ||
         "jpg"
       )
-        .toLowerCase();
+      .toLowerCase();
 
 
     const path =
@@ -1345,7 +994,6 @@ async () => {
         false;
 
       return;
-
     }
 
 
@@ -1359,10 +1007,7 @@ async () => {
   }
 
 
-  /*
-    EDITAR
-  */
-
+  /* EDITAR */
   if (editingId) {
 
     const updateData = {
@@ -1431,10 +1076,7 @@ async () => {
   }
 
 
-  /*
-    NOVO PRODUTO
-  */
-
+  /* NOVO */
   const ins =
     await db
       .from("products")
@@ -1490,16 +1132,15 @@ async () => {
 
 
 /* =====================================================
-   CANCELAR EDIÇÃO
+   CANCELAR
 ===================================================== */
 
 $("cancelEditBtn").onclick =
-() =>
-  clearForm();
+() => clearForm();
 
 
 /* =====================================================
-   EDITAR PRODUTO
+   EDITAR
 ===================================================== */
 
 window.editProduct =
@@ -1580,11 +1221,8 @@ async id => {
 
 
   window.scrollTo({
-
     top: 0,
-
     behavior: "smooth"
-
   });
 
 };
@@ -1633,7 +1271,7 @@ async id => {
 
 
 /* =====================================================
-   LISTA DE PRODUTOS
+   LISTA
 ===================================================== */
 
 async function loadProducts() {
@@ -1672,7 +1310,6 @@ async function loadProducts() {
 
             <img
               src="${esc(p.image_url)}"
-              alt="${esc(p.name)}"
             >
 
             <div class="item-main">
@@ -1682,13 +1319,11 @@ async function loadProducts() {
               </b>
 
               <div class="ml-id">
-
                 ID afiliado:
                 ${esc(
                   p.mercadolivre_id ||
                   "não informado"
                 )}
-
               </div>
 
               <div class="price">
@@ -1714,7 +1349,9 @@ async function loadProducts() {
                     ? "Atualizado em: " +
                       new Date(
                         p.price_updated_at
-                      ).toLocaleString("pt-BR")
+                      ).toLocaleString(
+                        "pt-BR"
+                      )
 
                     : ""
                 }
@@ -1758,7 +1395,7 @@ async function loadProducts() {
 
 
 /* =====================================================
-   INICIALIZAÇÃO
+   INICIAR
 ===================================================== */
 
 init();

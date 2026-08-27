@@ -1,159 +1,271 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width,initial-scale=1.0"
   >
 
-  <title>Conectando ao Mercado Livre | Garimpo Online</title>
+  <title>
+    Conectando ao Mercado Livre | Garimpo Online
+  </title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
+
       margin: 0;
+
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       background: #f5f5f5;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       color: #333;
+
     }
 
     .container {
+
       width: 100%;
+
       max-width: 460px;
+
       padding: 20px;
+
     }
 
     .card {
+
       background: white;
+
       border-radius: 22px;
+
       padding: 40px 30px;
+
       text-align: center;
+
       box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.08);
+        0 10px 35px
+        rgba(0, 0, 0, 0.08);
+
     }
 
     .logo {
+
       width: 76px;
+
       height: 76px;
+
       margin: 0 auto 22px;
+
       border-radius: 50%;
+
       background: #ffe600;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 30px;
+
       font-weight: 900;
+
       color: #333;
+
     }
 
     h1 {
+
       margin: 0 0 12px;
+
       font-size: 25px;
+
       color: #222;
+
     }
 
     .descricao {
+
       margin: 0 auto 28px;
+
       max-width: 350px;
+
       color: #777;
+
       line-height: 1.5;
+
       font-size: 15px;
+
     }
 
     .loading {
+
       width: 48px;
+
       height: 48px;
+
       margin: 10px auto 24px;
-      border: 5px solid #eee;
+
+      border:
+        5px solid #eee;
+
       border-top-color: #3483fa;
+
       border-radius: 50%;
-      animation: girar 0.9s linear infinite;
+
+      animation:
+        girar 0.9s linear infinite;
+
     }
 
     @keyframes girar {
+
       to {
         transform: rotate(360deg);
       }
+
     }
 
     .status {
+
       font-size: 16px;
+
       font-weight: 600;
+
       color: #333;
+
     }
 
     .sucesso,
     .erro {
+
       display: none;
+
     }
 
     .icone {
+
       width: 64px;
+
       height: 64px;
+
       margin: 0 auto 22px;
+
       border-radius: 50%;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 34px;
+
       font-weight: bold;
+
     }
 
     .icone-sucesso {
+
       background: #e8f7ed;
+
       color: #20a050;
+
     }
 
     .icone-erro {
+
       background: #fdeaea;
+
       color: #d93025;
+
     }
 
     .erro-texto {
+
       color: #d93025;
+
       background: #fff1f1;
+
       border-radius: 10px;
+
       padding: 12px;
+
       margin: 18px 0;
+
       font-size: 14px;
+
       word-break: break-word;
+
     }
 
     .botao {
+
       display: inline-block;
+
       margin-top: 18px;
+
       padding: 13px 24px;
+
       border-radius: 10px;
+
       background: #3483fa;
+
       color: white;
+
       text-decoration: none;
+
       font-size: 15px;
+
       font-weight: bold;
+
     }
 
     .rodape {
+
       margin-top: 25px;
+
       font-size: 12px;
+
       color: #999;
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
   <div class="container">
+
     <div class="card">
 
+
       <!-- CONECTANDO -->
+
       <div id="conectando">
 
         <div class="logo">
@@ -182,12 +294,15 @@
 
 
       <!-- SUCESSO -->
+
       <div
         id="sucesso"
         class="sucesso"
       >
 
-        <div class="icone icone-sucesso">
+        <div
+          class="icone icone-sucesso"
+        >
           ✓
         </div>
 
@@ -211,12 +326,15 @@
 
 
       <!-- ERRO -->
+
       <div
         id="erro"
         class="erro"
       >
 
-        <div class="icone icone-erro">
+        <div
+          class="icone icone-erro"
+        >
           !
         </div>
 
@@ -251,386 +369,363 @@
       </div>
 
     </div>
+
   </div>
 
 
-  <script>
+<script>
 
-    /*
-     * =========================================
-     * CONFIGURAÇÃO
-     * =========================================
-     */
-
-    const SUPABASE_URL =
-      "https://xokyvzjeoivmggsmkjjs.supabase.co";
-
-    const EDGE_FUNCTION =
-      SUPABASE_URL +
-      "/functions/v1/mercadolivre-auth";
-
-    const REDIRECT_URI =
-      "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
+const SUPABASE_URL =
+  "https://xokyvzjeoivmggsmkjjs.supabase.co";
 
 
-    /*
-     * =========================================
-     * ELEMENTOS
-     * =========================================
-     */
-
-    const conectando =
-      document.getElementById("conectando");
-
-    const sucesso =
-      document.getElementById("sucesso");
-
-    const erro =
-      document.getElementById("erro");
-
-    const status =
-      document.getElementById("status");
-
-    const erroTexto =
-      document.getElementById("erroTexto");
+const EDGE_FUNCTION =
+  SUPABASE_URL +
+  "/functions/v1/mercadolivre-auth";
 
 
-    /*
-     * =========================================
-     * MOSTRAR ERRO
-     * =========================================
-     */
+const REDIRECT_URI =
+  "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
 
-    function mostrarErro(mensagem) {
 
-      conectando.style.display = "none";
+const conectando =
+  document.getElementById(
+    "conectando"
+  );
 
-      sucesso.style.display = "none";
 
-      erro.style.display = "block";
+const sucesso =
+  document.getElementById(
+    "sucesso"
+  );
 
-      erroTexto.textContent =
-        mensagem ||
-        "Erro desconhecido.";
+
+const erro =
+  document.getElementById(
+    "erro"
+  );
+
+
+const status =
+  document.getElementById(
+    "status"
+  );
+
+
+const erroTexto =
+  document.getElementById(
+    "erroTexto"
+  );
+
+
+function mostrarErro(
+  mensagem
+) {
+
+  conectando.style.display =
+    "none";
+
+  sucesso.style.display =
+    "none";
+
+  erro.style.display =
+    "block";
+
+  erroTexto.textContent =
+    mensagem ||
+    "Erro desconhecido.";
+
+}
+
+
+function mostrarSucesso() {
+
+  conectando.style.display =
+    "none";
+
+  erro.style.display =
+    "none";
+
+  sucesso.style.display =
+    "block";
+
+}
+
+
+/* =====================================================
+   CONECTAR
+===================================================== */
+
+async function conectar() {
+
+  try {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const code =
+      params.get("code");
+
+
+    const state =
+      params.get("state");
+
+
+    const error =
+      params.get("error");
+
+
+    const errorDescription =
+      params.get(
+        "error_description"
+      );
+
+
+    /* ERRO DO ML */
+
+    if (error) {
+
+      throw new Error(
+        errorDescription ||
+        error
+      );
+
+    }
+
+
+    /* PRECISA TER CODE */
+
+    if (!code) {
+
+      throw new Error(
+        "Nenhum código de autorização foi recebido."
+      );
+
     }
 
 
     /*
-     * =========================================
-     * MOSTRAR SUCESSO
-     * =========================================
-     */
+      RECUPERAR STATE
+    */
 
-    function mostrarSucesso() {
+    const stateOriginal =
+      sessionStorage.getItem(
+        "ml_oauth_state"
+      );
 
-      conectando.style.display = "none";
 
-      erro.style.display = "none";
+    /*
+      RECUPERAR CODE VERIFIER
+    */
 
-      sucesso.style.display = "block";
+    const codeVerifier =
+      sessionStorage.getItem(
+        "ml_code_verifier"
+      );
+
+
+    console.log(
+      "State recebido:",
+      state
+    );
+
+    console.log(
+      "State salvo:",
+      stateOriginal
+    );
+
+    console.log(
+      "Code recebido:",
+      !!code
+    );
+
+    console.log(
+      "Code verifier encontrado:",
+      !!codeVerifier
+    );
+
+
+    /*
+      VALIDAR STATE
+    */
+
+    if (
+      !state ||
+      !stateOriginal ||
+      state !== stateOriginal
+    ) {
+
+      throw new Error(
+        "A validação de segurança da autorização falhou. Inicie a conexão novamente pelo painel."
+      );
+
     }
 
 
     /*
-     * =========================================
-     * CONECTAR
-     * =========================================
-     */
+      VALIDAR CODE VERIFIER
+    */
 
-    async function conectar() {
+    if (!codeVerifier) {
 
-      try {
+      throw new Error(
+        "O code_verifier não foi encontrado neste navegador. Volte ao painel e inicie uma nova conexão."
+      );
 
-        const params =
-          new URLSearchParams(
-            window.location.search
-          );
+    }
 
 
-        /*
-         * CODE
-         */
-
-        const code =
-          params.get("code");
+    status.textContent =
+      "Código recebido. Finalizando conexão...";
 
 
-        /*
-         * STATE DEVOLVIDO PELO MERCADO LIVRE
-         */
+    /*
+      ENVIAR PARA EDGE FUNCTION
+    */
 
-        const state =
-          params.get("state");
+    const resposta =
+      await fetch(
+        EDGE_FUNCTION,
+        {
 
+          method:
+            "POST",
 
-        /*
-         * ERRO DO MERCADO LIVRE
-         */
+          headers: {
 
-        const oauthError =
-          params.get("error");
+            "Content-Type":
+              "application/json"
 
-        const errorDescription =
-          params.get("error_description");
+          },
 
+          body:
+            JSON.stringify({
 
-        /*
-         * =====================================
-         * VERIFICAR ERRO DO ML
-         * =====================================
-         */
+              code:
+                code,
 
-        if (oauthError) {
+              code_verifier:
+                codeVerifier,
 
-          throw new Error(
-            errorDescription ||
-            oauthError
-          );
+              redirect_uri:
+                REDIRECT_URI
+
+            })
+
         }
+      );
 
 
-        /*
-         * =====================================
-         * PRECISA TER CODE
-         * =====================================
-         */
-
-        if (!code) {
-
-          throw new Error(
-            "Nenhum código de autorização foi recebido."
-          );
-        }
+    let dados;
 
 
-        /*
-         * =====================================
-         * RECUPERAR CODE VERIFIER
-         * =====================================
-         *
-         * O verifier foi criado pelo Admin
-         * antes de mandar para o Mercado Livre.
-         */
+    try {
 
-        const codeVerifier =
-          sessionStorage.getItem(
-            "ml_code_verifier"
-          );
+      dados =
+        await resposta.json();
 
+    }
 
-        /*
-         * =====================================
-         * VERIFICAR CODE VERIFIER
-         * =====================================
-         */
+    catch {
 
-        if (!codeVerifier) {
+      dados = {
 
-          throw new Error(
-            "O code_verifier não foi encontrado neste navegador. Volte ao painel e inicie uma nova conexão."
-          );
-        }
+        success:
+          false,
+
+        error:
+          "Resposta inválida da Edge Function."
+
+      };
+
+    }
 
 
-        /*
-         * =====================================
-         * STATE
-         * =====================================
-         *
-         * O state é usado como proteção
-         * adicional quando estiver disponível.
-         *
-         * NÃO vamos bloquear a troca do token
-         * somente porque o state não voltou.
-         */
-
-        const stateOriginal =
-          sessionStorage.getItem(
-            "ml_oauth_state"
-          );
+    console.log(
+      "Status da Edge Function:",
+      resposta.status
+    );
 
 
-        /*
-         * Se os dois existirem, precisam
-         * ser iguais.
-         */
-
-        if (
-          state &&
-          stateOriginal &&
-          state !== stateOriginal
-        ) {
-
-          throw new Error(
-            "A validação de segurança da autorização falhou. Inicie uma nova conexão pelo painel."
-          );
-        }
+    console.log(
+      "Resposta da Edge Function:",
+      dados
+    );
 
 
-        /*
-         * =====================================
-         * STATUS
-         * =====================================
-         */
+    /*
+      VERIFICAR RESPOSTA
+    */
 
-        status.textContent =
-          "Código recebido. Finalizando conexão...";
+    if (
+      !resposta.ok ||
+      !dados.success
+    ) {
 
+      throw new Error(
+        dados.error ||
+        "Erro ao trocar o código por token."
+      );
 
-        /*
-         * =====================================
-         * ENVIAR PARA EDGE FUNCTION
-         * =====================================
-         */
-
-        const resposta =
-          await fetch(
-            EDGE_FUNCTION,
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body: JSON.stringify({
-
-                code:
-                  code,
-
-                code_verifier:
-                  codeVerifier,
-
-                redirect_uri:
-                  REDIRECT_URI
-
-              })
-            }
-          );
-
-
-        /*
-         * =====================================
-         * LER RESPOSTA
-         * =====================================
-         */
-
-        let dados;
-
-        try {
-
-          dados =
-            await resposta.json();
-
-        } catch {
-
-          dados = {
-            success: false,
-            error:
-              "Resposta inválida da Edge Function."
-          };
-        }
-
-
-        /*
-         * =====================================
-         * DEBUG
-         * =====================================
-         */
-
-        console.log(
-          "Status da Edge Function:",
-          resposta.status
-        );
-
-        console.log(
-          "Resposta da Edge Function:",
-          dados
-        );
-
-
-        /*
-         * =====================================
-         * VERIFICAR RESPOSTA
-         * =====================================
-         */
-
-        if (
-          !resposta.ok ||
-          !dados.success
-        ) {
-
-          throw new Error(
-            dados.error ||
-            dados.message ||
-            "Erro ao trocar o código por token."
-          );
-        }
-
-
-        /*
-         * =====================================
-         * LIMPAR PKCE
-         * =====================================
-         */
-
-        sessionStorage.removeItem(
-          "ml_code_verifier"
-        );
-
-        sessionStorage.removeItem(
-          "ml_oauth_state"
-        );
-
-
-        /*
-         * =====================================
-         * LIMPAR CODE DA URL
-         * =====================================
-         */
-
-        window.history.replaceState(
-          {},
-          document.title,
-          REDIRECT_URI
-        );
-
-
-        /*
-         * =====================================
-         * SUCESSO
-         * =====================================
-         */
-
-        mostrarSucesso();
-
-      }
-
-      catch (e) {
-
-        console.error(
-          "Erro OAuth:",
-          e
-        );
-
-        mostrarErro(
-          e.message ||
-          "Erro ao conectar com o Mercado Livre."
-        );
-      }
     }
 
 
     /*
-     * =========================================
-     * INICIAR
-     * =========================================
-     */
+      LIMPAR PKCE
+    */
 
-    conectar();
+    sessionStorage.removeItem(
+      "ml_code_verifier"
+    );
 
-  </script>
+
+    sessionStorage.removeItem(
+      "ml_oauth_state"
+    );
+
+
+    /*
+      REMOVER CODE DA URL
+    */
+
+    window.history.replaceState(
+      {},
+      document.title,
+      REDIRECT_URI
+    );
+
+
+    /*
+      SUCESSO
+    */
+
+    mostrarSucesso();
+
+  }
+
+  catch (e) {
+
+    console.error(
+      "Erro OAuth:",
+      e
+    );
+
+    mostrarErro(
+      e.message ||
+      "Erro ao conectar com o Mercado Livre."
+    );
+
+  }
+
+}
+
+
+conectar();
+
+</script>
 
 </body>
 </html>
