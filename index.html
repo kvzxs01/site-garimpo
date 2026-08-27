@@ -27,7 +27,6 @@
       border-bottom: 1px solid #292929;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       padding: 0 6%;
       position: fixed;
       top: 0;
@@ -70,11 +69,6 @@
       color: #888;
       font-size: 10px;
       margin-top: 3px;
-    }
-
-    /* Gerenciar fica escondido no site público */
-    .admin {
-      display: none;
     }
 
     .hero {
@@ -238,8 +232,8 @@
       margin: 0;
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      line-clamp: 3;
       -webkit-line-clamp: 3;
+      line-clamp: 3;
       overflow: hidden;
       min-height: 50px;
     }
@@ -375,18 +369,20 @@
   <header id="header">
 
     <div class="brand">
-      <div class="logo">G</div>
+
+      <div class="logo">
+        G
+      </div>
 
       <div>
         <b>Garimpo Online</b>
-        <small>Achadinhos que valem a pena</small>
-      </div>
-    </div>
 
-    <!-- Escondido no site público -->
-    <a class="admin" href="admin.html">
-      ⚙ Gerenciar
-    </a>
+        <small>
+          Achadinhos que valem a pena
+        </small>
+      </div>
+
+    </div>
 
   </header>
 
@@ -453,9 +449,8 @@
     let selected = "Todos";
 
     function esc(value) {
-      return String(value ?? "").replace(
-        /[&<>"']/g,
-        function(match) {
+      return String(value ?? "")
+        .replace(/[&<>"']/g, function(match) {
           return {
             "&": "&amp;",
             "<": "&lt;",
@@ -463,8 +458,7 @@
             '"': "&quot;",
             "'": "&#039;"
           }[match];
-        }
-      );
+        });
     }
 
     function formatPrice(value) {
@@ -520,9 +514,7 @@
 
     function renderCats() {
       const categories = products
-        .map(function(product) {
-          return product.category;
-        })
+        .map(product => product.category)
         .filter(Boolean);
 
       const cats = [
@@ -531,21 +523,19 @@
       ];
 
       document.getElementById("cats").innerHTML =
-        cats.map(function(category) {
-          return `
-            <button
-              class="cat ${category === selected ? "active" : ""}"
-              data-cat="${esc(category)}"
-              type="button"
-            >
-              ${esc(category)}
-            </button>
-          `;
-        }).join("");
+        cats.map(category => `
+          <button
+            class="cat ${category === selected ? "active" : ""}"
+            data-cat="${esc(category)}"
+            type="button"
+          >
+            ${esc(category)}
+          </button>
+        `).join("");
 
       document
         .querySelectorAll(".cat")
-        .forEach(function(button) {
+        .forEach(button => {
           button.onclick = function() {
             selected = button.dataset.cat;
             renderCats();
@@ -555,14 +545,13 @@
     }
 
     function render() {
-      const searchInput =
-        document.getElementById("search");
-
-      const q = searchInput.value
+      const q = document
+        .getElementById("search")
+        .value
         .toLowerCase()
         .trim();
 
-      const list = products.filter(function(product) {
+      const list = products.filter(product => {
 
         const categoryOK =
           selected === "Todos" ||
@@ -573,7 +562,10 @@
           ${product.description || ""}
         `.toLowerCase();
 
-        return categoryOK && text.includes(q);
+        return (
+          categoryOK &&
+          text.includes(q)
+        );
       });
 
       const grid =
@@ -590,7 +582,7 @@
       }
 
       grid.innerHTML = list
-        .map(function(product) {
+        .map(product => {
 
           const currentPrice =
             product.current_price !== null &&
@@ -598,11 +590,6 @@
             String(product.current_price).trim() !== ""
               ? product.current_price
               : product.price;
-
-          const link =
-            product.affiliate_url ||
-            product.mercadolivre_url ||
-            "#";
 
           return `
             <article class="card">
@@ -646,7 +633,11 @@
 
                 <a
                   class="buy"
-                  href="${esc(link)}"
+                  href="${esc(
+                    product.affiliate_url ||
+                    product.mercadolivre_url ||
+                    "#"
+                  )}"
                   target="_blank"
                   rel="nofollow sponsored noopener"
                 >
