@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Garimpo Online</title>
 
   <style>
@@ -71,18 +72,9 @@
       margin-top: 3px;
     }
 
+    /* Gerenciar fica escondido no site público */
     .admin {
-      color: #aaa;
-      text-decoration: none;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 9px 12px;
-      font-size: 12px;
-    }
-
-    .admin:hover {
-      color: #fff;
-      border-color: #555;
+      display: none;
     }
 
     .hero {
@@ -246,8 +238,8 @@
       margin: 0;
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
       line-clamp: 3;
+      -webkit-line-clamp: 3;
       overflow: hidden;
       min-height: 50px;
     }
@@ -374,10 +366,6 @@
         padding: 10px 6px;
         font-size: 10px;
       }
-
-      .admin {
-        display: none;
-      }
     }
   </style>
 </head>
@@ -387,25 +375,16 @@
   <header id="header">
 
     <div class="brand">
-
-      <div class="logo">
-        G
-      </div>
+      <div class="logo">G</div>
 
       <div>
         <b>Garimpo Online</b>
-
-        <small>
-          Achadinhos que valem a pena
-        </small>
+        <small>Achadinhos que valem a pena</small>
       </div>
-
     </div>
 
-    <a
-      class="admin"
-      href="admin.html"
-    >
+    <!-- Escondido no site público -->
+    <a class="admin" href="admin.html">
       ⚙ Gerenciar
     </a>
 
@@ -461,112 +440,45 @@
     Garimpo Online · Links de afiliados podem gerar comissão.
   </footer>
 
-
-  <!-- SUPABASE -->
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script src="config.js"></script>
 
-
   <script>
-
-    /* =====================================================
-       VERIFICAR CONFIGURAÇÃO
-    ===================================================== */
-
-    const grid =
-      document.getElementById("grid");
-
-    if (
-      typeof SUPABASE_URL === "undefined" ||
-      typeof SUPABASE_ANON_KEY === "undefined"
-    ) {
-
-      console.error(
-        "config.js não carregou SUPABASE_URL ou SUPABASE_ANON_KEY."
-      );
-
-      grid.innerHTML = `
-        <div class="empty">
-          Erro de configuração do Supabase.
-          <br><br>
-          Verifique o arquivo config.js.
-        </div>
-      `;
-
-      throw new Error(
-        "SUPABASE_URL ou SUPABASE_ANON_KEY não encontrados."
-      );
-    }
-
-
-    /* =====================================================
-       CONEXÃO SUPABASE
-    ===================================================== */
-
-    const db =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-      );
-
+    const db = supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
 
     let products = [];
-
     let selected = "Todos";
 
-
-    /* =====================================================
-       PROTEÇÃO HTML
-    ===================================================== */
-
     function esc(value) {
-
-      return String(value ?? "")
-        .replace(
-          /[&<>"']/g,
-          function(match) {
-
-            return {
-              "&": "&amp;",
-              "<": "&lt;",
-              ">": "&gt;",
-              '"': "&quot;",
-              "'": "&#039;"
-            }[match];
-
-          }
-        );
-
+      return String(value ?? "").replace(
+        /[&<>"']/g,
+        function(match) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+          }[match];
+        }
+      );
     }
 
-
-    /* =====================================================
-       FORMATAR PREÇO
-    ===================================================== */
-
     function formatPrice(value) {
-
       if (
         value === null ||
         value === undefined ||
         value === ""
       ) {
-
         return "Consultar preço";
-
       }
 
+      const number = Number(value);
 
-      const number =
-        Number(value);
-
-
-      if (
-        Number.isFinite(number)
-      ) {
-
+      if (Number.isFinite(number)) {
         return number.toLocaleString(
           "pt-BR",
           {
@@ -574,209 +486,100 @@
             currency: "BRL"
           }
         );
-
       }
-
 
       return String(value);
-
     }
 
-
-    /* =====================================================
-       CARREGAR PRODUTOS
-    ===================================================== */
-
     async function load() {
+      const result = await db
+        .from("products")
+        .select("*")
+        .eq("active", true)
+        .order("created_at", {
+          ascending: false
+        });
 
-      try {
+      if (result.error) {
+        console.error(result.error);
 
-        const result =
-          await db
-            .from("products")
-            .select("*")
-            .eq("active", true)
-            .order(
-              "created_at",
-              {
-                ascending: false
-              }
-            );
-
-
-        if (result.error) {
-
-          console.error(
-            "Erro ao carregar produtos:",
-            result.error
-          );
-
-          grid.innerHTML = `
-            <div class="empty">
-              Erro ao carregar produtos.
-              <br><br>
-              <small>
-                Abra o Console (F12) para ver o erro.
-              </small>
-            </div>
-          `;
-
-          return;
-
-        }
-
-
-        products =
-          result.data || [];
-
-
-        console.log(
-          "Produtos carregados:",
-          products
-        );
-
-
-        renderCats();
-
-        render();
-
-      }
-      catch (error) {
-
-        console.error(
-          "Erro inesperado:",
-          error
-        );
-
-        grid.innerHTML = `
+        document.getElementById("grid").innerHTML = `
           <div class="empty">
             Erro ao carregar produtos.
           </div>
         `;
 
+        return;
       }
 
+      products = result.data || [];
+
+      renderCats();
+      render();
     }
 
-
-    /* =====================================================
-       CATEGORIAS
-    ===================================================== */
-
     function renderCats() {
-
-      const categories =
-        products
-          .map(
-            product => product.category
-          )
-          .filter(Boolean);
-
+      const categories = products
+        .map(function(product) {
+          return product.category;
+        })
+        .filter(Boolean);
 
       const cats = [
         "Todos",
         ...new Set(categories)
       ];
 
-
-      document.getElementById(
-        "cats"
-      ).innerHTML =
-
-        cats
-          .map(
-            category => `
-
-              <button
-                class="cat ${
-                  category === selected
-                    ? "active"
-                    : ""
-                }"
-                data-cat="${esc(category)}"
-                type="button"
-              >
-                ${esc(category)}
-              </button>
-
-            `
-          )
-          .join("");
-
+      document.getElementById("cats").innerHTML =
+        cats.map(function(category) {
+          return `
+            <button
+              class="cat ${category === selected ? "active" : ""}"
+              data-cat="${esc(category)}"
+              type="button"
+            >
+              ${esc(category)}
+            </button>
+          `;
+        }).join("");
 
       document
         .querySelectorAll(".cat")
-        .forEach(
-          button => {
-
-            button.onclick =
-              function() {
-
-                selected =
-                  button.dataset.cat;
-
-                renderCats();
-
-                render();
-
-              };
-
-          }
-        );
-
+        .forEach(function(button) {
+          button.onclick = function() {
+            selected = button.dataset.cat;
+            renderCats();
+            render();
+          };
+        });
     }
 
-
-    /* =====================================================
-       RENDERIZAR PRODUTOS
-    ===================================================== */
-
     function render() {
+      const searchInput =
+        document.getElementById("search");
 
-      const search =
-        document.getElementById(
-          "search"
-        );
+      const q = searchInput.value
+        .toLowerCase()
+        .trim();
 
+      const list = products.filter(function(product) {
 
-      const q =
-        search.value
-          .toLowerCase()
-          .trim();
+        const categoryOK =
+          selected === "Todos" ||
+          product.category === selected;
 
+        const text = `
+          ${product.name || ""}
+          ${product.description || ""}
+        `.toLowerCase();
 
-      const list =
-        products.filter(
-          product => {
+        return categoryOK && text.includes(q);
+      });
 
-            const categoryOK =
-              selected === "Todos" ||
-              product.category === selected;
-
-
-            const text =
-              `
-                ${product.name || ""}
-                ${product.description || ""}
-              `
-                .toLowerCase();
-
-
-            const searchOK =
-              text.includes(q);
-
-
-            return (
-              categoryOK &&
-              searchOK
-            );
-
-          }
-        );
-
+      const grid =
+        document.getElementById("grid");
 
       if (!list.length) {
-
         grid.innerHTML = `
           <div class="empty">
             Nenhum produto encontrado.
@@ -784,126 +587,79 @@
         `;
 
         return;
-
       }
 
+      grid.innerHTML = list
+        .map(function(product) {
 
-      grid.innerHTML =
+          const currentPrice =
+            product.current_price !== null &&
+            product.current_price !== undefined &&
+            String(product.current_price).trim() !== ""
+              ? product.current_price
+              : product.price;
 
-        list
-          .map(
-            product => {
+          const link =
+            product.affiliate_url ||
+            product.mercadolivre_url ||
+            "#";
 
-              /*
-                Se current_price existir,
-                usa o preço atualizado.
+          return `
+            <article class="card">
 
-                Caso contrário,
-                usa price.
-              */
+              <div class="pic">
+                <img
+                  src="${esc(product.image_url || "")}"
+                  alt="${esc(product.name || "Produto")}"
+                  loading="lazy"
+                >
+              </div>
 
-              const currentPrice =
-                product.current_price !== null &&
-                product.current_price !== undefined &&
-                String(
-                  product.current_price
-                ).trim() !== ""
+              <div class="info">
 
-                  ? product.current_price
+                <div class="catname">
+                  ${esc(
+                    product.category ||
+                    "Achadinhos"
+                  )}
+                </div>
 
-                  : product.price;
+                <div class="name">
+                  ${esc(
+                    product.name ||
+                    "Produto"
+                  )}
+                </div>
 
+                <div class="desc">
+                  ${esc(
+                    product.description ||
+                    "Confira a oferta."
+                  )}
+                </div>
 
-              return `
+                <div class="price">
+                  ${esc(
+                    formatPrice(currentPrice)
+                  )}
+                </div>
 
-                <article class="card">
+                <a
+                  class="buy"
+                  href="${esc(link)}"
+                  target="_blank"
+                  rel="nofollow sponsored noopener"
+                >
+                  Ver oferta →
+                </a>
 
-                  <div class="pic">
+              </div>
 
-                    <img
-                      src="${esc(
-                        product.image_url || ""
-                      )}"
-                      alt="${esc(
-                        product.name || "Produto"
-                      )}"
-                      loading="lazy"
-                    >
-
-                  </div>
-
-
-                  <div class="info">
-
-                    <div class="catname">
-
-                      ${esc(
-                        product.category ||
-                        "Achadinhos"
-                      )}
-
-                    </div>
-
-
-                    <div class="name">
-
-                      ${esc(
-                        product.name ||
-                        "Produto"
-                      )}
-
-                    </div>
-
-
-                    <div class="desc">
-
-                      ${esc(
-                        product.description ||
-                        "Confira a oferta."
-                      )}
-
-                    </div>
-
-
-                    <div class="price">
-
-                      ${esc(
-                        formatPrice(
-                          currentPrice
-                        )
-                      )}
-
-                    </div>
-
-
-                    <a
-                      class="buy"
-                      href="${esc(
-                        product.affiliate_url ||
-                        "#"
-                      )}"
-                      target="_blank"
-                      rel="nofollow sponsored noopener"
-                    >
-                      Ver oferta →
-                    </a>
-
-                  </div>
-
-                </article>
-
-              `;
-
-            }
-          )
-          .join("");
-
+            </article>
+          `;
+        })
+        .join("");
     }
-
-
-    /* =====================================================
-       PESQUISA
-    ===================================================== */
 
     document
       .getElementById("search")
@@ -912,19 +668,10 @@
         render
       );
 
-
-    /* =====================================================
-       ESCONDER CABEÇALHO AO ROLAR
-    ===================================================== */
-
     const header =
-      document.getElementById(
-        "header"
-      );
-
+      document.getElementById("header");
 
     let lastScrollY = 0;
-
 
     window.addEventListener(
       "scroll",
@@ -933,39 +680,19 @@
         const current =
           window.scrollY;
 
-
         if (current <= 10) {
-
-          header.classList.remove(
-            "hide"
-          );
-
-          lastScrollY =
-            current;
-
+          header.classList.remove("hide");
+          lastScrollY = current;
           return;
-
         }
-
 
         if (current > lastScrollY) {
-
-          header.classList.add(
-            "hide"
-          );
-
-        }
-        else if (current < lastScrollY) {
-
-          header.classList.remove(
-            "hide"
-          );
-
+          header.classList.add("hide");
+        } else if (current < lastScrollY) {
+          header.classList.remove("hide");
         }
 
-
-        lastScrollY =
-          current;
+        lastScrollY = current;
 
       },
       {
@@ -973,13 +700,7 @@
       }
     );
 
-
-    /* =====================================================
-       INICIAR
-    ===================================================== */
-
     load();
-
   </script>
 
 </body>
