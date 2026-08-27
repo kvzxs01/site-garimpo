@@ -3,150 +3,504 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conectando ao Mercado Livre...</title>
+
+  <title>Conectando ao Mercado Livre | Garimpo Online</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f5;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f5f5f5;
-      font-family: Arial, sans-serif;
+      color: #333;
     }
 
-    .box {
-      width: min(90%, 420px);
-      padding: 30px;
-      background: white;
-      border-radius: 16px;
+    .container {
+      width: 100%;
+      max-width: 460px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 22px;
+      padding: 40px 30px;
       text-align: center;
-      box-shadow: 0 5px 25px rgba(0,0,0,.08);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      background: #ffe600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: 900;
+      color: #333;
     }
 
     h1 {
-      font-size: 22px;
+      margin: 0 0 12px;
+      font-size: 25px;
+      color: #222;
     }
 
-    p {
-      color: #666;
+    .descricao {
+      margin: 0 auto 28px;
+      max-width: 350px;
+      color: #777;
       line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .loading {
+      width: 48px;
+      height: 48px;
+      margin: 10px auto 24px;
+      border: 5px solid #eee;
+      border-top-color: #3483fa;
+      border-radius: 50%;
+      animation: girar 0.9s linear infinite;
+    }
+
+    @keyframes girar {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .status {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      min-height: 24px;
+    }
+
+    .sucesso {
+      display: none;
+    }
+
+    .sucesso-icone {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      background: #e8f7ed;
+      color: #20a050;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: bold;
     }
 
     .erro {
-      color: #d00;
+      display: none;
+    }
+
+    .erro-icone {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      background: #fdeaea;
+      color: #d93025;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .erro-texto {
+      color: #d93025;
+      background: #fff1f1;
+      border-radius: 10px;
+      padding: 12px;
+      margin: 18px 0;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .botao {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 13px 24px;
+      border-radius: 10px;
+      background: #3483fa;
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .botao:hover {
+      background: #2968c8;
+    }
+
+    .rodape {
+      margin-top: 25px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 32px 22px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="box">
-    <h1 id="titulo">Conectando...</h1>
-    <p id="mensagem">
-      Aguarde enquanto finalizamos a conexão com o Mercado Livre.
-    </p>
+  <div class="container">
+
+    <div class="card">
+
+      <!-- CONECTANDO -->
+      <div id="conectando">
+
+        <div class="logo">
+          ML
+        </div>
+
+        <h1>Conectando ao Mercado Livre</h1>
+
+        <p class="descricao">
+          Estamos finalizando a conexão da sua conta
+          com o Garimpo Online.
+        </p>
+
+        <div class="loading"></div>
+
+        <div class="status" id="status">
+          Aguarde um momento...
+        </div>
+
+      </div>
+
+
+      <!-- SUCESSO -->
+      <div id="sucesso" class="sucesso">
+
+        <div class="sucesso-icone">
+          ✓
+        </div>
+
+        <h1>Conta conectada!</h1>
+
+        <p class="descricao">
+          Sua conta do Mercado Livre foi conectada
+          com sucesso ao Garimpo Online.
+        </p>
+
+        <a
+          class="botao"
+          href="https://kvzxs01.github.io/site-garimpo/"
+        >
+          Voltar para o Garimpo Online
+        </a>
+
+      </div>
+
+
+      <!-- ERRO -->
+      <div id="erro" class="erro">
+
+        <div class="erro-icone">
+          !
+        </div>
+
+        <h1>Erro ao conectar</h1>
+
+        <p class="descricao">
+          Não foi possível finalizar a conexão
+          com o Mercado Livre.
+        </p>
+
+        <div
+          class="erro-texto"
+          id="erroTexto"
+        >
+          Erro desconhecido.
+        </div>
+
+        <a
+          class="botao"
+          href="https://kvzxs01.github.io/site-garimpo/"
+        >
+          Voltar para o site
+        </a>
+
+      </div>
+
+
+      <div class="rodape">
+        Garimpo Online
+      </div>
+
+    </div>
+
   </div>
 
+
   <script>
+
+    /*
+     * CONFIGURAÇÕES
+     */
+
     const SUPABASE_URL =
       "https://xokyvzjeoivmggsmkjjs.supabase.co";
 
     const EDGE_FUNCTION =
-      SUPABASE_URL + "/functions/v1/mercadolivre-auth";
+      SUPABASE_URL +
+      "/functions/v1/mercadolivre-auth";
 
-    async function conectar() {
+    const REDIRECT_URI =
+      "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
 
-      const params = new URLSearchParams(window.location.search);
 
-      const code = params.get("code");
-      const error = params.get("error");
+    /*
+     * ELEMENTOS DA PÁGINA
+     */
 
-      if (error) {
-        document.getElementById("titulo").textContent =
-          "Erro na autorização";
+    const conectando =
+      document.getElementById("conectando");
 
-        document.getElementById("mensagem").textContent =
-          params.get("error_description") || error;
+    const sucesso =
+      document.getElementById("sucesso");
 
-        return;
-      }
+    const erro =
+      document.getElementById("erro");
 
-      if (!code) {
-        document.getElementById("titulo").textContent =
-          "Nenhum código recebido";
+    const status =
+      document.getElementById("status");
 
-        document.getElementById("mensagem").textContent =
-          "O Mercado Livre não enviou um código de autorização.";
+    const erroTexto =
+      document.getElementById("erroTexto");
 
-        return;
-      }
 
-      document.getElementById("titulo").textContent =
-        "Código recebido";
+    /*
+     * MOSTRAR ERRO
+     */
 
-      document.getElementById("mensagem").textContent =
-        "Finalizando conexão...";
+    function mostrarErro(mensagem) {
+
+      conectando.style.display = "none";
+
+      sucesso.style.display = "none";
+
+      erro.style.display = "block";
+
+      erroTexto.textContent =
+        mensagem || "Erro desconhecido.";
+
+    }
+
+
+    /*
+     * MOSTRAR SUCESSO
+     */
+
+    function mostrarSucesso() {
+
+      conectando.style.display = "none";
+
+      erro.style.display = "none";
+
+      sucesso.style.display = "block";
+
+    }
+
+
+    /*
+     * PEGAR PARÂMETROS DA URL
+     */
+
+    const parametros =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const code =
+      parametros.get("code");
+
+    const error =
+      parametros.get("error");
+
+    const errorDescription =
+      parametros.get("error_description");
+
+
+    /*
+     * SE O MERCADO LIVRE DEVOLVEU ERRO
+     */
+
+    if (error) {
+
+      mostrarErro(
+        errorDescription ||
+        error
+      );
+
+    }
+
+
+    /*
+     * SE NÃO VEIO CODE
+     */
+
+    else if (!code) {
+
+      mostrarErro(
+        "Nenhum código de autorização foi recebido."
+      );
+
+    }
+
+
+    /*
+     * SE VEIO CODE
+     */
+
+    else {
+
+      conectarMercadoLivre();
+
+    }
+
+
+    /*
+     * TROCAR CODE POR TOKEN
+     */
+
+    async function conectarMercadoLivre() {
 
       try {
 
-        const response = await fetch(EDGE_FUNCTION, {
-          method: "POST",
+        status.textContent =
+          "Código recebido. Finalizando conexão...";
 
-          headers: {
-            "Content-Type": "application/json"
-          },
 
-          body: JSON.stringify({
-            code: code,
+        const resposta =
+          await fetch(
+            EDGE_FUNCTION,
+            {
+              method: "POST",
 
-            redirect_uri:
-              "https://kvzxs01.github.io/site-garimpo/oauth/callback.html"
-          })
-        });
+              headers: {
+                "Content-Type": "application/json"
+              },
 
-        const data = await response.json();
+              body: JSON.stringify({
+
+                code: code,
+
+                redirect_uri: REDIRECT_URI
+
+              })
+
+            }
+          );
+
+
+        /*
+         * TENTAR LER A RESPOSTA
+         */
+
+        let dados;
+
+        try {
+
+          dados =
+            await resposta.json();
+
+        } catch {
+
+          dados = {
+            success: false,
+            error:
+              "A Edge Function retornou uma resposta inválida."
+          };
+
+        }
+
+
+        /*
+         * LOGS PARA DEBUG
+         */
 
         console.log(
           "Status da Edge Function:",
-          response.status
+          resposta.status
         );
 
         console.log(
           "Resposta da Edge Function:",
-          data
+          dados
         );
 
-        if (!response.ok || !data.success) {
+
+        /*
+         * SE DEU ERRO
+         */
+
+        if (
+          !resposta.ok ||
+          !dados.success
+        ) {
+
           throw new Error(
-            data.error ||
+            dados.error ||
             "Erro ao conectar com o Mercado Livre."
           );
+
         }
 
-        document.getElementById("titulo").textContent =
-          "Conectado com sucesso!";
 
-        document.getElementById("mensagem").textContent =
-          "Sua conta do Mercado Livre foi conectada.";
+        /*
+         * SUCESSO
+         */
 
-      } catch (err) {
+        mostrarSucesso();
 
-        console.error(err);
-
-        document.getElementById("titulo").textContent =
-          "Erro ao conectar";
-
-        document.getElementById("mensagem").textContent =
-          err.message;
-
-        document.getElementById("mensagem")
-          .classList.add("erro");
       }
+
+
+      catch (e) {
+
+        console.error(
+          "Erro na conexão:",
+          e
+        );
+
+        mostrarErro(
+          e.message ||
+          "Erro ao conectar com o Mercado Livre."
+        );
+
+      }
+
     }
 
-    conectar();
   </script>
 
 </body>
