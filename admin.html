@@ -1,1406 +1,888 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Painel — Garimpo Online</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Conectando ao Mercado Livre | Garimpo Online
+  </title>
+
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
+
       margin: 0;
-      background: #080808;
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-    }
 
-    .wrap {
-      max-width: 800px;
-      margin: auto;
-      padding: 30px 20px 70px;
-    }
+      min-height: 100vh;
 
-    .top {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f5f5f5;
+
       display: flex;
-      justify-content: space-between;
+
       align-items: center;
+
+      justify-content: center;
+
+      color: #333;
+
     }
 
-    .top a {
-      color: #ffd600;
-      text-decoration: none;
-    }
 
-    .box {
-      background: #111;
-      border: 1px solid #292929;
-      border-radius: 14px;
+    .container {
+
+      width: 100%;
+
+      max-width: 460px;
+
       padding: 20px;
-      margin: 18px 0;
+
     }
 
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 800;
-      margin: 14px 0 7px;
-    }
 
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px;
-      background: #171717;
-      color: #fff;
-      border: 1px solid #333;
-      border-radius: 9px;
-    }
+    .card {
 
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
+      background: white;
 
-    .btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 15px;
-      font-weight: 900;
-      cursor: pointer;
-      margin-top: 15px;
-    }
+      border-radius: 22px;
 
-    .btn:disabled {
-      opacity: .5;
-      cursor: not-allowed;
-    }
+      padding: 40px 30px;
 
-    .primary {
-      background: #ffd600;
-      color: #000;
-    }
-
-    .secondary {
-      background: #191919;
-      color: #fff;
-      border: 1px solid #333;
-    }
-
-    .danger {
-      background: #411515;
-      color: #ffaaaa;
-    }
-
-    .edit {
-      background: #222;
-      color: #ffd600;
-      border: 1px solid #444;
-    }
-
-    .ml-connect {
-      background: #ffe600;
-      color: #222;
-      width: 100%;
-      font-size: 15px;
-      padding: 14px;
-    }
-
-    .upload {
-      border: 1px dashed #555;
-      border-radius: 10px;
-      padding: 18px;
       text-align: center;
-      color: #999;
-      margin-top: 8px;
+
+      box-shadow:
+        0 10px 35px
+        rgba(0, 0, 0, 0.08);
+
     }
 
-    .upload input {
-      border: 0;
-      padding: 0;
-      background: transparent;
-    }
 
-    .preview {
-      display: none;
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin: 12px auto 0;
-    }
+    .logo {
 
-    .msg {
-      font-size: 12px;
-      color: #999;
-      margin-top: 10px;
-    }
+      width: 76px;
 
-    .error {
-      color: #ff9b9b;
-    }
+      height: 76px;
 
-    .success {
-      color: #b7ffb7;
-    }
+      margin: 0 auto 22px;
 
-    .hidden {
-      display: none !important;
-    }
+      border-radius: 50%;
 
-    .item {
+      background: #ffe600;
+
       display: flex;
+
       align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid #292929;
-      padding: 14px 0;
+
+      justify-content: center;
+
+      font-size: 30px;
+
+      font-weight: 900;
+
+      color: #333;
+
     }
 
-    .item img {
-      width: 65px;
-      height: 65px;
-      object-fit: cover;
-      border-radius: 8px;
-      background: #fff;
+
+    h1 {
+
+      margin: 0 0 12px;
+
+      font-size: 25px;
+
+      color: #222;
+
     }
 
-    .item-main {
-      flex: 1;
-      min-width: 0;
-    }
 
-    .muted {
-      font-size: 11px;
+    .descricao {
+
+      margin: 0 auto 28px;
+
+      max-width: 350px;
+
       color: #777;
-      margin-top: 4px;
+
+      line-height: 1.5;
+
+      font-size: 15px;
+
     }
 
-    .ml-id {
-      font-size: 11px;
-      color: #ffd600;
-      margin-top: 5px;
+
+    .loading {
+
+      width: 48px;
+
+      height: 48px;
+
+      margin: 10px auto 24px;
+
+      border:
+        5px solid #eee;
+
+      border-top-color:
+        #3483fa;
+
+      border-radius: 50%;
+
+      animation:
+        girar 0.9s linear infinite;
+
     }
 
-    .price {
-      font-size: 13px;
-      margin-top: 5px;
+
+    @keyframes girar {
+
+      to {
+        transform:
+          rotate(360deg);
+      }
+
     }
 
-    .actions {
+
+    .status {
+
+      font-size: 16px;
+
+      font-weight: 600;
+
+      color: #333;
+
+    }
+
+
+    .sucesso,
+    .erro {
+
+      display: none;
+
+    }
+
+
+    .icone {
+
+      width: 64px;
+
+      height: 64px;
+
+      margin: 0 auto 22px;
+
+      border-radius: 50%;
+
       display: flex;
-      gap: 5px;
+
       align-items: center;
+
+      justify-content: center;
+
+      font-size: 34px;
+
+      font-weight: bold;
+
     }
 
-    .actions .btn {
-      margin-top: 0;
-      padding: 9px 11px;
-      font-size: 11px;
+
+    .icone-sucesso {
+
+      background: #e8f7ed;
+
+      color: #20a050;
+
     }
 
-    @media(max-width:600px) {
-      .item {
-        align-items: flex-start;
-      }
 
-      .actions {
-        flex-direction: column;
-      }
+    .icone-erro {
 
-      .actions .btn {
-        width: 100%;
-      }
+      background: #fdeaea;
+
+      color: #d93025;
+
     }
+
+
+    .erro-texto {
+
+      color: #d93025;
+
+      background: #fff1f1;
+
+      border-radius: 10px;
+
+      padding: 12px;
+
+      margin: 18px 0;
+
+      font-size: 14px;
+
+      word-break: break-word;
+
+    }
+
+
+    .botao {
+
+      display: inline-block;
+
+      margin-top: 18px;
+
+      padding: 13px 24px;
+
+      border-radius: 10px;
+
+      background: #3483fa;
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 15px;
+
+      font-weight: bold;
+
+    }
+
+
+    .rodape {
+
+      margin-top: 25px;
+
+      font-size: 12px;
+
+      color: #999;
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
-<main class="wrap">
 
-  <div class="top">
-    <h1>Garimpo Online</h1>
-    <a href="index.html">← Ver loja</a>
-  </div>
+  <div class="container">
 
-  <!-- LOGIN -->
-  <section id="loginBox" class="box">
-
-    <h2>Entrar no painel</h2>
-
-    <p class="muted">
-      Este login é somente para administrar os produtos.
-    </p>
-
-    <label>E-mail</label>
-
-    <input
-      id="email"
-      type="email"
-      autocomplete="username"
-    >
-
-    <label>Senha</label>
-
-    <input
-      id="password"
-      type="password"
-      autocomplete="current-password"
-    >
-
-    <button
-      id="loginBtn"
-      class="btn primary"
-    >
-      Entrar
-    </button>
-
-    <div id="loginMsg" class="msg"></div>
-
-  </section>
+    <div class="card">
 
 
-  <!-- PAINEL -->
-  <section id="panel" class="hidden">
+      <!-- CONECTANDO -->
 
-    <!-- MERCADO LIVRE -->
-    <div class="box">
+      <div id="conectando">
 
-      <h2>Mercado Livre</h2>
-
-      <p class="muted">
-        Conecte sua conta do Mercado Livre para permitir a atualização automática dos preços.
-      </p>
-
-      <button
-        id="connectMlBtn"
-        class="btn ml-connect"
-      >
-        🟡 Conectar Mercado Livre
-      </button>
-
-      <div
-        id="mlMsg"
-        class="msg"
-      ></div>
-
-    </div>
-
-
-    <!-- FORMULÁRIO -->
-    <div class="box">
-
-      <button
-        id="logoutBtn"
-        class="btn secondary"
-      >
-        Sair
-      </button>
-
-      <h2 id="formTitle">
-        Adicionar produto
-      </h2>
-
-
-      <label>Nome</label>
-
-      <input
-        id="name"
-        placeholder="Ex.: Fone Bluetooth"
-      >
-
-
-      <label>
-        ID de afiliado do Mercado Livre
-      </label>
-
-      <input
-        id="mercadolivre_id"
-        placeholder="Ex.: R6PPBF-4F7N"
-      >
-
-      <div class="msg">
-        Use o ID obtido em <b>Copiar ID</b> na Central de Afiliados.
-      </div>
-
-
-      <label>Categoria</label>
-
-      <select id="category">
-        <option>Eletrônicos</option>
-        <option>Casa</option>
-        <option>Games</option>
-        <option>Moda</option>
-        <option>Beleza</option>
-        <option>Automotivo</option>
-        <option>Achadinhos</option>
-      </select>
-
-
-      <label>Imagem</label>
-
-      <div class="upload">
-
-        <input
-          id="file"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-        >
-
-        <div>
-          Escolha a imagem do produto
+        <div class="logo">
+          ML
         </div>
 
-        <img
-          id="preview"
-          class="preview"
+
+        <h1>
+          Conectando ao Mercado Livre
+        </h1>
+
+
+        <p class="descricao">
+
+          Estamos finalizando a conexão
+          da sua conta com o Garimpo Online.
+
+        </p>
+
+
+        <div class="loading"></div>
+
+
+        <div
+          class="status"
+          id="status"
         >
+          Verificando autorização...
+        </div>
 
       </div>
 
 
-      <label>Link de afiliado</label>
-
-      <input
-        id="affiliate"
-        placeholder="https://meli.la/..."
-      >
-
-
-      <label>Descrição</label>
-
-      <textarea
-        id="description"
-        placeholder="Por que vale a pena?"
-      ></textarea>
-
-
-      <button
-        id="addBtn"
-        class="btn primary"
-      >
-        ＋ Publicar produto
-      </button>
-
-      <button
-        id="cancelEditBtn"
-        class="btn secondary hidden"
-      >
-        Cancelar edição
-      </button>
+      <!-- SUCESSO -->
 
       <div
-        id="msg"
-        class="msg"
-      ></div>
+        id="sucesso"
+        class="sucesso"
+      >
+
+        <div
+          class="icone icone-sucesso"
+        >
+          ✓
+        </div>
+
+
+        <h1>
+          Conta conectada!
+        </h1>
+
+
+        <p class="descricao">
+
+          Sua conta do Mercado Livre foi
+          conectada com sucesso.
+
+        </p>
+
+
+        <a
+          class="botao"
+          href="https://kvzxs01.github.io/site-garimpo/admin.html"
+        >
+          Voltar para o painel
+        </a>
+
+      </div>
+
+
+      <!-- ERRO -->
+
+      <div
+        id="erro"
+        class="erro"
+      >
+
+        <div
+          class="icone icone-erro"
+        >
+          !
+        </div>
+
+
+        <h1>
+          Erro ao conectar
+        </h1>
+
+
+        <p class="descricao">
+
+          Não foi possível finalizar
+          a conexão com o Mercado Livre.
+
+        </p>
+
+
+        <div
+          class="erro-texto"
+          id="erroTexto"
+        >
+          Erro desconhecido.
+        </div>
+
+
+        <a
+          class="botao"
+          href="https://kvzxs01.github.io/site-garimpo/admin.html"
+        >
+          Voltar para o painel
+        </a>
+
+      </div>
+
+
+      <div class="rodape">
+        Garimpo Online
+      </div>
+
 
     </div>
 
+  </div>
 
-    <!-- PRODUTOS -->
-    <div class="box">
 
-      <h2>Produtos publicados</h2>
-
-      <div id="list"></div>
-
-    </div>
-
-  </section>
-
-</main>
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-
-<script>
-
-const db =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-
-
-const $ =
-  id => document.getElementById(id);
-
-
-const esc =
-  s =>
-    String(s ?? "")
-      .replace(
-        /[&<>"']/g,
-        m => ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
-        })[m]
-      );
-
-
-let editingId = null;
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-function showPanel() {
-
-  $("loginBox")
-    .classList
-    .add("hidden");
-
-  $("panel")
-    .classList
-    .remove("hidden");
-
-  loadProducts();
-}
-
-
-function showLogin() {
-
-  $("panel")
-    .classList
-    .add("hidden");
-
-  $("loginBox")
-    .classList
-    .remove("hidden");
-}
-
-
-async function init() {
-
-  const r =
-    await db.auth.getSession();
-
-  if (r.error) {
-
-    $("loginMsg").textContent =
-      r.error.message;
-
-    $("loginMsg").className =
-      "msg error";
-
-    return;
-  }
-
-
-  if (r.data.session) {
-
-    showPanel();
-
-  } else {
-
-    showLogin();
-
-  }
-
-
-  db.auth.onAuthStateChange(
-    (event, session) => {
-
-      if (session) {
-
-        showPanel();
-
-      } else {
-
-        showLogin();
-
-      }
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-$("loginBtn").onclick =
-async () => {
-
-  const email =
-    $("email")
-      .value
-      .trim();
-
-  const password =
-    $("password")
-      .value;
-
-
-  if (!email || !password) {
-
-    $("loginMsg").textContent =
-      "Digite e-mail e senha.";
-
-    $("loginMsg").className =
-      "msg error";
-
-    return;
-  }
-
-
-  $("loginBtn").disabled =
-    true;
-
-  $("loginMsg").textContent =
-    "Entrando...";
-
-
-  const r =
-    await db.auth.signInWithPassword({
-      email,
-      password
-    });
-
-
-  $("loginBtn").disabled =
-    false;
-
-
-  if (r.error) {
-
-    $("loginMsg").textContent =
-      r.error.message;
-
-    $("loginMsg").className =
-      "msg error";
-
-    return;
-  }
-
-
-  $("loginMsg").textContent =
-    "Login realizado!";
-
-  $("loginMsg").className =
-    "msg success";
-
-  showPanel();
-
-};
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-$("logoutBtn").onclick =
-() => db.auth.signOut();
-
-
-/* =====================================================
-   MERCADO LIVRE OAUTH + PKCE
-===================================================== */
-
-$("connectMlBtn").onclick =
-async () => {
-
-  try {
-
-    $("connectMlBtn").disabled =
-      true;
-
-    $("mlMsg").textContent =
-      "Preparando conexão...";
-
-    $("mlMsg").className =
-      "msg";
+  <script>
 
 
     /*
-      CLIENT ID DO MERCADO LIVRE
-    */
-    const CLIENT_ID =
-      "3125220410520940";
+     * ============================================
+     * CONFIGURAÇÃO
+     * ============================================
+     */
+
+    const SUPABASE_URL =
+      "https://xokyvzjeoivmggsmkjjs.supabase.co";
 
 
-    /*
-      CALLBACK EXATO
-    */
+    const EDGE_FUNCTION =
+      SUPABASE_URL +
+      "/functions/v1/mercadolivre-auth";
+
+
     const REDIRECT_URI =
       "https://kvzxs01.github.io/site-garimpo/oauth/callback.html";
 
 
     /*
-      GERAR STATE
-    */
-    const stateArray =
-      new Uint8Array(32);
+     * ============================================
+     * ELEMENTOS
+     * ============================================
+     */
 
-    crypto.getRandomValues(
-      stateArray
-    );
-
-    const state =
-      Array.from(
-        stateArray,
-        b => b.toString(16).padStart(2, "0")
-      ).join("");
-
-
-    /*
-      GERAR CODE VERIFIER
-    */
-    const verifierArray =
-      new Uint8Array(32);
-
-    crypto.getRandomValues(
-      verifierArray
-    );
-
-    const codeVerifier =
-      Array.from(
-        verifierArray,
-        b => b.toString(16).padStart(2, "0")
-      ).join("");
-
-
-    /*
-      TRANSFORMAR VERIFIER EM SHA-256
-      PARA O PKCE
-    */
-    const encoder =
-      new TextEncoder();
-
-    const data =
-      encoder.encode(
-        codeVerifier
+    const conectando =
+      document.getElementById(
+        "conectando"
       );
 
-    const hash =
-      await crypto.subtle.digest(
-        "SHA-256",
-        data
+
+    const sucesso =
+      document.getElementById(
+        "sucesso"
+      );
+
+
+    const erro =
+      document.getElementById(
+        "erro"
+      );
+
+
+    const status =
+      document.getElementById(
+        "status"
+      );
+
+
+    const erroTexto =
+      document.getElementById(
+        "erroTexto"
       );
 
 
     /*
-      BASE64URL
-    */
-    const base64 =
-      btoa(
-        String.fromCharCode(
-          ...new Uint8Array(hash)
-        )
-      )
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_")
-      .replace(/=+$/, "");
-
-
-    const codeChallenge =
-      base64;
-
-
-    /*
-      SALVAR NO SESSION STORAGE
-    */
-    sessionStorage.setItem(
-      "ml_oauth_state",
-      state
-    );
-
-    sessionStorage.setItem(
-      "ml_code_verifier",
-      codeVerifier
-    );
-
-
-    /*
-      CONFIRMAÇÃO NO CONSOLE
-    */
-    console.log(
-      "OAuth state salvo:",
-      state
-    );
-
-    console.log(
-      "OAuth code_verifier salvo."
-    );
-
-
-    /*
-      URL DO MERCADO LIVRE
-    */
-    const authUrl =
-      "https://auth.mercadolivre.com.br/authorization" +
-      "?response_type=code" +
-      "&client_id=" +
-      encodeURIComponent(CLIENT_ID) +
-      "&redirect_uri=" +
-      encodeURIComponent(REDIRECT_URI) +
-      "&state=" +
-      encodeURIComponent(state) +
-      "&code_challenge=" +
-      encodeURIComponent(codeChallenge) +
-      "&code_challenge_method=S256";
-
-
-    $("mlMsg").textContent =
-      "Abrindo Mercado Livre...";
-
-
-    /*
-      REDIRECIONAR
-    */
-    window.location.href =
-      authUrl;
-
-  }
-
-  catch (error) {
-
-    console.error(
-      error
-    );
-
-    $("mlMsg").textContent =
-      "Erro ao iniciar conexão: " +
-      error.message;
-
-    $("mlMsg").className =
-      "msg error";
-
-    $("connectMlBtn").disabled =
-      false;
-
-  }
-
-};
-
-
-/* =====================================================
-   IMAGEM
-===================================================== */
-
-$("file").onchange =
-() => {
-
-  const f =
-    $("file")
-      .files[0];
-
-  if (!f) return;
-
-
-  if (
-    f.size >
-    5 * 1024 * 1024
-  ) {
-
-    $("msg").textContent =
-      "A imagem deve ter até 5 MB.";
-
-    $("msg").className =
-      "msg error";
-
-    $("file").value =
-      "";
-
-    return;
-  }
-
-
-  $("preview").src =
-    URL.createObjectURL(f);
-
-  $("preview").style.display =
-    "block";
-
-};
-
-
-/* =====================================================
-   LIMPAR FORMULÁRIO
-===================================================== */
-
-function clearForm() {
-
-  editingId = null;
-
-  $("formTitle").textContent =
-    "Adicionar produto";
-
-  $("addBtn").textContent =
-    "＋ Publicar produto";
-
-  $("cancelEditBtn")
-    .classList
-    .add("hidden");
-
-
-  [
-    "name",
-    "mercadolivre_id",
-    "affiliate",
-    "description"
-  ]
-    .forEach(
-      id =>
-        $(id).value = ""
-    );
-
-
-  $("file").value =
-    "";
-
-  $("preview")
-    .style
-    .display =
-    "none";
-
-  $("msg").textContent =
-    "";
-
-}
-
-
-/* =====================================================
-   ADICIONAR / EDITAR
-===================================================== */
-
-$("addBtn").onclick =
-async () => {
-
-  const f =
-    $("file")
-      .files[0];
-
-  const name =
-    $("name")
-      .value
-      .trim();
-
-  const mercadolivre_id =
-    $("mercadolivre_id")
-      .value
-      .trim();
-
-  const link =
-    $("affiliate")
-      .value
-      .trim();
-
-  const category =
-    $("category")
-      .value;
-
-  const description =
-    $("description")
-      .value
-      .trim();
-
-
-  if (
-    !name ||
-    !mercadolivre_id ||
-    !link
-  ) {
-
-    $("msg").textContent =
-      "Preencha nome, ID de afiliado e link.";
-
-    $("msg").className =
-      "msg error";
-
-    return;
-  }
-
-
-  if (!editingId && !f) {
-
-    $("msg").textContent =
-      "Escolha uma imagem.";
-
-    $("msg").className =
-      "msg error";
-
-    return;
-  }
-
-
-  $("addBtn").disabled =
-    true;
-
-  $("msg").textContent =
-    editingId
-      ? "Salvando alterações..."
-      : "Enviando produto...";
-
-
-  let image_url = null;
-
-
-  /* UPLOAD */
-  if (f) {
-
-    const ext =
-      (
-        f.name
-          .split(".")
-          .pop() ||
-        "jpg"
-      )
-      .toLowerCase();
-
-
-    const path =
-      Date.now() +
-      "-" +
-      crypto.randomUUID() +
-      "." +
-      ext;
-
-
-    const up =
-      await db.storage
-        .from("product-images")
-        .upload(
-          path,
-          f,
-          {
-            contentType:
-              f.type
-          }
-        );
-
-
-    if (up.error) {
-
-      $("msg").textContent =
-        "Erro no upload: " +
-        up.error.message;
-
-      $("msg").className =
-        "msg error";
-
-      $("addBtn").disabled =
-        false;
-
-      return;
-    }
-
-
-    image_url =
-      db.storage
-        .from("product-images")
-        .getPublicUrl(path)
-        .data
-        .publicUrl;
-
-  }
-
-
-  /* EDITAR */
-  if (editingId) {
-
-    const updateData = {
-
-      name,
-
-      mercadolivre_id,
-
-      category,
-
-      affiliate_url:
-        link,
-
-      description
-
-    };
-
-
-    if (image_url) {
-
-      updateData.image_url =
-        image_url;
+     * ============================================
+     * MOSTRAR ERRO
+     * ============================================
+     */
+
+    function mostrarErro(
+      mensagem
+    ) {
+
+      conectando.style.display =
+        "none";
+
+      sucesso.style.display =
+        "none";
+
+      erro.style.display =
+        "block";
+
+      erroTexto.textContent =
+        mensagem ||
+        "Erro desconhecido.";
 
     }
 
 
-    const r =
-      await db
-        .from("products")
-        .update(updateData)
-        .eq(
-          "id",
-          editingId
-        );
+    /*
+     * ============================================
+     * MOSTRAR SUCESSO
+     * ============================================
+     */
 
+    function mostrarSucesso() {
 
-    if (r.error) {
+      conectando.style.display =
+        "none";
 
-      $("msg").textContent =
-        "Erro ao atualizar: " +
-        r.error.message;
+      erro.style.display =
+        "none";
 
-      $("msg").className =
-        "msg error";
-
-    } else {
-
-      $("msg").textContent =
-        "Produto atualizado!";
-
-      $("msg").className =
-        "msg success";
-
-      clearForm();
-
-      loadProducts();
+      sucesso.style.display =
+        "block";
 
     }
 
 
-    $("addBtn").disabled =
-      false;
+    /*
+     * ============================================
+     * CONECTAR
+     * ============================================
+     */
 
-    return;
+    async function conectar() {
 
-  }
+      try {
 
 
-  /* NOVO */
-  const ins =
-    await db
-      .from("products")
-      .insert({
+        /*
+         * Ler parâmetros devolvidos
+         * pelo Mercado Livre
+         */
 
-        name,
+        const params =
+          new URLSearchParams(
+            window.location.search
+          );
 
-        mercadolivre_id,
 
-        category,
+        const code =
+          params.get(
+            "code"
+          );
 
-        image_url,
 
-        affiliate_url:
-          link,
+        const state =
+          params.get(
+            "state"
+          );
 
-        description,
 
-        active:
-          true
+        const error =
+          params.get(
+            "error"
+          );
 
-      });
 
+        const errorDescription =
+          params.get(
+            "error_description"
+          );
 
-  if (ins.error) {
 
-    $("msg").textContent =
-      "Erro ao salvar: " +
-      ins.error.message;
+        /*
+         * ========================================
+         * ERRO DO MERCADO LIVRE
+         * ========================================
+         */
 
-    $("msg").className =
-      "msg error";
+        if (error) {
 
-  } else {
+          throw new Error(
+            errorDescription ||
+            error
+          );
 
-    $("msg").textContent =
-      "Produto publicado com sucesso!";
-
-    $("msg").className =
-      "msg success";
-
-    clearForm();
-
-    loadProducts();
-
-  }
-
-
-  $("addBtn").disabled =
-    false;
-
-};
-
-
-/* =====================================================
-   CANCELAR
-===================================================== */
-
-$("cancelEditBtn").onclick =
-() => clearForm();
-
-
-/* =====================================================
-   EDITAR
-===================================================== */
-
-window.editProduct =
-async id => {
-
-  const r =
-    await db
-      .from("products")
-      .select("*")
-      .eq(
-        "id",
-        id
-      )
-      .single();
-
-
-  if (r.error) {
-
-    alert(
-      r.error.message
-    );
-
-    return;
-
-  }
-
-
-  const p =
-    r.data;
-
-
-  editingId =
-    p.id;
-
-
-  $("formTitle").textContent =
-    "Editar produto";
-
-
-  $("addBtn").textContent =
-    "✓ Salvar alterações";
-
-
-  $("cancelEditBtn")
-    .classList
-    .remove("hidden");
-
-
-  $("name").value =
-    p.name || "";
-
-
-  $("mercadolivre_id").value =
-    p.mercadolivre_id || "";
-
-
-  $("category").value =
-    p.category || "Achadinhos";
-
-
-  $("affiliate").value =
-    p.affiliate_url || "";
-
-
-  $("description").value =
-    p.description || "";
-
-
-  if (p.image_url) {
-
-    $("preview").src =
-      p.image_url;
-
-    $("preview").style.display =
-      "block";
-
-  }
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-};
-
-
-/* =====================================================
-   EXCLUIR
-===================================================== */
-
-window.removeProduct =
-async id => {
-
-  if (
-    !confirm(
-      "Excluir este produto?"
-    )
-  ) {
-    return;
-  }
-
-
-  const r =
-    await db
-      .from("products")
-      .delete()
-      .eq(
-        "id",
-        id
-      );
-
-
-  if (r.error) {
-
-    alert(
-      r.error.message
-    );
-
-    return;
-
-  }
-
-
-  loadProducts();
-
-};
-
-
-/* =====================================================
-   LISTA
-===================================================== */
-
-async function loadProducts() {
-
-  const r =
-    await db
-      .from("products")
-      .select("*")
-      .order(
-        "created_at",
-        {
-          ascending:
-            false
         }
-      );
 
 
-  if (r.error) {
+        /*
+         * ========================================
+         * CODE OBRIGATÓRIO
+         * ========================================
+         */
 
-    $("list").innerHTML =
-      "<p class='msg error'>" +
-      esc(r.error.message) +
-      "</p>";
+        if (!code) {
 
-    return;
+          throw new Error(
+            "Nenhum código de autorização foi recebido."
+          );
 
-  }
-
-
-  $("list").innerHTML =
-    (r.data || [])
-      .map(
-        p => `
-
-          <div class="item">
-
-            <img
-              src="${esc(p.image_url)}"
-            >
-
-            <div class="item-main">
-
-              <b>
-                ${esc(p.name)}
-              </b>
-
-              <div class="ml-id">
-                ID afiliado:
-                ${esc(
-                  p.mercadolivre_id ||
-                  "não informado"
-                )}
-              </div>
-
-              <div class="price">
-
-                ${
-                  p.current_price != null
-
-                    ? "Preço atual: R$ " +
-                      Number(
-                        p.current_price
-                      ).toFixed(2)
-
-                    : "Preço ainda não atualizado"
-                }
-
-              </div>
-
-              <div class="muted">
-
-                ${
-                  p.price_updated_at
-
-                    ? "Atualizado em: " +
-                      new Date(
-                        p.price_updated_at
-                      ).toLocaleString(
-                        "pt-BR"
-                      )
-
-                    : ""
-                }
-
-              </div>
-
-            </div>
+        }
 
 
-            <div class="actions">
+        /*
+         * ========================================
+         * RECUPERAR STATE
+         * ========================================
+         */
 
-              <button
-                class="btn edit"
-                onclick="editProduct('${p.id}')"
-              >
-                Editar
-              </button>
-
-              <button
-                class="btn danger"
-                onclick="removeProduct('${p.id}')"
-              >
-                Excluir
-              </button>
-
-            </div>
-
-          </div>
-
-        `
-      )
-      .join("")
-
-    ||
-
-    "<p class='muted'>" +
-    "Nenhum produto ainda." +
-    "</p>";
-
-}
+        const stateOriginal =
+          localStorage.getItem(
+            "ml_oauth_state"
+          );
 
 
-/* =====================================================
-   INICIAR
-===================================================== */
+        /*
+         * ========================================
+         * RECUPERAR CODE VERIFIER
+         * ========================================
+         */
 
-init();
+        const codeVerifier =
+          localStorage.getItem(
+            "ml_code_verifier"
+          );
 
-</script>
+
+        /*
+         * DEBUG
+         */
+
+        console.log(
+          "===== OAUTH CALLBACK ====="
+        );
+
+
+        console.log(
+          "Code recebido:",
+          !!code
+        );
+
+
+        console.log(
+          "State recebido:",
+          state
+        );
+
+
+        console.log(
+          "State salvo:",
+          stateOriginal
+        );
+
+
+        console.log(
+          "State confere:",
+          state === stateOriginal
+        );
+
+
+        console.log(
+          "Code verifier encontrado:",
+          !!codeVerifier
+        );
+
+
+        /*
+         * ========================================
+         * VALIDAR STATE
+         * ========================================
+         */
+
+        if (
+          !state ||
+          !stateOriginal ||
+          state !== stateOriginal
+        ) {
+
+          throw new Error(
+            "A validação de segurança da autorização falhou. Inicie a conexão novamente pelo painel."
+          );
+
+        }
+
+
+        /*
+         * ========================================
+         * VALIDAR CODE VERIFIER
+         * ========================================
+         */
+
+        if (!codeVerifier) {
+
+          throw new Error(
+            "O code_verifier não foi encontrado neste navegador. Volte ao painel e inicie uma nova conexão."
+          );
+
+        }
+
+
+        status.textContent =
+          "Código recebido. Finalizando conexão...";
+
+
+        /*
+         * ========================================
+         * ENVIAR PARA EDGE FUNCTION
+         * ========================================
+         */
+
+        const resposta =
+          await fetch(
+            EDGE_FUNCTION,
+            {
+
+              method:
+                "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json"
+
+              },
+
+              body:
+                JSON.stringify({
+
+                  code:
+                    code,
+
+                  code_verifier:
+                    codeVerifier,
+
+                  redirect_uri:
+                    REDIRECT_URI,
+
+                  state:
+                    state
+
+                })
+
+            }
+          );
+
+
+        /*
+         * ========================================
+         * LER RESPOSTA
+         * ========================================
+         */
+
+        let dados;
+
+
+        try {
+
+          dados =
+            await resposta.json();
+
+        }
+        catch {
+
+          dados = {
+
+            success:
+              false,
+
+            error:
+              "Resposta inválida da Edge Function."
+
+          };
+
+        }
+
+
+        console.log(
+          "Status da Edge Function:",
+          resposta.status
+        );
+
+
+        console.log(
+          "Resposta da Edge Function:",
+          dados
+        );
+
+
+        /*
+         * ========================================
+         * VERIFICAR RESULTADO
+         * ========================================
+         */
+
+        if (
+          !resposta.ok ||
+          !dados.success
+        ) {
+
+          throw new Error(
+            dados.error ||
+            "Erro ao trocar o código por token."
+          );
+
+        }
+
+
+        /*
+         * ========================================
+         * CONEXÃO CONFIRMADA
+         * ========================================
+         *
+         * Isto serve apenas para o painel
+         * saber que a conexão acabou de ocorrer.
+         *
+         * Os tokens NÃO são colocados no
+         * localStorage.
+         */
+
+        localStorage.setItem(
+          "ml_conectado",
+          "true"
+        );
+
+
+        /*
+         * ========================================
+         * APAGAR DADOS TEMPORÁRIOS
+         * ========================================
+         */
+
+        localStorage.removeItem(
+          "ml_code_verifier"
+        );
+
+
+        localStorage.removeItem(
+          "ml_oauth_state"
+        );
+
+
+        /*
+         * ========================================
+         * LIMPAR CODE DA URL
+         * ========================================
+         */
+
+        window.history.replaceState(
+          {},
+          document.title,
+          REDIRECT_URI
+        );
+
+
+        /*
+         * ========================================
+         * MOSTRAR SUCESSO
+         * ========================================
+         */
+
+        mostrarSucesso();
+
+
+      }
+      catch (e) {
+
+        console.error(
+          "Erro OAuth:",
+          e
+        );
+
+
+        mostrarErro(
+          e.message ||
+          "Erro ao conectar com o Mercado Livre."
+        );
+
+      }
+
+    }
+
+
+    /*
+     * ============================================
+     * INICIAR
+     * ============================================
+     */
+
+    conectar();
+
+
+  </script>
 
 </body>
+
 </html>
+```
