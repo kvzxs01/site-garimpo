@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Garimpo Online</title>
 
   <style>
@@ -23,30 +21,20 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* =========================
-       CABEÇALHO
-    ========================= */
-
     header {
       height: 72px;
       border-bottom: 1px solid #292929;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 0 6%;
-
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-
       background: rgba(8, 8, 8, 0.94);
       backdrop-filter: blur(10px);
-
       z-index: 1000;
-
       transition: transform 0.3s ease;
     }
 
@@ -63,15 +51,11 @@
     .logo {
       width: 40px;
       height: 40px;
-
       border-radius: 10px;
-
       background: #ffd600;
       color: #000;
-
       display: grid;
       place-items: center;
-
       font-weight: 900;
       font-size: 22px;
     }
@@ -82,22 +66,28 @@
 
     .brand small {
       display: block;
-
       color: #888;
-
       font-size: 10px;
-
       margin-top: 3px;
     }
 
-    /* =========================
-       HERO
-    ========================= */
+    .admin {
+      color: #aaa;
+      text-decoration: none;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 12px;
+    }
+
+    .admin:hover {
+      color: #fff;
+      border-color: #555;
+    }
 
     .hero {
       max-width: 1100px;
       margin: auto;
-
       padding: 145px 20px 55px;
     }
 
@@ -107,73 +97,44 @@
 
     .hero h1 {
       font-size: clamp(42px, 7vw, 74px);
-
       line-height: 0.98;
-
       letter-spacing: -3px;
-
       margin: 16px 0;
     }
 
     .hero p {
       max-width: 600px;
-
       color: #999;
-
       line-height: 1.6;
-
-      margin-bottom: 0;
+      margin: 0;
     }
-
-    /* =========================
-       CONTEÚDO
-    ========================= */
 
     .wrap {
       max-width: 1100px;
-
       margin: auto;
-
       padding: 0 20px 80px;
     }
 
-    /* =========================
-       BUSCA
-    ========================= */
-
     .bar {
       display: flex;
-
       gap: 10px;
-
       flex-wrap: wrap;
-
       margin-bottom: 25px;
     }
 
     .search {
       flex: 1;
-
       min-width: 220px;
-
       background: #111;
-
       border: 1px solid #333;
-
       color: #fff;
-
       border-radius: 9px;
-
       padding: 13px 14px;
-
       font-size: 14px;
-
-      transition: border-color 0.2s ease;
     }
 
     .search:focus {
       outline: none;
-
       border-color: #ffd600;
     }
 
@@ -181,37 +142,20 @@
       color: #777;
     }
 
-    /* =========================
-       CATEGORIAS
-    ========================= */
-
     .cats {
       display: flex;
-
       gap: 7px;
-
       flex-wrap: wrap;
     }
 
     .cat {
       background: #111;
-
       color: #bbb;
-
       border: 1px solid #333;
-
       border-radius: 9px;
-
       padding: 10px 12px;
-
       cursor: pointer;
-
       font-size: 12px;
-
-      transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
     }
 
     .cat:hover {
@@ -221,48 +165,26 @@
 
     .cat.active {
       background: #ffd600;
-
       color: #000;
-
       border-color: #ffd600;
-
       font-weight: 800;
     }
 
-    /* =========================
-       GRID
-    ========================= */
-
     .grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(4, 1fr);
-
+      grid-template-columns: repeat(4, 1fr);
       gap: 15px;
-
       align-items: stretch;
     }
 
-    /* =========================
-       CARD
-    ========================= */
-
     .card {
       background: #111;
-
       border: 1px solid #292929;
-
       border-radius: 15px;
-
       overflow: hidden;
-
       display: flex;
-
       flex-direction: column;
-
       height: 100%;
-
       transition:
         transform 0.2s ease,
         border-color 0.2s ease,
@@ -271,238 +193,131 @@
 
     .card:hover {
       transform: translateY(-3px);
-
       border-color: #444;
-
-      box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
-
-    /* =========================
-       IMAGEM
-    ========================= */
 
     .pic {
       aspect-ratio: 1 / 1;
-
       background: #fff;
-
       flex-shrink: 0;
-
       overflow: hidden;
     }
 
     .pic img {
       width: 100%;
       height: 100%;
-
       object-fit: cover;
-
       display: block;
-
-      transition:
-        transform 0.3s ease;
+      transition: transform 0.3s ease;
     }
 
     .card:hover .pic img {
       transform: scale(1.03);
     }
 
-    /* =========================
-       INFORMAÇÕES
-    ========================= */
-
     .info {
       padding: 14px;
-
       display: flex;
-
       flex-direction: column;
-
       flex: 1;
-
       min-height: 215px;
     }
 
     .catname {
       font-size: 10px;
-
       color: #ffd600;
-
       font-weight: 900;
-
       text-transform: uppercase;
-
       margin-bottom: 6px;
     }
 
     .name {
       font-weight: 800;
-
       font-size: 14px;
-
       line-height: 1.35;
-
       margin: 0 0 7px;
     }
 
     .desc {
       color: #999;
-
       font-size: 12px;
-
       line-height: 1.4;
-
       margin: 0;
-
       display: -webkit-box;
-
       -webkit-box-orient: vertical;
-
       -webkit-line-clamp: 3;
-
       line-clamp: 3;
-
       overflow: hidden;
-
       min-height: 50px;
     }
 
-    /* =========================
-       PREÇO
-    ========================= */
-
     .price {
       margin-top: auto;
-
       margin-bottom: 10px;
-
       color: #fff;
-
       font-size: 21px;
-
       font-weight: 900;
-
       line-height: 1.2;
-
-      display: flex;
-
-      align-items: baseline;
-
-      gap: 4px;
     }
-
-    /* =========================
-       BOTÃO
-    ========================= */
 
     .buy {
       display: block;
-
       width: 100%;
-
       text-align: center;
-
       background: #ffd600;
-
       color: #000;
-
       border-radius: 9px;
-
       padding: 12px;
-
       text-decoration: none;
-
       font-weight: 900;
-
       font-size: 12px;
-
-      margin-top: 0;
-
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease;
     }
 
     .buy:hover {
       background: #ffe44d;
-
-      transform: translateY(-1px);
     }
-
-    .buy:active {
-      transform: translateY(0);
-    }
-
-    /* =========================
-       VAZIO
-    ========================= */
 
     .empty {
       grid-column: 1 / -1;
-
       text-align: center;
-
       color: #777;
-
       padding: 50px 20px;
     }
 
-    /* =========================
-       RODAPÉ
-    ========================= */
-
     footer {
       text-align: center;
-
       border-top: 1px solid #292929;
-
       padding: 30px;
-
       color: #777;
-
       font-size: 11px;
     }
 
-    /* =========================
-       RESPONSIVO
-    ========================= */
-
     @media (max-width: 1000px) {
-
       .grid {
-        grid-template-columns:
-          repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr);
       }
-
     }
 
     @media (max-width: 850px) {
-
       .grid {
-        grid-template-columns:
-          repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .hero {
         padding-top: 130px;
       }
-
     }
 
     @media (max-width: 500px) {
-
       header {
         height: 64px;
-
         padding: 0 15px;
       }
 
       .logo {
         width: 36px;
         height: 36px;
-
         font-size: 19px;
       }
 
@@ -515,31 +330,25 @@
       }
 
       .hero {
-        padding:
-          115px 15px 40px;
+        padding: 115px 15px 40px;
       }
 
       .hero h1 {
         font-size: 43px;
-
         letter-spacing: -2px;
       }
 
       .wrap {
-        padding:
-          0 15px 60px;
+        padding: 0 15px 60px;
       }
 
       .grid {
-        grid-template-columns:
-          repeat(2, 1fr);
-
+        grid-template-columns: repeat(2, 1fr);
         gap: 9px;
       }
 
       .info {
         padding: 10px;
-
         min-height: 195px;
       }
 
@@ -553,32 +362,27 @@
 
       .desc {
         font-size: 10px;
-
         min-height: 43px;
       }
 
       .price {
         font-size: 16px;
-
         margin-bottom: 8px;
       }
 
       .buy {
         padding: 10px 6px;
-
         font-size: 10px;
       }
 
+      .admin {
+        display: none;
+      }
     }
   </style>
 </head>
 
-
 <body>
-
-  <!-- =========================
-       CABEÇALHO
-  ========================= -->
 
   <header id="header">
 
@@ -589,25 +393,23 @@
       </div>
 
       <div>
-
-        <b>
-          Garimpo Online
-        </b>
+        <b>Garimpo Online</b>
 
         <small>
           Achadinhos que valem a pena
         </small>
-
       </div>
 
     </div>
 
+    <a
+      class="admin"
+      href="admin.html"
+    >
+      ⚙ Gerenciar
+    </a>
+
   </header>
-
-
-  <!-- =========================
-       HERO
-  ========================= -->
 
   <section class="hero">
 
@@ -616,13 +418,10 @@
     </div>
 
     <h1>
-
       Produtos que
-
       <span class="yellow">
         valem o clique.
       </span>
-
     </h1>
 
     <p>
@@ -631,11 +430,6 @@
     </p>
 
   </section>
-
-
-  <!-- =========================
-       PRODUTOS
-  ========================= -->
 
   <main class="wrap">
 
@@ -656,7 +450,6 @@
 
     </div>
 
-
     <div
       id="grid"
       class="grid"
@@ -664,19 +457,12 @@
 
   </main>
 
-
-  <!-- =========================
-       RODAPÉ
-  ========================= -->
-
   <footer>
-    Garimpo Online · O melhor site para achadinhos.
+    Garimpo Online · Links de afiliados podem gerar comissão.
   </footer>
 
 
-  <!-- =========================
-       SUPABASE
-  ========================= -->
+  <!-- SUPABASE -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -692,7 +478,6 @@
     const grid =
       document.getElementById("grid");
 
-
     if (
       typeof SUPABASE_URL === "undefined" ||
       typeof SUPABASE_ANON_KEY === "undefined"
@@ -705,13 +490,14 @@
       grid.innerHTML = `
         <div class="empty">
           Erro de configuração do Supabase.
+          <br><br>
+          Verifique o arquivo config.js.
         </div>
       `;
 
       throw new Error(
         "SUPABASE_URL ou SUPABASE_ANON_KEY não encontrados."
       );
-
     }
 
 
@@ -737,22 +523,21 @@
 
     function esc(value) {
 
-      return String(
-        value ?? ""
-      ).replace(
-        /[&<>"']/g,
-        function (match) {
+      return String(value ?? "")
+        .replace(
+          /[&<>"']/g,
+          function(match) {
 
-          return {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#039;"
-          }[match];
+            return {
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;"
+            }[match];
 
-        }
-      );
+          }
+        );
 
     }
 
@@ -793,20 +578,7 @@
       }
 
 
-      const text =
-        String(value).trim();
-
-
-      if (
-        /^r\$/i.test(text)
-      ) {
-
-        return text;
-
-      }
-
-
-      return `R$ ${text}`;
+      return String(value);
 
     }
 
@@ -819,18 +591,11 @@
 
       try {
 
-        /*
-         * Busca os produtos ativos.
-         */
-
-        let result =
+        const result =
           await db
             .from("products")
             .select("*")
-            .eq(
-              "active",
-              true
-            )
+            .eq("active", true)
             .order(
               "created_at",
               {
@@ -838,36 +603,6 @@
               }
             );
 
-
-        /*
-         * Caso a coluna active não exista,
-         * tenta novamente sem o filtro.
-         */
-
-        if (result.error) {
-
-          console.warn(
-            "Consulta com active falhou. Tentando sem filtro active.",
-            result.error
-          );
-
-          result =
-            await db
-              .from("products")
-              .select("*")
-              .order(
-                "created_at",
-                {
-                  ascending: false
-                }
-              );
-
-        }
-
-
-        /* =================================================
-           VERIFICAR ERRO
-        ================================================= */
 
         if (result.error) {
 
@@ -878,16 +613,11 @@
 
           grid.innerHTML = `
             <div class="empty">
-
               Erro ao carregar produtos.
-
               <br><br>
-
               <small>
-                Abra o Console do navegador
-                (F12) para ver o erro do Supabase.
+                Abra o Console (F12) para ver o erro.
               </small>
-
             </div>
           `;
 
@@ -895,10 +625,6 @@
 
         }
 
-
-        /* =================================================
-           PRODUTOS RECEBIDOS
-        ================================================= */
 
         products =
           result.data || [];
@@ -915,7 +641,6 @@
         render();
 
       }
-
       catch (error) {
 
         console.error(
@@ -940,46 +665,41 @@
 
     function renderCats() {
 
-      const categorias =
+      const categories =
         products
           .map(
-            function (product) {
-
-              return product.category;
-
-            }
+            product => product.category
           )
           .filter(Boolean);
 
 
       const cats = [
         "Todos",
-        ...new Set(categorias)
+        ...new Set(categories)
       ];
 
 
-      document
-        .getElementById("cats")
-        .innerHTML =
+      document.getElementById(
+        "cats"
+      ).innerHTML =
+
         cats
           .map(
-            function (category) {
+            category => `
 
-              return `
-                <button
-                  class="cat ${
-                    category === selected
-                      ? "active"
-                      : ""
-                  }"
-                  data-cat="${esc(category)}"
-                  type="button"
-                >
-                  ${esc(category)}
-                </button>
-              `;
+              <button
+                class="cat ${
+                  category === selected
+                    ? "active"
+                    : ""
+                }"
+                data-cat="${esc(category)}"
+                type="button"
+              >
+                ${esc(category)}
+              </button>
 
-            }
+            `
           )
           .join("");
 
@@ -987,10 +707,10 @@
       document
         .querySelectorAll(".cat")
         .forEach(
-          function (button) {
+          button => {
 
             button.onclick =
-              function () {
+              function() {
 
                 selected =
                   button.dataset.cat;
@@ -1020,45 +740,40 @@
 
 
       const q =
-        search
-          ? search.value
-              .toLowerCase()
-              .trim()
-          : "";
+        search.value
+          .toLowerCase()
+          .trim();
 
 
       const list =
         products.filter(
-          function (product) {
+          product => {
 
-            const matchesCategory =
+            const categoryOK =
               selected === "Todos" ||
               product.category === selected;
 
 
             const text =
-              `${product.name || ""} ${
-                product.description || ""
-              }`
+              `
+                ${product.name || ""}
+                ${product.description || ""}
+              `
                 .toLowerCase();
 
 
-            const matchesSearch =
+            const searchOK =
               text.includes(q);
 
 
             return (
-              matchesCategory &&
-              matchesSearch
+              categoryOK &&
+              searchOK
             );
 
           }
         );
 
-
-      /* =================================================
-         NENHUM PRODUTO
-      ================================================= */
 
       if (!list.length) {
 
@@ -1073,98 +788,44 @@
       }
 
 
-      /* =================================================
-         MONTAR CARDS
-      ================================================= */
-
       grid.innerHTML =
+
         list
           .map(
-            function (product) {
+            product => {
 
               /*
-               * =================================================
-               * PREÇO ATUAL
-               * =================================================
-               *
-               * O sistema dá prioridade para current_price.
-               *
-               * Se current_price estiver preenchido:
-               *     mostra current_price
-               *
-               * Se estiver vazio:
-               *     usa price
-               *
-               * Portanto o site está preparado para receber
-               * o preço atualizado pelo backend.
-               */
+                Se current_price existir,
+                usa o preço atualizado.
 
-              let currentPrice;
+                Caso contrário,
+                usa price.
+              */
 
-
-              if (
+              const currentPrice =
                 product.current_price !== null &&
                 product.current_price !== undefined &&
                 String(
                   product.current_price
                 ).trim() !== ""
-              ) {
 
-                currentPrice =
-                  product.current_price;
+                  ? product.current_price
 
-              }
-
-              else {
-
-                currentPrice =
-                  product.price;
-
-              }
-
-
-              const formattedPrice =
-                formatPrice(
-                  currentPrice
-                );
-
-
-              /*
-               * =================================================
-               * LINK DE AFILIADO
-               * =================================================
-               */
-
-              const affiliateUrl =
-                String(
-                  product.affiliate_url ||
-                  "#"
-                ).trim();
-
-
-              /*
-               * =================================================
-               * IMAGEM
-               * =================================================
-               */
-
-              const imageUrl =
-                String(
-                  product.image_url ||
-                  ""
-                ).trim();
+                  : product.price;
 
 
               return `
+
                 <article class="card">
 
                   <div class="pic">
 
                     <img
-                      src="${esc(imageUrl)}"
+                      src="${esc(
+                        product.image_url || ""
+                      )}"
                       alt="${esc(
-                        product.name ||
-                        "Produto"
+                        product.name || "Produto"
                       )}"
                       loading="lazy"
                     >
@@ -1175,40 +836,51 @@
                   <div class="info">
 
                     <div class="catname">
+
                       ${esc(
                         product.category ||
                         "Achadinhos"
                       )}
+
                     </div>
 
 
                     <div class="name">
+
                       ${esc(
                         product.name ||
                         "Produto"
                       )}
+
                     </div>
 
 
                     <div class="desc">
+
                       ${esc(
                         product.description ||
                         "Confira a oferta."
                       )}
+
                     </div>
 
 
                     <div class="price">
+
                       ${esc(
-                        formattedPrice
+                        formatPrice(
+                          currentPrice
+                        )
                       )}
+
                     </div>
 
 
                     <a
                       class="buy"
                       href="${esc(
-                        affiliateUrl
+                        product.affiliate_url ||
+                        "#"
                       )}"
                       target="_blank"
                       rel="nofollow sponsored noopener"
@@ -1219,6 +891,7 @@
                   </div>
 
                 </article>
+
               `;
 
             }
@@ -1255,43 +928,34 @@
 
     window.addEventListener(
       "scroll",
-      function () {
+      function() {
 
-        const currentScrollY =
+        const current =
           window.scrollY;
 
 
-        if (
-          currentScrollY <= 10
-        ) {
+        if (current <= 10) {
 
           header.classList.remove(
             "hide"
           );
 
           lastScrollY =
-            currentScrollY;
+            current;
 
           return;
 
         }
 
 
-        if (
-          currentScrollY >
-          lastScrollY
-        ) {
+        if (current > lastScrollY) {
 
           header.classList.add(
             "hide"
           );
 
         }
-
-        else if (
-          currentScrollY <
-          lastScrollY
-        ) {
+        else if (current < lastScrollY) {
 
           header.classList.remove(
             "hide"
@@ -1301,7 +965,7 @@
 
 
         lastScrollY =
-          currentScrollY;
+          current;
 
       },
       {
@@ -1311,7 +975,7 @@
 
 
     /* =====================================================
-       INICIALIZAÇÃO
+       INICIAR
     ===================================================== */
 
     load();
